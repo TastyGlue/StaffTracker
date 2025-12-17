@@ -7,6 +7,8 @@ A simple CRUD accounting application built with .NET MAUI Blazor Hybrid, running
 - **Framework**: .NET MAUI Blazor Hybrid
 - **Platform**: Windows only
 - **Language**: C#
+- **Database**: SQLite with Entity Framework Core 9.0
+- **Data Storage**: Local file in user's AppData\Local folder
 
 ## Project Structure
 
@@ -41,6 +43,46 @@ Inherits from EntryBase. Represents employee dismissal with no additional proper
 Defines entry types:
 - `Dismissal = 1`
 - `Appointment = 2`
+
+### Data (`Dismissal_Appointment/Data/`)
+
+#### AppDbContext.cs
+Entity Framework Core DbContext for the application:
+- `DbSet<Appointment> Appointments` - Collection of appointment records
+- `DbSet<Dismissal> Dismissals` - Collection of dismissal records
+- Uses Table-Per-Type (TPT) mapping strategy for inheritance hierarchy
+- Configures decimal precision for salary fields
+- Enforces required properties and constraints
+
+#### DatabaseConfig.cs
+Configuration helper for database connection:
+- `DatabasePath` - Returns the full path to the SQLite database file
+- `ConnectionString` - Provides the SQLite connection string
+- Database location: `%LOCALAPPDATA%\dismissal_appointment.db`
+
+#### DatabaseInitializer.cs
+Service for database initialization:
+- Ensures database is created on application startup
+- Called automatically when MainPage is constructed
+- Uses `EnsureCreatedAsync()` to create database schema
+
+## Database Setup
+
+### Storage Location
+The SQLite database is stored locally on the user's machine at:
+```
+C:\Users\[Username]\AppData\Local\dismissal_appointment.db
+```
+
+### Configuration
+- Database connection is configured in `MauiProgram.cs`
+- AppDbContext is registered with dependency injection
+- Database is automatically initialized when the application starts
+- Uses Table-Per-Type mapping for Appointment and Dismissal entities
+
+### NuGet Packages
+- `Microsoft.EntityFrameworkCore.Sqlite` (v9.0.11)
+- `Microsoft.EntityFrameworkCore.Tools` (v9.0.11)
 
 ## Purpose
 This application serves as an accounting tool to maintain records of:

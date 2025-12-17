@@ -2,6 +2,8 @@
 
 public abstract class EntryBase
 {
+    public Guid Id { get; set; }
+
     public EntryType EntryType { get; set; }
     public DateTime Date { get; set; }
     public bool IsNRAConfirmed { get; set; }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Dismissal_Appointment.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dismissal_Appointment
 {
@@ -15,6 +17,16 @@ namespace Dismissal_Appointment
                 });
 
             builder.Services.AddMauiBlazorWebView();
+
+            // Register SQLite database
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlite(DatabaseConfig.ConnectionString));
+
+            // Register database initializer
+            builder.Services.AddTransient<DatabaseInitializer>();
+
+            // Register pages
+            builder.Services.AddSingleton<MainPage>();
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();

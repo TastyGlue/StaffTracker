@@ -2,9 +2,12 @@
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        public MainPage(DatabaseInitializer databaseInitializer)
         {
             InitializeComponent();
+
+            // Initialize the database
+            Task.Run(async () => await databaseInitializer.InitializeAsync());
         }
     }
 }
