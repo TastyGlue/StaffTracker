@@ -1,8 +1,11 @@
-﻿namespace Dismissal_Appointment.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Dismissal_Appointment.Models;
 
 public abstract class EntryBase
 {
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
     public EntryType EntryType { get; set; }
     public DateTime Date { get; set; }

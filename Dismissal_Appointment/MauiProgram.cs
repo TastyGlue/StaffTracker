@@ -1,5 +1,4 @@
-﻿using Dismissal_Appointment.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Dismissal_Appointment
@@ -37,6 +36,10 @@ namespace Dismissal_Appointment
 
             // Register database initializer
             builder.Services.AddTransient<DatabaseInitializer>();
+
+            // Register services
+            builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();
+            builder.Services.AddScoped<IEntryService<Dismissal>, DismissalService>();
 
             // Register pages
             builder.Services.AddSingleton<MainPage>();
