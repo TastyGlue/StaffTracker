@@ -1,5 +1,4 @@
-using Dismissal_Appointment.Models;
-using Microsoft.EntityFrameworkCore;
+using Dismissal_Appointment.Models;using Microsoft.EntityFrameworkCore;
 
 namespace Dismissal_Appointment.Data;
 
@@ -31,30 +30,5 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Appointment>()
             .Property(a => a.Salary)
             .HasPrecision(18, 2);
-
-        // Configure required properties
-        modelBuilder.Entity<EntryBase>()
-            .Property(e => e.CompanyName)
-            .IsRequired();
-
-        modelBuilder.Entity<EntryBase>()
-            .Property(e => e.IDN)
-            .IsRequired();
-
-        modelBuilder.Entity<EntryBase>()
-            .Property(e => e.FirstName)
-            .IsRequired();
-
-        modelBuilder.Entity<EntryBase>()
-            .Property(e => e.Surname)
-            .IsRequired();
-
-        modelBuilder.Entity<EntryBase>()
-            .Property(e => e.LabourCodeArticle)
-            .IsRequired();
-
-        modelBuilder.Entity<Appointment>()
-            .Property(a => a.Position)
-            .IsRequired();
     }
 }
