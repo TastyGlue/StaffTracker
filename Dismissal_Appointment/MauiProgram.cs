@@ -18,6 +18,19 @@ namespace Dismissal_Appointment
 
             builder.Services.AddMauiBlazorWebView();
 
+            // Add UI Component Library
+            builder.Services.AddMudServices(config =>
+            {
+                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.TopRight;
+                config.SnackbarConfiguration.PreventDuplicates = false;
+                config.SnackbarConfiguration.NewestOnTop = false;
+                config.SnackbarConfiguration.ShowCloseIcon = true;
+                config.SnackbarConfiguration.HideTransitionDuration = 500;
+                config.SnackbarConfiguration.ShowTransitionDuration = 500;
+                config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+            });
+            builder.Services.AddMudLocalization();
+
             // Register SQLite database
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(DatabaseConfig.ConnectionString));
