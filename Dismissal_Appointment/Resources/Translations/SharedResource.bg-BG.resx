@@ -120,4 +120,7 @@
   <data name="Hello, world!" xml:space="preserve">
     <value>Здравей, свят!</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Начало</value>
+  </data>
 </root>

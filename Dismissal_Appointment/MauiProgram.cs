@@ -49,6 +49,7 @@ namespace Dismissal_Appointment
             builder.Services.AddTransient<DatabaseInitializer>();
 
             // Register services
+            builder.Services.AddScoped<IPageTitleService, PageTitleService>();
             builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();
             builder.Services.AddScoped<IEntryService<Dismissal>, DismissalService>();
 

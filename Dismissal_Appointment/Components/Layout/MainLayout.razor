@@ -1,17 +1,66 @@
 ﻿@inherits LayoutComponentBase
+@inject ILocalizationService Localizer
+@inject IPageTitleService PageTitleService
+@implements IDisposable
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudThemeProvider Theme="@Themes.DefaultTheme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+<MudLayout>
+    <MudAppBar Elevation="1" Class="app-topbar">
+        <MudSpacer />
+        <MudMenu Icon="@Icons.Material.Filled.Language" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+            <MudMenuItem OnClick="@(() => ChangeCulture("bg-BG"))">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1rem;">🇧🇬</span>
+                    <span>Български</span>
+                </div>
+            </MudMenuItem>
+            <MudMenuItem OnClick="@(() => ChangeCulture("en-US"))">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1rem;">🇺🇸</span>
+                    <span>English</span>
+                </div>
+            </MudMenuItem>
+        </MudMenu>
+    </MudAppBar>
+
+    <MudMainContent Class="main-content">
+        <div class="page-title-container">
+            <MudText Typo="Typo.h5" Class="page-title">@Localizer[PageTitleService.TitleKey]</MudText>
         </div>
 
-        <article class="content px-4">
+        <div class="page-content">
             @Body
-        </article>
-    </main>
-</div>
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    protected override void OnInitialized()
+    {
+        PageTitleService.OnChange += OnPageTitleChanged;
+    }
+
+    private void OnPageTitleChanged()
+    {
+        StateHasChanged();
+    }
+
+    private void ChangeCulture(string culture)
+    {
+        var cultureInfo = new System.Globalization.CultureInfo(culture);
+        System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+        // Force re-render
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        PageTitleService.OnChange -= OnPageTitleChanged;
+    }
+}

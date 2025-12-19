@@ -48,6 +48,7 @@ Defines entry types:
 
 #### AppDbContext.cs
 Entity Framework Core DbContext for the application:
+- `DbSet<EntryBase> Entries` - Collection of all entry records (base type)
 - `DbSet<Appointment> Appointments` - Collection of appointment records
 - `DbSet<Dismissal> Dismissals` - Collection of dismissal records
 - Uses Table-Per-Type (TPT) mapping strategy for inheritance hierarchy
@@ -65,6 +66,63 @@ Service for database initialization:
 - Ensures database is created on application startup
 - Called automatically when MainPage is constructed
 - Uses `EnsureCreatedAsync()` to create database schema
+
+### Services (`Dismissal_Appointment/Services/`)
+
+#### LocalizationService.cs
+Service for application localization and internationalization:
+- `ILocalizationService` - Interface for localization service
+- `LocalizationService` - Implementation providing string localization
+- Indexer `this[string key]` - Returns localized string for a given key
+- Indexer `this[string key, params object[] arguments]` - Returns formatted localized string with arguments
+- `CurrentCulture` - Property exposing the current UI culture
+- Uses resource files from `Resources/Translations/` folder
+- Registered as singleton in dependency injection container
+
+#### PageTitleService.cs
+Service for managing the page title displayed in MainLayout:
+- `IPageTitleService` - Interface for page title service
+- `PageTitleService` - Implementation for managing page titles
+- `TitleKey` - Property containing the resource key for the current page title
+- `OnChange` - Event that fires when the title changes, triggering MainLayout to re-render
+- `SetTitle(string titleKey)` - Method to set the page title using a localization resource key
+- The title is automatically localized using the LocalizationService
+- Registered as scoped service in dependency injection container
+
+### Resources (`Dismissal_Appointment/Resources/Translations/`)
+
+#### SharedResource.resx
+Default resource file containing translatable strings for the application:
+- Base English language resource file
+- Auto-generated Designer.cs provides strongly-typed access
+- Configured as embedded resource with PublicResXFileCodeGenerator
+
+#### SharedResource.bg-BG.resx
+Bulgarian language resource file:
+- Culture-specific translations for Bulgarian (bg-BG)
+- Falls back to default resource if translation is missing
+- Example translations include UI strings like "Hello, world!" -> "Здравей, свят!"
+
+## Localization
+
+### Configuration
+The application is configured with Bulgarian (bg-BG) as the default culture:
+- Default culture set in `MauiProgram.cs` on application startup
+- `CultureInfo.DefaultThreadCurrentCulture` and `CultureInfo.DefaultThreadCurrentUICulture` both set to "bg-BG"
+- Localization service registered in dependency injection with resources path "Resources/Translations"
+- Uses .NET resource file (.resx) system for managing translations
+
+### Usage
+To use localization in Blazor components:
+1. Inject `ILocalizationService` into the component
+2. Access localized strings using the indexer: `Localizer["key"]`
+3. For formatted strings with parameters: `Localizer["key", arg1, arg2]`
+4. Access current culture via `Localizer.CurrentCulture`
+
+### Adding New Translations
+1. Add the default English string to `SharedResource.resx`
+2. Add culture-specific translations to corresponding .resx files (e.g., `SharedResource.bg-BG.resx` for Bulgarian)
+3. The LocalizationService will automatically return the key if no translation is found
 
 ## Database Setup
 
@@ -90,7 +148,66 @@ This application serves as an accounting tool to maintain records of:
 - Employee dismissals with labour code article references
 - NRA confirmation tracking for regulatory compliance
 
+## UI/UX
+
+### MudBlazor Components
+The application uses MudBlazor for the user interface:
+- MudBlazor theme provider configured in `MainLayout.razor`
+- Dialog, Popover, and Snackbar providers enabled globally
+
+### Layout Structure
+The application uses a simple, clean layout defined in `MainLayout.razor`:
+- **Topbar**: Subtle topbar with light background (`#f5f5f5`) and minimal shadow
+  - Culture/language switcher located in the right side (Bulgarian/English)
+- **Page Title Section**: Centered horizontally below the topbar
+  - Displays the current page title with clear separation from content
+- **Page Content**: Main content area below the title section
+  - Max-width of 1400px, centered horizontally
+  - Light background color (`#fafafa`)
+
+### Styling Guidelines
+- All custom styling for the layout is defined in `wwwroot/css/app.css`
+- Layout uses the following CSS classes:
+  - `.app-topbar` - Styling for the top application bar
+  - `.main-content` - Main content area background
+  - `.page-title-container` - Container for centered page title
+  - `.page-title` - Page title text styling
+  - `.page-content` - Content area with padding and max-width
+- Any new styling should be added to `app.css` to maintain separation of concerns
+
+### Culture Switching
+- Culture can be switched via the language menu in the topbar
+- Switching culture updates both `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
+- The layout forces a re-render to reflect localization changes
+
+### Page Titles
+Each page component can set its own localized title using the PageTitleService:
+
+**Usage in Razor page components:**
+1. Inject `IPageTitleService` into the component: `@inject IPageTitleService PageTitleService`
+2. In the `OnInitialized()` or `OnInitializedAsync()` lifecycle method, call `PageTitleService.SetTitle("ResourceKey")`
+3. The resource key should correspond to a localized string in the SharedResource.resx files
+4. The title will automatically be displayed in the centered page title section and will update when culture changes
+
+**Example:**
+```razor
+@page "/appointments"
+@inject IPageTitleService PageTitleService
+
+@code {
+    protected override void OnInitialized()
+    {
+        PageTitleService.SetTitle("AppointmentsPageTitle");
+    }
+}
+```
+
+Then add the corresponding keys to your resource files:
+- `SharedResource.resx`: `AppointmentsPageTitle = "Appointments"`
+- `SharedResource.bg-BG.resx`: `AppointmentsPageTitle = "Назначения"`
+
 ## Development Notes
 - Focus on CRUD operations for appointment and dismissal entries
 - Windows-only deployment target
 - Labour code articles are tracked as strings for flexibility
+- All UI styling should go into `wwwroot/css/app.css` file
