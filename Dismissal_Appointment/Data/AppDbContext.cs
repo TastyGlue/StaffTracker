@@ -1,4 +1,4 @@
-using Dismissal_Appointment.Models;using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dismissal_Appointment.Data;
 
@@ -8,6 +8,7 @@ public class AppDbContext : DbContext
     {
     }
 
+    public DbSet<EntryBase> Entries { get; set; } = null!;
     public DbSet<Appointment> Appointments { get; set; } = null!;
     public DbSet<Dismissal> Dismissals { get; set; } = null!;
 

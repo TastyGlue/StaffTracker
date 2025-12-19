@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
+using Dismissal_Appointment.Services;
 
 namespace Dismissal_Appointment
 {
@@ -7,6 +9,11 @@ namespace Dismissal_Appointment
     {
         public static MauiApp CreateMauiApp()
         {
+            // Set default culture to Bulgarian
+            var culture = new CultureInfo("bg-BG");
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -33,6 +40,10 @@ namespace Dismissal_Appointment
             // Register SQLite database
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(DatabaseConfig.ConnectionString));
+
+            // Localization
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources/Translations");
+            builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
 
             // Register database initializer
             builder.Services.AddTransient<DatabaseInitializer>();
