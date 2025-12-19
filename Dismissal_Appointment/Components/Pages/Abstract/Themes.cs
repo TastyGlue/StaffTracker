@@ -49,7 +49,10 @@ public static class Themes
 
             // Lines and borders
             LinesDefault = "#E0E0E0",
-            LinesInputs = "#BDBDBD"
+            LinesInputs = "#BDBDBD",
+
+            TableStriped = "#F5F5F5",
+            TableHover = "#e0edfb"
         },
 
         LayoutProperties = new()

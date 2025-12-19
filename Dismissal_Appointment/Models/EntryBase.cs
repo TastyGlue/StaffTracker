@@ -20,4 +20,7 @@ public class EntryBase
     public string FirstName { get; set; } = default!;
     public string? SecondName { get; set; }
     public string Surname { get; set; } = default!;
+
+    [NotMapped]
+    public string FullName => $"{FirstName} {(string.IsNullOrWhiteSpace(SecondName) ? "" : SecondName + " ")}{Surname}";
 }

@@ -64,6 +64,26 @@ a, .btn-link {
     font-weight: 600;
 }
 
+.table-hover-color {
+    background-color: #D2E5F9 !important;
+}
+
+@keyframes row-ripple {
+    0% {
+        box-shadow: inset 0 0 8px 40px rgba(33, 150, 243, 0);
+    }
+    50% {
+        box-shadow: inset 0 0 8px 20px rgba(33, 150, 243, 0.2);
+    }
+    100% {
+        box-shadow: inset 0 0 8px 0 rgba(33, 150, 243, 0.4);
+    }
+}
+
+.row-ripple-effect {
+    animation: row-ripple .3s ease-out;
+}
+
 .padding-0 {
     padding: 0 !important;
 }

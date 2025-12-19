@@ -6,3 +6,6 @@ global using Dismissal_Appointment.Components.Pages.Abstract;
 
 global using MudBlazor;
 global using MudBlazor.Services;
+
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Components;

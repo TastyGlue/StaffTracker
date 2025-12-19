@@ -123,17 +123,17 @@
   <data name="Appointments" xml:space="preserve">
     <value>Назначения</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Създаване</value>
+  <data name="Create New Entry" xml:space="preserve">
+    <value>Създаване на нов запис</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Изтриване</value>
+  <data name="Delete Entry" xml:space="preserve">
+    <value>Изтриване на запис</value>
   </data>
   <data name="Dismissals" xml:space="preserve">
     <value>Уволнения</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редактиране</value>
+  <data name="Edit Entry" xml:space="preserve">
+    <value>Редактиране на запис</value>
   </data>
   <data name="Entries" xml:space="preserve">
     <value>Записи</value>

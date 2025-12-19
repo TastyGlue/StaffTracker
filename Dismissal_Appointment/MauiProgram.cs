@@ -50,6 +50,7 @@ namespace Dismissal_Appointment
 
             // Register services
             builder.Services.AddScoped<IPageTitleService, PageTitleService>();
+            builder.Services.AddScoped<IEntryService<EntryBase>, EntryBaseService>();
             builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();
             builder.Services.AddScoped<IEntryService<Dismissal>, DismissalService>();
 

@@ -4,39 +4,41 @@
              Items="Entries"
              @bind-SelectedItem="SelectedEntry"
              MultiSelection="false"
+             SelectOnRowClick="true"
+             RowClassFunc="@RowClassFunc"
              Filterable="true"
              FilterMode="DataGridFilterMode.Simple"
+             SortMode="SortMode.Multiple"
              QuickFilter="QuickFilter"
              Hover="true"
+             Striped="true"
              Loading="IsLoading"
              Elevation="1"
              Class="mb-4">
 
     <ToolBarContent>
-        <MudButton Variant="Variant.Filled"
-                   Color="Color.Success" 
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Filled.Add">
-            @Localizer["Create"]
-        </MudButton>
+        <MudTooltip Text="@Localizer["Create New Entry"]" Placement="Placement.Bottom">
+            <MudIconButton Icon="@Icons.Material.Filled.Add" 
+                           Variant="Variant.Filled"
+                           Color="Color.Success"
+                           Class="ml-2" />
+        </MudTooltip>
 
-        <MudButton Variant="Variant.Filled"
-                   Color="Color.Warning"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Filled.Edit"
-                   Disabled="SelectedEntry == null"
-                   Class="ml-2">
-            @Localizer["Edit"]
-        </MudButton>
+        <MudTooltip Text="@Localizer["Edit Entry"]" Placement="Placement.Bottom">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                           Variant="Variant.Filled"
+                           Color="Color.Warning"
+                           Disabled="SelectedEntry == null"
+                           Class="ml-2" />
+        </MudTooltip>
 
-        <MudButton Variant="Variant.Filled"
-                   Color="Color.Error"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Filled.Delete"
-                   Disabled="SelectedEntry == null"
-                   Class="ml-2">
-            @Localizer["Delete"]
-        </MudButton>
+        <MudTooltip Text="@Localizer["Delete Entry"]" Placement="Placement.Bottom">
+            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                           Variant="Variant.Filled"
+                           Color="Color.Error"
+                           Disabled="SelectedEntry == null"
+                           Class="ml-2" />
+        </MudTooltip>
 
         <MudSpacer />
 
@@ -49,9 +51,9 @@
     </ToolBarContent>
 
     <Columns>
-        <PropertyColumn Property="x => x.Id" Title="@Localizer["Id"]" Sortable="true" />
-        <PropertyColumn Property="x => x.IDN" Title="@Localizer["IDN"]" Sortable="true" />
-        <PropertyColumn Property="x => x.FirstName" Title="@Localizer["First Name"]" Sortable="true" />
+        <PropertyColumn Property="x => x.Id" Title="@Localizer["Id"]" />
+        <PropertyColumn Property="x => x.IDN" Title="@Localizer["IDN"]" />
+        <PropertyColumn Property="x => x.FirstName" Title="@Localizer["First Name"]"  />
     </Columns>
 
     <NoRecordsContent>

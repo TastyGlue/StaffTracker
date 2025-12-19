@@ -7,7 +7,11 @@
             InitializeComponent();
 
             // Initialize the database
-            Task.Run(async () => await databaseInitializer.InitializeAsync());
+            Task.Run(async () =>
+            {
+                await databaseInitializer.InitializeAsync();
+                await databaseInitializer.SeedTestDataAsync();
+            });
         }
     }
 }

@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace Dismissal_Appointment.Services;
 
 public class DismissalService : IEntryService<Dismissal>
