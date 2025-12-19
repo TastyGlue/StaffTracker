@@ -11,17 +11,25 @@
 <MudLayout>
     <MudAppBar Elevation="1" Class="app-topbar">
         <MudSpacer />
-        <MudMenu Icon="@Icons.Material.Filled.Language" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-            <MudMenuItem OnClick="@(() => ChangeCulture("bg-BG"))">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <MudMenu Icon="@Icons.Material.Filled.Language" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight" PopoverClass="padding-0">
+            <MudMenuItem OnClick="@(() => ChangeCulture("bg-BG"))" Class="@((CultureInfo.CurrentCulture.Name == "bg-BG") ? "selected-culture" : "")">
+                <div class="culture-menu-item-container">
                     <span style="font-size: 1rem;">🇧🇬</span>
                     <span>Български</span>
+                    @if (CultureInfo.CurrentCulture.Name == "bg-BG")
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" Style="margin-left: auto;" />
+                    }
                 </div>
             </MudMenuItem>
-            <MudMenuItem OnClick="@(() => ChangeCulture("en-US"))">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <MudMenuItem OnClick="@(() => ChangeCulture("en-US"))" Class="@((CultureInfo.CurrentCulture.Name == "en-US") ? "selected-culture" : "")">
+                <div class="culture-menu-item-container">
                     <span style="font-size: 1rem;">🇺🇸</span>
                     <span>English</span>
+                    @if (CultureInfo.CurrentCulture.Name == "en-US")
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" Style="margin-left: auto;" />
+                    }
                 </div>
             </MudMenuItem>
         </MudMenu>
@@ -42,6 +50,7 @@
     protected override void OnInitialized()
     {
         PageTitleService.OnChange += OnPageTitleChanged;
+        Localizer.OnCultureChanged += OnCultureChanged;
     }
 
     private void OnPageTitleChanged()
@@ -49,18 +58,19 @@
         StateHasChanged();
     }
 
+    private void OnCultureChanged()
+    {
+        StateHasChanged();
+    }
+
     private void ChangeCulture(string culture)
     {
-        var cultureInfo = new System.Globalization.CultureInfo(culture);
-        System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-        System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-
-        // Force re-render
-        StateHasChanged();
+        Localizer.SetCulture(culture);
     }
 
     public void Dispose()
     {
         PageTitleService.OnChange -= OnPageTitleChanged;
+        Localizer.OnCultureChanged -= OnCultureChanged;
     }
 }

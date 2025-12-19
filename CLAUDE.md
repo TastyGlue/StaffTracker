@@ -37,6 +37,18 @@ Inherits from EntryBase. Represents employee hiring with additional properties:
 #### Dismissal.cs
 Inherits from EntryBase. Represents employee dismissal with no additional properties beyond the base class.
 
+### Base Components (`Dismissal_Appointment/Components/Pages/Abstract/`)
+
+#### ExtendedComponentBase.cs
+Abstract base class for all page components that provides common functionality:
+- Inherits from `ComponentBase` and implements `IDisposable`
+- Automatically injects `ILocalizationService` (as `Localizer` property)
+- Automatically injects `IPageTitleService` (as `PageTitleService` property)
+- Automatically subscribes to culture change and page title change events in `OnInitialized()`
+- Provides `SetTitle(string title)` helper method for setting page titles
+- Automatically handles cleanup and unsubscribes from events in `Dispose()`
+- **IMPORTANT**: When overriding `OnInitialized()` or other lifecycle methods, always call `base.OnInitialized()` first to ensure event subscriptions work correctly
+
 ### Enums (`Dismissal_Appointment/Enums/`)
 
 #### EntryType.cs
@@ -76,6 +88,8 @@ Service for application localization and internationalization:
 - Indexer `this[string key]` - Returns localized string for a given key
 - Indexer `this[string key, params object[] arguments]` - Returns formatted localized string with arguments
 - `CurrentCulture` - Property exposing the current UI culture
+- `SetCulture(string culture)` - Method to change the application culture and notify all subscribers
+- `OnCultureChanged` - Event that fires when culture is changed, allowing components to re-render with new translations
 - Uses resource files from `Resources/Translations/` folder
 - Registered as singleton in dependency injection container
 
@@ -118,6 +132,8 @@ To use localization in Blazor components:
 2. Access localized strings using the indexer: `Localizer["key"]`
 3. For formatted strings with parameters: `Localizer["key", arg1, arg2]`
 4. Access current culture via `Localizer.CurrentCulture`
+5. Subscribe to `OnCultureChanged` event and call `StateHasChanged()` to update when culture switches
+6. Implement `IDisposable` and unsubscribe in `Dispose()` method
 
 ### Adding New Translations
 1. Add the default English string to `SharedResource.resx`
@@ -178,26 +194,22 @@ The application uses a simple, clean layout defined in `MainLayout.razor`:
 ### Culture Switching
 - Culture can be switched via the language menu in the topbar
 - Switching culture updates both `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
-- The layout forces a re-render to reflect localization changes
+- The active culture is highlighted with a checkmark icon and blue background
+- Components inheriting from `ExtendedComponentBase` automatically re-render when culture changes
 
 ### Page Titles
-Each page component can set its own localized title using the PageTitleService:
+Page components should inherit from `ExtendedComponentBase` and use the `SetTitle()` helper method:
 
-**Usage in Razor page components:**
-1. Inject `IPageTitleService` into the component: `@inject IPageTitleService PageTitleService`
-2. In the `OnInitialized()` or `OnInitializedAsync()` lifecycle method, call `PageTitleService.SetTitle("ResourceKey")`
-3. The resource key should correspond to a localized string in the SharedResource.resx files
-4. The title will automatically be displayed in the centered page title section and will update when culture changes
-
-**Example:**
+**Recommended approach (using ExtendedComponentBase):**
 ```razor
 @page "/appointments"
-@inject IPageTitleService PageTitleService
+@inherits ExtendedComponentBase
 
 @code {
     protected override void OnInitialized()
     {
-        PageTitleService.SetTitle("AppointmentsPageTitle");
+        base.OnInitialized();  // IMPORTANT: Always call base first!
+        SetTitle("AppointmentsPageTitle");
     }
 }
 ```
@@ -205,6 +217,8 @@ Each page component can set its own localized title using the PageTitleService:
 Then add the corresponding keys to your resource files:
 - `SharedResource.resx`: `AppointmentsPageTitle = "Appointments"`
 - `SharedResource.bg-BG.resx`: `AppointmentsPageTitle = "Назначения"`
+
+The title will automatically be displayed in the centered page title section and will update when culture changes.
 
 ## Development Notes
 - Focus on CRUD operations for appointment and dismissal entries

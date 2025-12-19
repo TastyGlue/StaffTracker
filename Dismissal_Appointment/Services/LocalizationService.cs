@@ -7,18 +7,20 @@ namespace Dismissal_Appointment.Services
     {
         string this[string key] { get; }
         string this[string key, params object[] arguments] { get; }
-        CultureInfo CurrentCulture { get; }
+        
+        event Action? OnCultureChanged;
+        void SetCulture(string culture);
     }
 
     public class LocalizationService : ILocalizationService
     {
-        public CultureInfo CurrentCulture => CultureInfo.CurrentUICulture;
+        public event Action? OnCultureChanged;
 
         public string this[string key]
         {
             get
             {
-                var value = SharedResource.ResourceManager.GetString(key, CurrentCulture);
+                var value = SharedResource.ResourceManager.GetString(key, CultureInfo.CurrentUICulture);
                 return value ?? key;
             }
         }
@@ -27,9 +29,20 @@ namespace Dismissal_Appointment.Services
         {
             get
             {
-                var format = SharedResource.ResourceManager.GetString(key, CurrentCulture) ?? key;
+                var format = SharedResource.ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
                 return string.Format(format, arguments);
             }
+        }
+
+        public void SetCulture(string culture)
+        {
+            var cultureInfo = new CultureInfo(culture);
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+
+            OnCultureChanged?.Invoke();
         }
     }
 }

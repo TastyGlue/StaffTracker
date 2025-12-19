@@ -52,6 +52,26 @@ a, .btn-link {
     max-width: 1400px;
     margin: 0 auto;
 }
+
+.culture-menu-item-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.selected-culture {
+    background-color: rgba(0, 123, 255, 0.1) !important;
+    font-weight: 600;
+}
+
+.padding-0 {
+    padding: 0 !important;
+}
+
+    .padding-0 > .mud-menu-list {
+        padding: 0 !important;
+    }
+
 h1:focus {
     outline: none;
 }

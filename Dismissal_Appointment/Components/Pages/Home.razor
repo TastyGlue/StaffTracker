@@ -1,16 +1,15 @@
 ﻿@page "/"
-@using Dismissal_Appointment.Services
-@inject ILocalizationService Localizer
-@inject IPageTitleService PageTitleService
+@inherits ExtendedComponentBase
 
 <h1>@Localizer["Hello, world!"]</h1>
-<p>@Localizer.CurrentCulture</p>
+<p>@CultureInfo.CurrentUICulture</p>
 
 Welcome to your new app.
 
 @code {
     protected override void OnInitialized()
     {
-        PageTitleService.SetTitle("Home");
+        base.OnInitialized();
+        SetTitle("Home");
     }
 }
