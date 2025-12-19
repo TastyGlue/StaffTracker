@@ -1,0 +1,14 @@
+﻿@page "/index"
+@inherits ExtendedComponentBase
+
+<MudTabs Ripple="true" Elevation="2" Rounded="true" ApplyEffectsToContainer="true">
+    <MudTabPanel Text="@Localizer["All"]">
+        <Dismissal_Appointment.Components.Pages.EntryLists.All />
+    </MudTabPanel>
+    <MudTabPanel Text="@Localizer["Appointments"]">
+        <MudText>Content One, sorted as 'G'</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="@Localizer["Dismissals"]">
+        <MudText>Content Three, sorted as 'Tab 3' as the SortKey is not set</MudText>
+    </MudTabPanel>
+</MudTabs>

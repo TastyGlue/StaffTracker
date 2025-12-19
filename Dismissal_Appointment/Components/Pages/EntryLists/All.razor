@@ -1,0 +1,64 @@
+﻿@inherits EntryListBase<EntryBase>
+
+<MudDataGrid T="EntryBase"
+             Items="Entries"
+             @bind-SelectedItem="SelectedEntry"
+             MultiSelection="false"
+             Filterable="true"
+             FilterMode="DataGridFilterMode.Simple"
+             QuickFilter="QuickFilter"
+             Hover="true"
+             Loading="IsLoading"
+             Elevation="1"
+             Class="mb-4">
+
+    <ToolBarContent>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Success" 
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Add">
+            @Localizer["Create"]
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Warning"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Edit"
+                   Disabled="SelectedEntry == null"
+                   Class="ml-2">
+            @Localizer["Edit"]
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Error"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Delete"
+                   Disabled="SelectedEntry == null"
+                   Class="ml-2">
+            @Localizer["Delete"]
+        </MudButton>
+
+        <MudSpacer />
+
+        <MudTextField @bind-Value="SearchString"
+                        Placeholder="@Localizer["Search..."]"
+                        Adornment="Adornment.Start"
+                        AdornmentIcon="@Icons.Material.Filled.Search"
+                        Immediate="true"
+                        Class="ml-2" />
+    </ToolBarContent>
+
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="@Localizer["Id"]" Sortable="true" />
+        <PropertyColumn Property="x => x.IDN" Title="@Localizer["IDN"]" Sortable="true" />
+        <PropertyColumn Property="x => x.FirstName" Title="@Localizer["First Name"]" Sortable="true" />
+    </Columns>
+
+    <NoRecordsContent>
+        <MudText>@Localizer["No entries to display"]</MudText>
+    </NoRecordsContent>
+
+    <PagerContent>
+        <MudDataGridPager T="EntryBase" />
+    </PagerContent>
+</MudDataGrid>

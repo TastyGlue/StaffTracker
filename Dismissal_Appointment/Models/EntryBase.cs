@@ -2,7 +2,7 @@
 
 namespace Dismissal_Appointment.Models;
 
-public abstract class EntryBase
+public class EntryBase
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
