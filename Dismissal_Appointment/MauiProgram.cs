@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System.Globalization;
-using Dismissal_Appointment.Services;
 
 namespace Dismissal_Appointment
 {
@@ -35,7 +33,7 @@ namespace Dismissal_Appointment
                 config.SnackbarConfiguration.ShowTransitionDuration = 500;
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
             });
-            builder.Services.AddMudLocalization();
+            //builder.Services.AddMudLocalization();
 
             // Register SQLite database
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -44,6 +42,7 @@ namespace Dismissal_Appointment
             // Localization
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources/Translations");
             builder.Services.AddSingleton<ILocalizationService, LocalizationService>();
+            builder.Services.AddSingleton<MudLocalizer, ResXMudLocalizer>();
 
             // Register database initializer
             builder.Services.AddTransient<DatabaseInitializer>();
