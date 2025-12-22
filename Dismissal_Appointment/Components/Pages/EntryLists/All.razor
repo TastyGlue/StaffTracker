@@ -1,27 +1,38 @@
-﻿@inherits EntryListBase<EntryBase>
+﻿@page "/"
+@inherits EntryListBase<EntryBase>
 
-<MudDataGrid T="EntryBase"
-             Items="Entries"
+<MudDataGrid @ref="DataGrid"
              @bind-SelectedItem="SelectedEntry"
+             T="EntryBase"
+             Items="Entries"
+             RowClassFunc="@RowClassFunc"
+             QuickFilter="QuickFilter"
+             Loading="IsLoading"
+             Hideable="true"
              MultiSelection="false"
              SelectOnRowClick="true"
-             RowClassFunc="@RowClassFunc"
              Filterable="true"
-             FilterMode="DataGridFilterMode.Simple"
-             SortMode="SortMode.Multiple"
-             QuickFilter="QuickFilter"
              Hover="true"
              Striped="true"
-             Loading="IsLoading"
+             Dense="true"
+             FixedHeader="true" 
+             ShowMenuIcon="true"
+             FilterCaseSensitivity="DataGridFilterCaseSensitivity.CaseInsensitive" 
+             FilterMode="DataGridFilterMode.ColumnFilterMenu"
+             SortMode="SortMode.Multiple"
              Elevation="1"
              Class="mb-4">
 
     <ToolBarContent>
+
         <MudTooltip Text="@Localizer["Create New Entry"]" Placement="Placement.Bottom">
-            <MudIconButton Icon="@Icons.Material.Filled.Add" 
-                           Variant="Variant.Filled"
-                           Color="Color.Success"
-                           Class="ml-2" />
+            <MudButtonGroup Variant="Variant.Filled"
+                            Color="Color.Success" Class="ml-2" >
+                <MudMenu Icon="@Icons.Material.Filled.Add" Class="entry-menu-btn">
+                    <MudMenuItem OnClick="@(() => { })">@Localizer["Appointment"]</MudMenuItem>
+                    <MudMenuItem OnClick="@(() => { })">@Localizer["Dismissal"]</MudMenuItem>
+                </MudMenu>
+            </MudButtonGroup>
         </MudTooltip>
 
         <MudTooltip Text="@Localizer["Edit Entry"]" Placement="Placement.Bottom">
@@ -51,9 +62,52 @@
     </ToolBarContent>
 
     <Columns>
-        <PropertyColumn Property="x => x.Id" Title="@Localizer["Id"]" />
-        <PropertyColumn Property="x => x.IDN" Title="@Localizer["IDN"]" />
-        <PropertyColumn Property="x => x.FirstName" Title="@Localizer["First Name"]"  />
+        <PropertyColumn Property="x => x.Id" Title="@Localizer["Id"]" HeaderStyle="max-width:140px" FilterOperators="NonNullableIntFilterOperators" />
+        <PropertyColumn Property="x => x.CompanyName" Title="@Localizer["Company"]" FilterOperators="NonNullableStringFilterOperators" />
+        <PropertyColumn Property="x => x.Division" Title="@Localizer["Division"]" />
+        <PropertyColumn Property="x => x.EntryType" Title="@Localizer["Entry Type"]">
+            <CellTemplate>
+                <EntryTypeChip EntryType="context.Item.EntryType" />
+            </CellTemplate>
+            <FilterTemplate>
+                <div class="mud-grid mud-grid-spacing-xs-6 justify-start">
+                    <div class="mud-grid-item mud-grid-item-xs-12">
+                        <div class="mud-grid mud-grid-spacing-xs-0 justify-start">
+                            <div class="mud-grid-item mud-grid-item-xs-12">
+                                <MudSelect Value="@EntryTypeColFilterOperator">
+                                    <MudSelectItem Value="@Localizer[FilterOperator.Enum.Is]" />
+                                </MudSelect>
+                            </div>
+                            <div class="mud-grid-item mud-grid-item-xs-12">
+                                <MudSelect @bind-Value="@EntryTypeColFilterValue" Placeholder="@Localizer["Filter value"]">
+                                    <MudSelectItem T="EntryType?" Value="EntryType.Appointment">@Localizer["Appointment"]</MudSelectItem>
+                                    <MudSelectItem T="EntryType?" Value="EntryType.Dismissal">@Localizer["Dismissal"]</MudSelectItem>
+                                </MudSelect>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mud-grid-item mud-grid-item-xs-12 d-flex justify-end">
+                        <MudButton ButtonType="ButtonType.Button" Variant="Variant.Text"
+                                   OnClick="@(() => ClearFilterAsync(context))">
+                            @Localizer["Clear"]</MudButton>
+                        <MudButton ButtonType="ButtonType.Button" Variant="Variant.Text" Color="Color.Primary"
+                                   OnClick="@(() => ApplyFilterAsync(context))">
+                            @Localizer["Filter"]</MudButton>
+                    </div>
+                </div>
+            </FilterTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.EntryDate" Format="dd.MM.yyyy" Title="@Localizer["Entry Date"]" FilterOperators="NonNullableDateFilterOperators" />
+        <PropertyColumn Property="x => x.ConsideredFromDate" Format="dd.MM.yyyy" Title="@Localizer["Considered From Date"]" FilterOperators="NonNullableDateFilterOperators" />
+        <PropertyColumn Property="x => x.IDN" Title="@Localizer["IDN"]" FilterOperators="NonNullableStringFilterOperators" />
+        <PropertyColumn Property="x => x.FirstName" Title="@Localizer["First Name"]" FilterOperators="NonNullableStringFilterOperators" />
+        <PropertyColumn Property="x => x.SecondName" Title="@Localizer["Second Name"]" />
+        <PropertyColumn Property="x => x.Surname" Title="@Localizer["Surname"]" FilterOperators="NonNullableStringFilterOperators" />
+        <PropertyColumn Property="x => x.IsNRAConfirmed" Title="@Localizer["Is NRA Confirmed"]">
+            <CellTemplate>
+                <MudCheckBox Value="context.Item.IsNRAConfirmed" ReadOnly="true" />
+            </CellTemplate>
+        </PropertyColumn>
     </Columns>
 
     <NoRecordsContent>

@@ -7,7 +7,7 @@ public partial class EntryListBase<T> : ExtendedComponentBase
 {
     [Inject] protected IEntryService<T> EntriesService { get; set; } = default!;
 
-    protected IEnumerable<T> Entries { get; set; } = [];
+    protected List<T> Entries { get; set; } = [];
     protected T? SelectedEntry { get; set; } = null;
     protected bool IsLoading { get; set; }
     public string SearchString { get; set; } = string.Empty;
@@ -30,7 +30,7 @@ public partial class EntryListBase<T> : ExtendedComponentBase
         if (SelectedEntry is not null && x.Id == SelectedEntry.Id)
         {
             classes.Add("table-hover-color");
-            classes.Add("row-ripple-effect");
+            //classes.Add("row-ripple-effect");
         }
 
         return string.Join(" ", classes);

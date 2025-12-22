@@ -171,4 +171,58 @@
   <data name="MudDataGrid_Filter" xml:space="preserve">
     <value>Филтрирай</value>
   </data>
+  <data name="MudDataGrid_EqualSign" xml:space="preserve">
+    <value>=</value>
+  </data>
+  <data name="MudDataGrid_GreaterThanOrEqualSign" xml:space="preserve">
+    <value>&gt;=</value>
+  </data>
+  <data name="MudDataGrid_GreaterThanSign" xml:space="preserve">
+    <value>&gt;</value>
+  </data>
+  <data name="MudDataGrid_LessThanOrEqualSign" xml:space="preserve">
+    <value>&lt;=</value>
+  </data>
+  <data name="MudDataGrid_LessThanSign" xml:space="preserve">
+    <value>&lt;</value>
+  </data>
+  <data name="MudDataGrid_NotEqualSign" xml:space="preserve">
+    <value>!=</value>
+  </data>
+  <data name="MudDataGrid_False" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="MudDataGrid_Is" xml:space="preserve">
+    <value>е</value>
+  </data>
+  <data name="MudDataGrid_IsAfter" xml:space="preserve">
+    <value>след</value>
+  </data>
+  <data name="MudDataGrid_IsBefore" xml:space="preserve">
+    <value>преди</value>
+  </data>
+  <data name="MudDataGrid_IsNot" xml:space="preserve">
+    <value>не е</value>
+  </data>
+  <data name="MudDataGrid_IsOnOrAfter" xml:space="preserve">
+    <value>е на или след</value>
+  </data>
+  <data name="MudDataGrid_IsOnOrBefore" xml:space="preserve">
+    <value>е на или преди</value>
+  </data>
+  <data name="MudDataGrid_True" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="MudDataGrid_Columns" xml:space="preserve">
+    <value>Колони</value>
+  </data>
+  <data name="MudDataGrid_Hide" xml:space="preserve">
+    <value>Скрий</value>
+  </data>
+  <data name="MudDataGrid_HideAll" xml:space="preserve">
+    <value>Скрий всички</value>
+  </data>
+  <data name="MudDataGrid_ShowAll" xml:space="preserve">
+    <value>Покажи всички</value>
+  </data>
 </root>

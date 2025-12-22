@@ -49,7 +49,6 @@ a, .btn-link {
 
 .page-content {
     padding: 2rem;
-    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -91,6 +90,41 @@ a, .btn-link {
     .padding-0 > .mud-menu-list {
         padding: 0 !important;
     }
+
+.mud-menu.entry-menu-btn > button {
+    padding: 6px !important;
+}
+
+.mud-list-item-clickable:hover {
+    background-color: #e0e0e0 !important;
+}
+
+.mud-list.mud-menu-list {
+    padding: 0;
+}
+
+.mud-popover.mud-data-grid-columns-panel {
+    max-width: 350px !important;
+    max-height: unset !important;
+}
+
+    .mud-popover.mud-data-grid-columns-panel .mud-drop-item button {
+        display: none;
+    }
+/* Remove time picker from DateTime DataGrid filter */
+.mud-popover-open .mud-grid.justify-start > .mud-grid-item-xs-5 {
+    display: none;
+}
+
+.mud-popover-open .mud-grid.justify-start > .mud-grid-item-xs-7 {
+    flex-grow: 1;
+    max-width: unset !important;
+    flex-basis: unset !important;
+}
+
+.column-filter-popup {
+    max-width: 300px !important;
+}
 
 h1:focus {
     outline: none;
