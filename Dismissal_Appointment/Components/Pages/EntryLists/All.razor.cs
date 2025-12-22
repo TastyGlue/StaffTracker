@@ -5,6 +5,7 @@ namespace Dismissal_Appointment.Components.Pages.EntryLists;
 public partial class All : EntryListBase<EntryBase>
 {
     [Inject] protected IJSRuntime JS { get; set; } = default!;
+    [Inject] public IDialogService DialogService { get; set; } = default!;
 
     protected MudDataGrid<EntryBase> DataGrid { get; set; } = default!;
     protected string EntryTypeColFilterOperator => Localizer[FilterOperator.Enum.Is];
@@ -70,6 +71,24 @@ public partial class All : EntryListBase<EntryBase>
         }
     }
 
+    protected async Task DeleteEntry()
+    {
+        if (SelectedEntry is null)
+            return;
+
+        var parameters = new DialogParameters { ["Entry"] = SelectedEntry };
+        var options = new DialogOptions { MaxWidth = MaxWidth.Large, BackdropClick = true, CloseOnEscapeKey = true, Position = DialogPosition.Center };
+        var dialog = await DialogService.ShowAsync<ConfirmDeleteDialog>(null, parameters, options);
+
+        var result = await dialog.Result;
+        if (result is not null && !result.Canceled)
+        {
+            Entries.Remove(SelectedEntry);
+            SelectedEntry = null;
+        }
+    }
+
+    #region Grid Events
     private async Task ClearFilterAsync(FilterContext<EntryBase> context)
     {
         EntryTypeColFilterValue = null;
@@ -78,8 +97,6 @@ public partial class All : EntryListBase<EntryBase>
 
     private async Task ApplyFilterAsync(FilterContext<EntryBase> context)
     {
-        //_filterItems = _selectedItems.ToHashSet();
-        //_icon = _filterItems.Count == Elements.Count() ? Icons.Material.Outlined.FilterAlt : Icons.Material.Filled.FilterAlt;
         EntryTypeFilterDef.Value = EntryTypeColFilterValue;
         await context.Actions.ApplyFilterAsync(EntryTypeFilterDef);
     }
@@ -95,4 +112,5 @@ public partial class All : EntryListBase<EntryBase>
             || (entry.IDN.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
             || (entry.FullName.Contains(SearchString, StringComparison.OrdinalIgnoreCase));
     }
+    #endregion
 }

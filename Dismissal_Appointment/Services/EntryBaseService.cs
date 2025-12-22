@@ -14,9 +14,15 @@ public class EntryBaseService : IEntryService<EntryBase>
         throw new NotImplementedException();
     }
 
-    public Task<bool> Delete(int id)
+    public async Task<bool> Delete(int id)
     {
-        throw new NotImplementedException();
+        var entry = await _context.Entries.FindAsync(id);
+        if (entry == null)
+            return false;
+
+        _context.Entries.Remove(entry);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<List<EntryBase>> GetAll()

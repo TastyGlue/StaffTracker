@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace Dismissal_Appointment.Components.Pages.Abstract;
+﻿namespace Dismissal_Appointment.Components.Pages.Abstract;
 
 public partial class ExtendedComponentBase : ComponentBase, IDisposable
 {
     [Inject] protected ILocalizationService Localizer { get; set; } = null!;
-
     [Inject] protected IPageTitleService PageTitleService { get; set; } = null!;
+    [Inject] public ISnackbar Snackbar { get; set; } = default!;
 
     protected override void OnInitialized()
     {
@@ -17,6 +15,11 @@ public partial class ExtendedComponentBase : ComponentBase, IDisposable
     protected void SetTitle(string title)
     {
         PageTitleService.SetTitle(title);
+    }
+
+    protected void Notify(string message, Severity severity, int duration = 5000)
+    {
+        Snackbar.Add(Localizer[message], severity, config => { config.VisibleStateDuration = duration; });
     }
 
     public void Dispose()

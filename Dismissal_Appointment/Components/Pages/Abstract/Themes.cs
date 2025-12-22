@@ -18,7 +18,8 @@ public static class Themes
             // Background colors - Clean and bright
             Background = "#FFFFFF",
             BackgroundGray = "#F5F7FA",
-            Surface = "#FFFFFF",
+            //Surface = "#FFFFFF",
+            Surface = "#f7f7f7",
 
             // AppBar and Drawer - Slight contrast
             AppbarBackground = "#FAFBFC",

@@ -1,0 +1,4 @@
+:root {
+    --mud-palette-action-default-hover: rgba(97, 97, 97, 0.15) !important;
+    --mud-palette-error-hover: rgba(211, 47, 47, 0.15) !important;
+}

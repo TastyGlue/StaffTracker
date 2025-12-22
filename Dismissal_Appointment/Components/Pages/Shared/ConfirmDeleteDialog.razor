@@ -1,0 +1,45 @@
+﻿@inherits ExtendedComponentBase
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5" Style="display:flex; align-items:stretch;">
+            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mr-3 mb-n1" />
+            @Localizer["Confirm deletion of entry"]
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body1" Class="mb-4">
+            @Localizer["Are you sure you want to delete entry №{0}?", Entry.Id]
+        </MudText>
+
+        <MudCard Class="mb-4" Elevation="2">
+            <MudCardContent>
+                <MudStack Spacing="2">
+                    <MudText Typo="Typo.body2">
+                        <strong>@Localizer["Company"]:</strong> @Entry.CompanyName
+                    </MudText>
+                    <MudText Typo="Typo.body2">
+                        <strong>@Localizer["Entry Type"]:</strong> @Localizer[Entry.EntryType.ToString()]
+                    </MudText>
+                    <MudText Typo="Typo.body2">
+                        <strong>@Localizer["Entry Date"]:</strong> @Entry.EntryDate.ToString("dd.MM.yyyy")
+                    </MudText>
+                    <MudText Typo="Typo.body2">
+                        <strong>@Localizer["IDN"]:</strong> @Entry.IDN
+                    </MudText>
+                    <MudText Typo="Typo.body2">
+                        <strong>@Localizer["Full Name"]:</strong> @Entry.FullName
+                    </MudText>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+
+        <MudText Typo="Typo.body2" Class="mb-4" Color="Color.Warning" Style="font-weight:bold;">
+            @Localizer["Warning: This action cannot be undone!", Entry.Id]
+        </MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@Localizer["Cancel"]</MudButton>
+        <MudButton Color="Color.Error" OnClick="DeleteEntry">@Localizer["Delete"]</MudButton>
+    </DialogActions>
+</MudDialog>

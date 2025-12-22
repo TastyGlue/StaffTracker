@@ -120,11 +120,20 @@
   <data name="All" xml:space="preserve">
     <value>Всички</value>
   </data>
+  <data name="An error occurred while deleting the entry." xml:space="preserve">
+    <value>Възникна грешка при изтриването на записа.</value>
+  </data>
   <data name="Appointment" xml:space="preserve">
     <value>Назначение</value>
   </data>
   <data name="Appointments" xml:space="preserve">
     <value>Назначения</value>
+  </data>
+  <data name="Are you sure you want to delete entry №{0}?" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да изтриете запис №{0}?</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отказ</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Изчисти</value>
@@ -132,11 +141,17 @@
   <data name="Company" xml:space="preserve">
     <value>Фирма</value>
   </data>
+  <data name="Confirm deletion of entry" xml:space="preserve">
+    <value>Потвърждение за изтриване на запис</value>
+  </data>
   <data name="Considered From Date" xml:space="preserve">
     <value>Считано от дата</value>
   </data>
   <data name="Create New Entry" xml:space="preserve">
     <value>Създаване на нов запис</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтриване</value>
   </data>
   <data name="Delete Entry" xml:space="preserve">
     <value>Изтриване на запис</value>
@@ -159,6 +174,9 @@
   <data name="Entry Date" xml:space="preserve">
     <value>Дата на записа</value>
   </data>
+  <data name="Entry deleted successfully." xml:space="preserve">
+    <value>Записът беше изтрит успешно.</value>
+  </data>
   <data name="Entry Type" xml:space="preserve">
     <value>Вид запис</value>
   </data>
@@ -170,6 +188,9 @@
   </data>
   <data name="First Name" xml:space="preserve">
     <value>Име</value>
+  </data>
+  <data name="Full Name" xml:space="preserve">
+    <value>Пълно име</value>
   </data>
   <data name="Hello, world!" xml:space="preserve">
     <value>Здравей, свят!</value>
@@ -200,5 +221,8 @@
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>
+  </data>
+  <data name="Warning: This action cannot be undone!" xml:space="preserve">
+    <value>Внимание: Това действие не може да бъде отменено!</value>
   </data>
 </root>
