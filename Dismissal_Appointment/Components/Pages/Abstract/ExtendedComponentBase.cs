@@ -2,9 +2,10 @@
 
 public partial class ExtendedComponentBase : ComponentBase, IDisposable
 {
+    [Inject] protected NavigationManager NavManager { get; set; } = null!;
     [Inject] protected ILocalizationService Localizer { get; set; } = null!;
     [Inject] protected IPageTitleService PageTitleService { get; set; } = null!;
-    [Inject] public ISnackbar Snackbar { get; set; } = default!;
+    [Inject] protected ISnackbar Snackbar { get; set; } = default!;
 
     protected override void OnInitialized()
     {

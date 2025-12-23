@@ -22,7 +22,7 @@
                         <strong>@Localizer["Entry Type"]:</strong> @Localizer[Entry.EntryType.ToString()]
                     </MudText>
                     <MudText Typo="Typo.body2">
-                        <strong>@Localizer["Entry Date"]:</strong> @Entry.EntryDate.ToString("dd.MM.yyyy")
+                        <strong>@Localizer["Entry Date"]:</strong> @Entry.EntryDate!.Value.ToString("dd.MM.yyyy")
                     </MudText>
                     <MudText Typo="Typo.body2">
                         <strong>@Localizer["IDN"]:</strong> @Entry.IDN

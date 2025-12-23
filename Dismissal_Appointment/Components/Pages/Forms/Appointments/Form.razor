@@ -1,0 +1,264 @@
+@inherits FormBase<Appointment>
+@page "/test"
+@using Dismissal_Appointment.Models
+
+<EditForm Model="@Model" OnValidSubmit="@((args) => OnValidSubmit.InvokeAsync())">
+
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <MudGrid Class="form-grid" Style="justify-content: space-evenly !important" Spacing="3">
+            <!-- Left Column -->
+            <MudItem xs="12" md="6"
+                     Style="flex-basis: 49%; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; padding-left: 0;">
+
+                <!-- Entry Date & Company Information Card -->
+                <MudPaper Elevation="1" Class="pa-3 mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-3" Style="color: #1976d2; font-weight: 500; font-size: 1rem;">
+                        @Localizer["Entry Date"]
+                    </MudText>
+                    <MudDatePicker Label="@Localizer["Entry Date"]"
+                                   @bind-Date="@Model.EntryDate"
+                                   Mask="@(new DateMask("dd.MM.yyyy"))"
+                                   DateFormat="dd.MM.yyyy"
+                                   Editable="true"
+                                   Variant="Variant.Text"
+                                   Margin="Margin.Dense"
+                                   Class="mb-3 required-field" />
+
+                    <MudText Typo="Typo.h6" Class="mb-2" Style="color: #1976d2; font-weight: 500; font-size: 1rem;">
+                        @Localizer["Company Information"]
+                    </MudText>
+                    <MudTextField Label="@Localizer["Company Name"]"
+                                  @bind-Value="@Model.CompanyName"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="mb-2 required-field" />
+                    <MudTextField Label="@Localizer["Division"]"
+                                  @bind-Value="@Model.Division"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense" />
+                </MudPaper>
+
+                <!-- Personal Information Card -->
+                <MudPaper Elevation="1" Class="pa-3 mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-2" Style="color: #1976d2; font-weight: 500; font-size: 1rem;">
+                        @Localizer["Personal Information"]
+                    </MudText>
+                    <MudTextField Label="@Localizer["IDN"]"
+                                  @bind-Value="@Model.IDN"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="mb-2 required-field" />
+                    <MudTextField Label="@Localizer["First Name"]"
+                                  @bind-Value="@Model.FirstName"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="mb-2 required-field" />
+                    <MudTextField Label="@Localizer["Second Name"]"
+                                  @bind-Value="@Model.SecondName"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="mb-2" />
+                    <MudTextField Label="@Localizer["Surname"]"
+                                  @bind-Value="@Model.Surname"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="required-field" />
+                </MudPaper>
+
+                <!-- Job Details Card -->
+                <MudPaper Elevation="1" Class="pa-3 mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-2" Style="color: #1976d2; font-weight: 500; font-size: 1rem;">
+                        @Localizer["Job Details"]
+                    </MudText>
+                    <div class="form-item-with-picker">
+                        <MudSelect @bind-Value="@Model.Currency"
+                                   Margin="Margin.Dense"
+                                   Class="mb-2"
+                                   Adornment="Adornment.Start">
+                            <MudSelectItem Value="Currency.BGN">@Localizer["BGN"]</MudSelectItem>
+                            <MudSelectItem Value="Currency.EUR">@Localizer["EUR"]</MudSelectItem>
+                        </MudSelect>
+                        <MudNumericField Label="@Localizer["Salary"]"
+                                         @bind-Value="@Model.Salary"
+                                         Variant="Variant.Text"
+                                         Margin="Margin.Dense"
+                                         Format="F2"
+                                         Min="0m"
+                                         Step="50.0m"
+                                         Class="mb-2 required-field" />
+                    </div>
+                    <MudTextField Label="@Localizer["Position"]"
+                                  @bind-Value="@Model.Position"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="required-field" />
+                </MudPaper>
+
+            </MudItem>
+
+            <!-- Right Column -->
+            <MudItem xs="12" md="6"
+                     Style="flex-basis: 49%; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; padding-left: 0;">
+
+                <!-- Work Experience Card -->
+                <MudPaper Elevation="1" Class="pa-3 mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-2" Style="color: #1976d2; font-weight: 500; font-size: 1rem;">
+                        @Localizer["Work Experience"]
+                    </MudText>
+
+                    <MudText Typo="Typo.body2" Style="font-weight: 500;">
+                        @Localizer["Overall Work Experience"]
+                    </MudText>
+                    <MudGrid Spacing="2" Class="mb-3">
+                        <MudItem xs="4">
+                            <MudNumericField Label="@Localizer["Years"]"
+                                             @bind-Value="@workExpYears"
+                                             Variant="Variant.Text"
+                                             Margin="Margin.Dense"
+                                             Min="0"
+                                             T="int" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="@Localizer["Months"]"
+                                             @bind-Value="@workExpMonths"
+                                             Variant="Variant.Text"
+                                             Margin="Margin.Dense"
+                                             Min="0"
+                                             Max="11"
+                                             T="int" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="@Localizer["Days"]"
+                                             @bind-Value="@workExpDays"
+                                             Variant="Variant.Text"
+                                             Margin="Margin.Dense"
+                                             Min="0"
+                                             Max="30"
+                                             T="int" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudText Typo="Typo.body2" Style="font-weight: 500;">
+                        @Localizer["Work Experience In Profession"]
+                    </MudText>
+                    <MudGrid Spacing="2">
+                        <MudItem xs="4">
+                            <MudNumericField Label="@Localizer["Years"]"
+                                             @bind-Value="@workExpProfYears"
+                                             Variant="Variant.Text"
+                                             Margin="Margin.Dense"
+                                             Min="0"
+                                             T="int" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="@Localizer["Months"]"
+                                             @bind-Value="@workExpProfMonths"
+                                             Variant="Variant.Text"
+                                             Margin="Margin.Dense"
+                                             Min="0"
+                                             Max="11"
+                                             T="int" />
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField Label="@Localizer["Days"]"
+                                             @bind-Value="@workExpProfDays"
+                                             Variant="Variant.Text"
+                                             Margin="Margin.Dense"
+                                             Min="0"
+                                             Max="30"
+                                             T="int" />
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+
+                <!-- Contract Details Card -->
+                <MudPaper Elevation="1" Class="pa-3 mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-2" Style="color: #1976d2; font-weight: 500; font-size: 1rem;">
+                        @Localizer["Contract Details"]
+                    </MudText>
+                    <MudDatePicker Label="@Localizer["Considered From Date"]"
+                                   @bind-Date="@Model.ConsideredFromDate"
+                                   Mask="@(new DateMask("dd.MM.yyyy"))"
+                                   DateFormat="dd.MM.yyyy"
+                                   Editable="true"
+                                   Variant="Variant.Text"
+                                   Margin="Margin.Dense"
+                                   Class="mb-2 required-field" />
+                    <MudDatePicker Label="@Localizer["Contract Date"]"
+                                   @bind-Date="@Model.ContractDate"
+                                   Mask="@(new DateMask("dd.MM.yyyy"))"
+                                   DateFormat="dd.MM.yyyy"
+                                   Editable="true"
+                                   Variant="Variant.Text"
+                                   Margin="Margin.Dense"
+                                   Class="mb-2 required-field" />
+                    <MudNumericField Label="@Localizer["Daily Work Hours"]"
+                                     @bind-Value="@Model.WorkingHours"
+                                     Clearable="true"
+                                     Variant="Variant.Text"
+                                     Margin="Margin.Dense"
+                                     Min="0"
+                                     Max="24"
+                                     T="int?" />
+                </MudPaper>
+
+                <!-- ID Card Details Card -->
+                <MudPaper Elevation="1" Class="pa-3 mb-3">
+                    <MudText Typo="Typo.h6" Class="mb-2" Style="color: #1976d2; font-weight: 500; font-size: 1rem;">
+                        @Localizer["Id Card Details"]
+                    </MudText>
+                    <MudTextField Label="@Localizer["Number"]"
+                                  @bind-Value="@Model.IdCardNumber"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="mb-2" />
+                    <MudDatePicker Label="@Localizer["Date of Issue"]"
+                                   @bind-Date="@Model.IdCardDate"
+                                   Mask="@(new DateMask("dd.MM.yyyy"))"
+                                   DateFormat="dd.MM.yyyy"
+                                   Editable="true"
+                                   Clearable="true"
+                                   Variant="Variant.Text"
+                                   Margin="Margin.Dense"
+                                   Class="mb-2" />
+                    <MudTextField Label="@Localizer["Authority"]"
+                                  @bind-Value="@Model.IdCardAuthority"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense"
+                                  Class="mb-2" />
+                    <MudTextField Label="@Localizer["Address"]"
+                                  @bind-Value="@Model.Address"
+                                  Variant="Variant.Text"
+                                  Margin="Margin.Dense" />
+                </MudPaper>
+
+            </MudItem>
+
+            <div class="d-flex" style="justify-content: space-between; width: 100%;">
+                <div>
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Save">
+                        @Localizer["Save"]
+                    </MudButton>
+                    <MudButton Variant="Variant.Text"
+                               Color="Color.Default"
+                               OnClick="@CancelHandler">
+                        @Localizer["Cancel"]
+                    </MudButton>
+                </div>
+                @if (!IsCreate)
+                {
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Error"
+                               Disabled="@IsCreate"
+                               OnClick="@OnDelete"
+                               StartIcon="@Icons.Material.Filled.Delete">
+                        @Localizer["Delete"]
+                    </MudButton>
+                }
+            </div>
+        </MudGrid>
+    </div>
+</EditForm>

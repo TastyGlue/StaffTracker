@@ -8,9 +8,9 @@ public class EntryBase
     public int Id { get; set; }
 
     public EntryType EntryType { get; set; }
-    public DateTime EntryDate { get; set; }
+    public DateTime? EntryDate { get; set; } = DateTime.Now;
 
-    public DateTime ConsideredFromDate { get; set; }
+    public DateTime? ConsideredFromDate { get; set; }
     public bool IsNRAConfirmed { get; set; }
 
     public string CompanyName { get; set; } = default!;

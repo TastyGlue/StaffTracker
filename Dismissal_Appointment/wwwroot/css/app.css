@@ -126,6 +126,27 @@ a, .btn-link {
     max-width: 300px !important;
 }
 
+/* Form */
+.form-grid {
+    padding: 16px;
+    background-color: hsl(0 0% 92% / 1);
+    border-radius: 8px;
+    gap: 16px;
+}
+
+.required-field label::after {
+    content: " *";
+    color: #F87171;
+    font-weight: 600;
+}
+
+.form-item-with-picker {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    align-items: flex-end;
+    gap: 12px;
+}
+
 h1:focus {
     outline: none;
 }

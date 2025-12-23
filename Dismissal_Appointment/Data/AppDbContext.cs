@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace Dismissal_Appointment.Data;
 
 public class AppDbContext : DbContext
@@ -31,5 +29,17 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Appointment>()
             .Property(a => a.Salary)
             .HasPrecision(18, 2);
+
+        modelBuilder.Entity<EntryBase>()
+            .Property(e => e.EntryDate)
+            .IsRequired();
+
+        modelBuilder.Entity<EntryBase>()
+            .Property(e => e.ConsideredFromDate)
+            .IsRequired();
+
+        modelBuilder.Entity<Appointment>()
+            .Property(e => e.ContractDate)
+            .IsRequired();
     }
 }

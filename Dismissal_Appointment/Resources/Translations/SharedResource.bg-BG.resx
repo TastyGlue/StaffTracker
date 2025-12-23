@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Address" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
   <data name="All" xml:space="preserve">
     <value>Всички</value>
   </data>
@@ -132,6 +135,9 @@
   <data name="Are you sure you want to delete entry №{0}?" xml:space="preserve">
     <value>Сигурни ли сте, че искате да изтриете запис №{0}?</value>
   </data>
+  <data name="Authority" xml:space="preserve">
+    <value>Издаден от</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отказ</value>
   </data>
@@ -141,14 +147,35 @@
   <data name="Company" xml:space="preserve">
     <value>Фирма</value>
   </data>
+  <data name="Company Information" xml:space="preserve">
+    <value>Фирмени данни</value>
+  </data>
+  <data name="Company Name" xml:space="preserve">
+    <value>Фирма/Наименование</value>
+  </data>
   <data name="Confirm deletion of entry" xml:space="preserve">
     <value>Потвърждение за изтриване на запис</value>
   </data>
   <data name="Considered From Date" xml:space="preserve">
     <value>Считано от дата</value>
   </data>
+  <data name="Contract Date" xml:space="preserve">
+    <value>Дата на договор</value>
+  </data>
+  <data name="Contract Details" xml:space="preserve">
+    <value>Данни за договора</value>
+  </data>
   <data name="Create New Entry" xml:space="preserve">
     <value>Създаване на нов запис</value>
+  </data>
+  <data name="Daily Work Hours" xml:space="preserve">
+    <value>Часове работен ден</value>
+  </data>
+  <data name="Date of Issue" xml:space="preserve">
+    <value>Дата на издаване</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Дни</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Изтриване</value>
@@ -201,6 +228,9 @@
   <data name="Id" xml:space="preserve">
     <value>Ид. номер</value>
   </data>
+  <data name="Id Card Details" xml:space="preserve">
+    <value>Данни по лична карта</value>
+  </data>
   <data name="IDN" xml:space="preserve">
     <value>ЕГН</value>
   </data>
@@ -210,8 +240,32 @@
   <data name="Is NRA Confirmed" xml:space="preserve">
     <value>Потвърдено от НАП</value>
   </data>
+  <data name="Job Details" xml:space="preserve">
+    <value>Данни за длъжността</value>
+  </data>
+  <data name="Months" xml:space="preserve">
+    <value>Месеци</value>
+  </data>
   <data name="No entries to display" xml:space="preserve">
     <value>Няма записи за показване</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="Overall Work Experience" xml:space="preserve">
+    <value>Трудов стаж общ</value>
+  </data>
+  <data name="Personal Information" xml:space="preserve">
+    <value>Лични данни</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Длъжност</value>
+  </data>
+  <data name="Salary" xml:space="preserve">
+    <value>Заплата</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Запазване</value>
   </data>
   <data name="Search..." xml:space="preserve">
     <value>Търсене...</value>
@@ -224,5 +278,14 @@
   </data>
   <data name="Warning: This action cannot be undone!" xml:space="preserve">
     <value>Внимание: Това действие не може да бъде отменено!</value>
+  </data>
+  <data name="Work Experience" xml:space="preserve">
+    <value>Трудов стаж</value>
+  </data>
+  <data name="Work Experience In Profession" xml:space="preserve">
+    <value>Трудов стаж професия</value>
+  </data>
+  <data name="Years" xml:space="preserve">
+    <value>Години</value>
   </data>
 </root>
