@@ -1,6 +1,4 @@
 @inherits FormBase<Appointment>
-@page "/test"
-@using Dismissal_Appointment.Models
 
 <EditForm Model="@Model" OnValidSubmit="@((args) => OnValidSubmit.InvokeAsync())">
     <FluentValidator />

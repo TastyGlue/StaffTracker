@@ -8,6 +8,14 @@ public partial class AppointmentValidator : AbstractValidator<Appointment>
         L = l;
 
         // EntryBase properties
+        RuleFor(x => x.EntryDate)
+            .NotEmpty()
+            .WithMessage(L["Field is required"]);
+
+        RuleFor(x => x.ConsideredFromDate)
+            .NotEmpty()
+            .WithMessage(L["Field is required"]);
+
         RuleFor(x => x.CompanyName)
             .NotEmpty()
             .WithMessage(L["Field is required"]);
@@ -29,6 +37,10 @@ public partial class AppointmentValidator : AbstractValidator<Appointment>
             .WithMessage(L["Field is required"]);
 
         // Appointment-specific properties
+        RuleFor(x => x.ContractDate)
+            .NotEmpty()
+            .WithMessage(L["Field is required"]);
+
         RuleFor(x => x.Salary)
             .GreaterThan(0)
             .WithMessage(L["Salary must be positive"]);

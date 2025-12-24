@@ -29,7 +29,7 @@
             <MudButtonGroup Variant="Variant.Filled"
                             Color="Color.Success" Class="ml-2" >
                 <MudMenu Icon="@Icons.Material.Filled.Add" Class="entry-menu-btn">
-                    <MudMenuItem OnClick="@(() => { })">@Localizer["Appointment"]</MudMenuItem>
+                    <MudMenuItem OnClick="@(() => NavManager.NavigateTo("appointment/create"))">@Localizer["Appointment"]</MudMenuItem>
                     <MudMenuItem OnClick="@(() => { })">@Localizer["Dismissal"]</MudMenuItem>
                 </MudMenu>
             </MudButtonGroup>
