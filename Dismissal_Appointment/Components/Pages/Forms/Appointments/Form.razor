@@ -3,6 +3,7 @@
 @using Dismissal_Appointment.Models
 
 <EditForm Model="@Model" OnValidSubmit="@((args) => OnValidSubmit.InvokeAsync())">
+    <FluentValidator />
 
     <div style="max-width: 1200px; margin: 0 auto;">
         <MudGrid Class="form-grid" Style="justify-content: space-evenly !important" Spacing="3">
@@ -17,6 +18,7 @@
                     </MudText>
                     <MudDatePicker Label="@Localizer["Entry Date"]"
                                    @bind-Date="@Model.EntryDate"
+                                   For="@(() => Model.EntryDate)"
                                    Mask="@(new DateMask("dd.MM.yyyy"))"
                                    DateFormat="dd.MM.yyyy"
                                    Editable="true"
@@ -29,11 +31,13 @@
                     </MudText>
                     <MudTextField Label="@Localizer["Company Name"]"
                                   @bind-Value="@Model.CompanyName"
+                                  For="@(() => Model.CompanyName)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="mb-2 required-field" />
                     <MudTextField Label="@Localizer["Division"]"
                                   @bind-Value="@Model.Division"
+                                  For="@(() => Model.Division)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense" />
                 </MudPaper>
@@ -45,21 +49,25 @@
                     </MudText>
                     <MudTextField Label="@Localizer["IDN"]"
                                   @bind-Value="@Model.IDN"
+                                  For="@(() => Model.IDN)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="mb-2 required-field" />
                     <MudTextField Label="@Localizer["First Name"]"
                                   @bind-Value="@Model.FirstName"
+                                  For="@(() => Model.FirstName)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="mb-2 required-field" />
                     <MudTextField Label="@Localizer["Second Name"]"
                                   @bind-Value="@Model.SecondName"
+                                  For="@(() => Model.SecondName)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="mb-2" />
                     <MudTextField Label="@Localizer["Surname"]"
                                   @bind-Value="@Model.Surname"
+                                  For="@(() => Model.Surname)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="required-field" />
@@ -72,6 +80,7 @@
                     </MudText>
                     <div class="form-item-with-picker">
                         <MudSelect @bind-Value="@Model.Currency"
+                                   For="@(() => Model.Currency)"
                                    Margin="Margin.Dense"
                                    Class="mb-2"
                                    Adornment="Adornment.Start">
@@ -80,6 +89,7 @@
                         </MudSelect>
                         <MudNumericField Label="@Localizer["Salary"]"
                                          @bind-Value="@Model.Salary"
+                                         For="@(() => Model.Salary)"
                                          Variant="Variant.Text"
                                          Margin="Margin.Dense"
                                          Format="F2"
@@ -89,6 +99,7 @@
                     </div>
                     <MudTextField Label="@Localizer["Position"]"
                                   @bind-Value="@Model.Position"
+                                  For="@(() => Model.Position)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="required-field" />
@@ -178,6 +189,7 @@
                     </MudText>
                     <MudDatePicker Label="@Localizer["Considered From Date"]"
                                    @bind-Date="@Model.ConsideredFromDate"
+                                   For="@(() => Model.ConsideredFromDate)"
                                    Mask="@(new DateMask("dd.MM.yyyy"))"
                                    DateFormat="dd.MM.yyyy"
                                    Editable="true"
@@ -186,6 +198,7 @@
                                    Class="mb-2 required-field" />
                     <MudDatePicker Label="@Localizer["Contract Date"]"
                                    @bind-Date="@Model.ContractDate"
+                                   For="@(() => Model.ContractDate)"
                                    Mask="@(new DateMask("dd.MM.yyyy"))"
                                    DateFormat="dd.MM.yyyy"
                                    Editable="true"
@@ -194,6 +207,7 @@
                                    Class="mb-2 required-field" />
                     <MudNumericField Label="@Localizer["Daily Work Hours"]"
                                      @bind-Value="@Model.WorkingHours"
+                                     For="@(() => Model.WorkingHours)"
                                      Clearable="true"
                                      Variant="Variant.Text"
                                      Margin="Margin.Dense"
@@ -209,11 +223,13 @@
                     </MudText>
                     <MudTextField Label="@Localizer["Number"]"
                                   @bind-Value="@Model.IdCardNumber"
+                                  For="@(() => Model.IdCardNumber)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="mb-2" />
                     <MudDatePicker Label="@Localizer["Date of Issue"]"
                                    @bind-Date="@Model.IdCardDate"
+                                   For="@(() => Model.IdCardDate)"
                                    Mask="@(new DateMask("dd.MM.yyyy"))"
                                    DateFormat="dd.MM.yyyy"
                                    Editable="true"
@@ -223,11 +239,13 @@
                                    Class="mb-2" />
                     <MudTextField Label="@Localizer["Authority"]"
                                   @bind-Value="@Model.IdCardAuthority"
+                                  For="@(() => Model.IdCardAuthority)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense"
                                   Class="mb-2" />
                     <MudTextField Label="@Localizer["Address"]"
                                   @bind-Value="@Model.Address"
+                                  For="@(() => Model.Address)"
                                   Variant="Variant.Text"
                                   Margin="Margin.Dense" />
                 </MudPaper>

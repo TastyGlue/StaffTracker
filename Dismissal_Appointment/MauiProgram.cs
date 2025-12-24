@@ -53,6 +53,9 @@ namespace Dismissal_Appointment
             builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();
             builder.Services.AddScoped<IEntryService<Dismissal>, DismissalService>();
 
+            // Register Validators
+            builder.Services.AddSingleton<IValidator<Appointment>, AppointmentValidator>();
+
             // Register pages
             builder.Services.AddSingleton<MainPage>();
 
