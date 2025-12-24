@@ -45,7 +45,7 @@ public static class Themes
             Info = "#0288D1",
 
             // Hover states
-            HoverOpacity = 0.04,
+            HoverOpacity = 0.08,
 
             // Lines and borders
             LinesDefault = "#E0E0E0",
@@ -62,7 +62,7 @@ public static class Themes
             DrawerWidthRight = "260px",
             DrawerMiniWidthLeft = "56px",
             DrawerMiniWidthRight = "56px",
-            AppbarHeight = "64px"
+            AppbarHeight = "48px"
         },
 
         Typography = new()

@@ -147,6 +147,16 @@ a, .btn-link {
     gap: 12px;
 }
 
+.single-item-paper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-checkbox span.mud-icon-button {
+    padding: 4px;
+}
+
 h1:focus {
     outline: none;
 }

@@ -3,7 +3,7 @@
 public partial class Create : ExtendedComponentBase
 {
     [Inject] protected IEntryService<Appointment> AppointmentService { get; set; } = null!;
-    protected Appointment Model { get; set; } = new();
+    protected Appointment Model { get; set; } = new() { EntryType = EntryType.Appointment };
 
     protected override async Task OnInitializedAsync()
     {
