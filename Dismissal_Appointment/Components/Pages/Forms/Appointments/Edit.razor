@@ -1,0 +1,8 @@
+﻿@page "/appointment/edit/{id:int}"
+@inherits ExtendedComponentBase
+
+@if (!IsLoading)
+{
+    <Form Model="Model"
+          OnValidSubmit="ValidSubmitHandler"/>
+}

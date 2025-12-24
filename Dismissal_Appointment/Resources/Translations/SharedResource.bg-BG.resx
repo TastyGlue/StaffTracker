@@ -315,10 +315,22 @@
   <data name="Appointment created successfully." xml:space="preserve">
     <value>Назначението беше създадено успешно.</value>
   </data>
+  <data name="Appointment edited successfully." xml:space="preserve">
+    <value>Назначението беше редактирано успешно.</value>
+  </data>
   <data name="Create Appointment" xml:space="preserve">
     <value>Създаване на назначение</value>
   </data>
+  <data name="Edit Appointment №{0}" xml:space="preserve">
+    <value>Редактиране на назначение №{0}</value>
+  </data>
   <data name="Error creating appointment." xml:space="preserve">
     <value>Възникна грешка при създаване на назначение.</value>
+  </data>
+  <data name="Error editing appointment." xml:space="preserve">
+    <value>Възникна грешка при редактиране на назначение.</value>
+  </data>
+  <data name="Error loading appointment." xml:space="preserve">
+    <value>Възникна грешка при зареждане на назначение.</value>
   </data>
 </root>

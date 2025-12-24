@@ -3,7 +3,6 @@
 public partial class FormBase<T> : ExtendedComponentBase
     where T : EntryBase, new()
 {
-    [Inject] protected IEntryService<T> EntryService { get; set; } = default!;
     [Parameter] public T Model { get; set; } = new();
     [Parameter] public bool IsCreate { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }

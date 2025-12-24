@@ -71,6 +71,12 @@ public partial class All : EntryListBase<EntryBase>
         }
     }
 
+    protected void NavigateToEditEntry()
+    {
+        string entryType = SelectedEntry!.EntryType.ToString().ToLower();
+        NavManager.NavigateTo($"/{entryType}/edit/{SelectedEntry.Id}");
+    }
+
     protected async Task DeleteEntry()
     {
         if (SelectedEntry is null)
