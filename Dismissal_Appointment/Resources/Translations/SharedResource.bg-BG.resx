@@ -333,4 +333,55 @@
   <data name="Error loading appointment." xml:space="preserve">
     <value>Възникна грешка при зареждане на назначение.</value>
   </data>
+  <data name="Compensation Days" xml:space="preserve">
+    <value>Обезщетение по чл.224 - дни</value>
+  </data>
+  <data name="Create Dismissal" xml:space="preserve">
+    <value>Създаване на уволнение</value>
+  </data>
+  <data name="Dismissal created successfully." xml:space="preserve">
+    <value>Уволнението беше създадено успешно.</value>
+  </data>
+  <data name="Dismissal Details" xml:space="preserve">
+    <value>Данни за уволнението</value>
+  </data>
+  <data name="Dismissal edited successfully." xml:space="preserve">
+    <value>Уволнението беше редактирано успешно.</value>
+  </data>
+  <data name="Edit Dismissal №{0}" xml:space="preserve">
+    <value>Редактиране на уволнение №{0}</value>
+  </data>
+  <data name="Error creating dismissal." xml:space="preserve">
+    <value>Възникна грешка при създаване на уволнение.</value>
+  </data>
+  <data name="Error editing dismissal." xml:space="preserve">
+    <value>Възникна грешка при редактиране на уволнение.</value>
+  </data>
+  <data name="Error loading dismissal." xml:space="preserve">
+    <value>Възникна грешка при зареждане на уволнението.</value>
+  </data>
+  <data name="Garnishment" xml:space="preserve">
+    <value>Запор</value>
+  </data>
+  <data name="Labour Code Article" xml:space="preserve">
+    <value>Член от КТ</value>
+  </data>
+  <data name="Leave Last Month" xml:space="preserve">
+    <value>Отпуск последен месец</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Art." xml:space="preserve">
+    <value>Чл.</value>
+  </data>
+  <data name="item" xml:space="preserve">
+    <value>т.</value>
+  </data>
+  <data name="para." xml:space="preserve">
+    <value>ал.</value>
+  </data>
 </root>

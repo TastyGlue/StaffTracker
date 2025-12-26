@@ -27,10 +27,10 @@
 
         <MudTooltip Text="@Localizer["Create New Entry"]" Placement="Placement.Bottom">
             <MudButtonGroup Variant="Variant.Filled"
-                            Color="Color.Success" Class="ml-2" >
+                            Color="Color.Primary" Class="ml-2" >
                 <MudMenu Icon="@Icons.Material.Filled.Add" Class="entry-menu-btn">
                     <MudMenuItem OnClick="@(() => NavManager.NavigateTo("appointment/create"))">@Localizer["Appointment"]</MudMenuItem>
-                    <MudMenuItem OnClick="@(() => { })">@Localizer["Dismissal"]</MudMenuItem>
+                    <MudMenuItem OnClick="@(() => NavManager.NavigateTo("dismissal/create"))">@Localizer["Dismissal"]</MudMenuItem>
                 </MudMenu>
             </MudButtonGroup>
         </MudTooltip>

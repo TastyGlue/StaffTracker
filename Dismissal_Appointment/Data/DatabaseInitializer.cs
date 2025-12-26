@@ -137,7 +137,9 @@ public class DatabaseInitializer
                 IDN = "7801105432",
                 FirstName = "Петър",
                 Surname = "Тодоров",
-                LabourCodeArticle = "Чл. 328, ал. 1, т. 2",
+                LabourCodeArticle = 328,
+                LabourCodeParagraph = 1,
+                LabourCodeItem = 2,
                 CompensationDays = 30
             },
             new Dismissal
@@ -152,7 +154,9 @@ public class DatabaseInitializer
                 FirstName = "Анна",
                 SecondName = "Василева",
                 Surname = "Стоянова",
-                LabourCodeArticle = "Чл. 325, ал. 1, т. 1",
+                LabourCodeArticle = 325,
+                LabourCodeParagraph = 1,
+                LabourCodeItem = 1,
                 Garnishment = false,
                 LeaveLastMonthDays = 5
             },
@@ -166,7 +170,9 @@ public class DatabaseInitializer
                 IDN = "8608123456",
                 FirstName = "Николай",
                 Surname = "Александров",
-                LabourCodeArticle = "Чл. 330, ал. 2, т. 6",
+                LabourCodeArticle = 330,
+                LabourCodeParagraph = 2,
+                LabourCodeItem = 6,
                 CompensationDays = 0,
                 Garnishment = true
             },
@@ -182,7 +188,8 @@ public class DatabaseInitializer
                 FirstName = "Димитър",
                 SecondName = "Христов",
                 Surname = "Йорданов",
-                LabourCodeArticle = "Чл. 327, ал. 1",
+                LabourCodeArticle = 327,
+                LabourCodeParagraph = 1,
                 CompensationDays = 15,
                 LeaveLastMonthDays = 2
             },
@@ -196,7 +203,9 @@ public class DatabaseInitializer
                 IDN = "8907156789",
                 FirstName = "Светлана",
                 Surname = "Иванова",
-                LabourCodeArticle = "Чл. 328, ал. 1, т. 11",
+                LabourCodeArticle = 328,
+                LabourCodeParagraph = 1,
+                LabourCodeItem = 11,
                 CompensationDays = 60,
                 Garnishment = false,
                 LeaveLastMonthDays = 10

@@ -55,6 +55,7 @@ namespace Dismissal_Appointment
 
             // Register Validators
             builder.Services.AddSingleton<IValidator<Appointment>, AppointmentValidator>();
+            builder.Services.AddSingleton<IValidator<Dismissal>, DismissalValidator>();
 
             // Register pages
             builder.Services.AddSingleton<MainPage>();

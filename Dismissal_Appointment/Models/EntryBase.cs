@@ -8,7 +8,7 @@ public class EntryBase
     public int Id { get; set; }
 
     public EntryType EntryType { get; set; }
-    public DateTime? EntryDate { get; set; } = DateTime.Now;
+    public DateTime? EntryDate { get; set; } = DateTime.Now.Date;
 
     public DateTime? ConsideredFromDate { get; set; }
     public bool IsNRAConfirmed { get; set; }
