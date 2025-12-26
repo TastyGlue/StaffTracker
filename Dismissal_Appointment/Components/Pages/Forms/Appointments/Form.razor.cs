@@ -3,14 +3,14 @@
 public partial class Form : FormBase<Appointment>
 {
     // Work Experience - Overall
-    private int workExpYears;
-    private int workExpMonths;
-    private int workExpDays;
+    private int? workExpYears;
+    private int? workExpMonths;
+    private int? workExpDays;
 
     // Work Experience - In Profession
-    private int workExpProfYears;
-    private int workExpProfMonths;
-    private int workExpProfDays;
+    private int? workExpProfYears;
+    private int? workExpProfMonths;
+    private int? workExpProfDays;
 
     protected override void OnInitialized()
     {
@@ -24,12 +24,12 @@ public partial class Form : FormBase<Appointment>
         // Convert total days to years, months, days for display
         if (Model.WorkExperienceDays.HasValue)
         {
-            ConvertDaysToYearsMonthsDays(Model.WorkExperienceDays.Value, out workExpYears, out workExpMonths, out workExpDays);
+            ConvertDaysToYearsMonthsDays(Model.WorkExperienceDays, out workExpYears, out workExpMonths, out workExpDays);
         }
 
         if (Model.WorkExperienceInProfessionDays.HasValue)
         {
-            ConvertDaysToYearsMonthsDays(Model.WorkExperienceInProfessionDays.Value, out workExpProfYears, out workExpProfMonths, out workExpProfDays);
+            ConvertDaysToYearsMonthsDays(Model.WorkExperienceInProfessionDays, out workExpProfYears, out workExpProfMonths, out workExpProfDays);
         }
     }
 

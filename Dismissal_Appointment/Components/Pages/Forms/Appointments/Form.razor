@@ -125,28 +125,31 @@
                         <MudItem xs="4">
                             <MudNumericField Label="@Localizer["Years"]"
                                              @bind-Value="@workExpYears"
+                                             Clearable="true"
                                              Variant="Variant.Text"
                                              Margin="Margin.Dense"
                                              Min="0"
-                                             T="int" />
+                                             T="int?" />
                         </MudItem>
                         <MudItem xs="4">
                             <MudNumericField Label="@Localizer["Months"]"
                                              @bind-Value="@workExpMonths"
+                                             Clearable="true"
                                              Variant="Variant.Text"
                                              Margin="Margin.Dense"
                                              Min="0"
                                              Max="11"
-                                             T="int" />
+                                             T="int?" />
                         </MudItem>
                         <MudItem xs="4">
                             <MudNumericField Label="@Localizer["Days"]"
                                              @bind-Value="@workExpDays"
+                                             Clearable="true"
                                              Variant="Variant.Text"
                                              Margin="Margin.Dense"
                                              Min="0"
                                              Max="30"
-                                             T="int" />
+                                             T="int?" />
                         </MudItem>
                     </MudGrid>
 
@@ -157,28 +160,31 @@
                         <MudItem xs="4">
                             <MudNumericField Label="@Localizer["Years"]"
                                              @bind-Value="@workExpProfYears"
+                                             Clearable="true"
                                              Variant="Variant.Text"
                                              Margin="Margin.Dense"
                                              Min="0"
-                                             T="int" />
+                                             T="int?" />
                         </MudItem>
                         <MudItem xs="4">
                             <MudNumericField Label="@Localizer["Months"]"
                                              @bind-Value="@workExpProfMonths"
+                                             Clearable="true"
                                              Variant="Variant.Text"
                                              Margin="Margin.Dense"
                                              Min="0"
                                              Max="11"
-                                             T="int" />
+                                             T="int?" />
                         </MudItem>
                         <MudItem xs="4">
                             <MudNumericField Label="@Localizer["Days"]"
                                              @bind-Value="@workExpProfDays"
+                                             Clearable="true"
                                              Variant="Variant.Text"
                                              Margin="Margin.Dense"
                                              Min="0"
                                              Max="30"
-                                             T="int" />
+                                             T="int?" />
                         </MudItem>
                     </MudGrid>
                 </MudPaper>

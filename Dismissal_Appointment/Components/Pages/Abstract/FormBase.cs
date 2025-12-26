@@ -30,17 +30,25 @@ public partial class FormBase<T> : ExtendedComponentBase
         }
     }
 
-    protected void ConvertDaysToYearsMonthsDays(int totalDays, out int years, out int months, out int days)
+    protected void ConvertDaysToYearsMonthsDays(int? totalDays, out int? years, out int? months, out int? days)
     {
+        if (totalDays is null)
+        {
+            years = null; months = null; days = null;
+            return;
+        }
+
         years = totalDays / 365;
-        int remainingDays = totalDays % 365;
+        int? remainingDays = totalDays % 365;
         months = remainingDays / 30;
         days = remainingDays % 30;
     }
 
-    protected int? ConvertYearsMonthsDaysToDays(int years, int months, int days)
+    protected int? ConvertYearsMonthsDaysToDays(int? years, int? months, int? days)
     {
-        int totalDays = (years * 365) + (months * 30) + days;
-        return totalDays > 0 ? totalDays : null;
+        if (years is null && months is null && days is null)
+            return null;
+        int totalDays = ((years ?? 0) * 365) + ((months ?? 0) * 30) + (days ?? 0);
+        return totalDays;
     }
 }
