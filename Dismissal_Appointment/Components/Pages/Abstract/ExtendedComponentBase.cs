@@ -6,6 +6,7 @@ public partial class ExtendedComponentBase : ComponentBase, IDisposable
     [Inject] protected ILocalizationService Localizer { get; set; } = null!;
     [Inject] protected IPageTitleService PageTitleService { get; set; } = null!;
     [Inject] protected ISnackbar Snackbar { get; set; } = default!;
+    [Inject] public IDialogService DialogService { get; set; } = default!;
 
     protected override void OnInitialized()
     {

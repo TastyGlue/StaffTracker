@@ -6,7 +6,6 @@ public partial class FormBase<T> : ExtendedComponentBase
     [Parameter] public T Model { get; set; } = new();
     [Parameter] public bool IsCreate { get; set; }
     [Parameter] public EventCallback OnValidSubmit { get; set; }
-    [Parameter] public EventCallback OnDelete { get; set; }
 
     protected override void OnInitialized()
     {
@@ -16,6 +15,19 @@ public partial class FormBase<T> : ExtendedComponentBase
     protected void CancelHandler()
     {
         NavManager.NavigateTo("/");
+    }
+
+    protected async Task DeleteEntry()
+    {
+        var parameters = new DialogParameters { ["Entry"] = Model, ["IsCardVisible"] = false };
+        var options = new DialogOptions { MaxWidth = MaxWidth.Large, BackdropClick = true, CloseOnEscapeKey = true, Position = DialogPosition.Center, BackgroundClass = "backgroud-dimmed" };
+        var dialog = await DialogService.ShowAsync<ConfirmDeleteDialog>(null, parameters, options);
+
+        var result = await dialog.Result;
+        if (result is not null && !result.Canceled)
+        {
+            NavManager.NavigateTo("/");
+        }
     }
 
     protected void ConvertDaysToYearsMonthsDays(int totalDays, out int years, out int months, out int days)

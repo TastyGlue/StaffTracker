@@ -6,6 +6,7 @@ public partial class ConfirmDeleteDialog : ExtendedComponentBase
 
     [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = default!;
     [Parameter] public EntryBase Entry { get; set; } = new();
+    [Parameter] public bool IsCardVisible { get; set; } = true;
 
     private void Cancel() => MudDialog.Cancel();
 

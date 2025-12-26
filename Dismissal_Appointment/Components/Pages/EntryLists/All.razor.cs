@@ -5,7 +5,6 @@ namespace Dismissal_Appointment.Components.Pages.EntryLists;
 public partial class All : EntryListBase<EntryBase>
 {
     [Inject] protected IJSRuntime JS { get; set; } = default!;
-    [Inject] public IDialogService DialogService { get; set; } = default!;
 
     protected MudDataGrid<EntryBase> DataGrid { get; set; } = default!;
     protected string EntryTypeColFilterOperator => Localizer[FilterOperator.Enum.Is];
