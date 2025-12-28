@@ -24,7 +24,7 @@ public partial class ExtendedComponentBase : ComponentBase, IDisposable
         Snackbar.Add(Localizer[message], severity, config => { config.VisibleStateDuration = duration; });
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         Localizer.OnCultureChanged -= StateHasChanged;
         PageTitleService.OnChange -= StateHasChanged;

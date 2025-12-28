@@ -9,19 +9,12 @@ public partial class EntryListBase<T> : ExtendedComponentBase
 
     protected ObservableCollection<T> Entries { get; set; } = [];
     protected T? SelectedEntry { get; set; } = null;
-    protected bool IsLoading { get; set; }
+    protected bool IsLoading { get; set; } = true;
     public string SearchString { get; set; } = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         base.OnInitialized();
-
-        IsLoading = true;
-
-        var entries = await EntriesService.GetAll();
-        Entries = new(entries);
-
-        IsLoading = false;
     }
 
     protected Func<T, int, string> RowClassFunc => (x, i) =>

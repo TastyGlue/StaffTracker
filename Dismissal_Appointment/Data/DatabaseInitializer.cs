@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace Dismissal_Appointment.Data;
 
 public class DatabaseInitializer

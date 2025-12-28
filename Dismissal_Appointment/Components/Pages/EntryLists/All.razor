@@ -2,6 +2,7 @@
 @inherits EntryListBase<EntryBase>
 
 <MudDataGrid @ref="DataGrid"
+             @bind-CurrentPage="CurrentPage"
              @bind-SelectedItem="SelectedEntry"
              T="EntryBase"
              Items="Entries"
@@ -64,10 +65,10 @@
     </ToolBarContent>
 
     <Columns>
-        <PropertyColumn Property="x => x.Id" Title="@Localizer["Id"]" HeaderStyle="max-width:150px" FilterOperators="NonNullableIntFilterOperators" />
-        <PropertyColumn Property="x => x.CompanyName" Title="@Localizer["Company"]" FilterOperators="NonNullableStringFilterOperators" />
-        <PropertyColumn Property="x => x.Division" Title="@Localizer["Division"]" />
-        <PropertyColumn Property="x => x.EntryType" Title="@Localizer["Entry Type"]">
+        <PropertyColumn Property="x => x.Id" Title="@Localizer["Id"]" HeaderStyle="max-width:150px" FilterOperators="NonNullableIntFilterOperators" @bind-Hidden="_hiddenCols[0]" />
+        <PropertyColumn Property="x => x.CompanyName" Title="@Localizer["Company"]" FilterOperators="NonNullableStringFilterOperators" @bind-Hidden="_hiddenCols[1]" />
+        <PropertyColumn Property="x => x.Division" Title="@Localizer["Division"]" @bind-Hidden="_hiddenCols[2]" />
+        <PropertyColumn Property="x => x.EntryType" Title="@Localizer["Entry Type"]" @bind-Hidden="_hiddenCols[3]">
             <CellTemplate>
                 <EntryTypeChip EntryType="context.Item.EntryType" />
             </CellTemplate>
@@ -90,22 +91,24 @@
                     </div>
                     <div class="mud-grid-item mud-grid-item-xs-12 d-flex justify-end">
                         <MudButton ButtonType="ButtonType.Button" Variant="Variant.Text"
-                                   OnClick="@(() => ClearFilterAsync(context))">
-                            @Localizer["Clear"]</MudButton>
+                                   OnClick="@(() => ClearEntryTypeFilterAsync(context))">
+                            @Localizer["Clear"]
+                        </MudButton>
                         <MudButton ButtonType="ButtonType.Button" Variant="Variant.Text" Color="Color.Primary"
-                                   OnClick="@(() => ApplyFilterAsync(context))">
-                            @Localizer["Filter"]</MudButton>
+                                   OnClick="@(() => ApplyEntryTypeFilterAsync(context))">
+                            @Localizer["Filter"]
+                        </MudButton>
                     </div>
                 </div>
             </FilterTemplate>
         </PropertyColumn>
-        <PropertyColumn Property="x => x.EntryDate" Format="dd.MM.yyyy" Title="@Localizer["Entry Date"]" FilterOperators="NonNullableDateFilterOperators" />
-        <PropertyColumn Property="x => x.ConsideredFromDate" Format="dd.MM.yyyy" Title="@Localizer["Considered From Date"]" FilterOperators="NonNullableDateFilterOperators" />
-        <PropertyColumn Property="x => x.IDN" Title="@Localizer["IDN"]" FilterOperators="NonNullableStringFilterOperators" />
-        <PropertyColumn Property="x => x.FirstName" Title="@Localizer["First Name"]" FilterOperators="NonNullableStringFilterOperators" />
-        <PropertyColumn Property="x => x.SecondName" Title="@Localizer["Second Name"]" />
-        <PropertyColumn Property="x => x.Surname" Title="@Localizer["Surname"]" FilterOperators="NonNullableStringFilterOperators" />
-        <PropertyColumn Property="x => x.IsNRAConfirmed" Title="@Localizer["Is NRA Confirmed"]">
+        <PropertyColumn Property="x => x.EntryDate" Format="dd.MM.yyyy" Title="@Localizer["Entry Date"]" FilterOperators="NonNullableDateFilterOperators" @bind-Hidden="_hiddenCols[4]" />
+        <PropertyColumn Property="x => x.ConsideredFromDate" Format="dd.MM.yyyy" Title="@Localizer["Considered From Date"]" FilterOperators="NonNullableDateFilterOperators" @bind-Hidden="_hiddenCols[5]" />
+        <PropertyColumn Property="x => x.IDN" Title="@Localizer["IDN"]" FilterOperators="NonNullableStringFilterOperators" @bind-Hidden="_hiddenCols[6]" />
+        <PropertyColumn Property="x => x.FirstName" Title="@Localizer["First Name"]" FilterOperators="NonNullableStringFilterOperators" @bind-Hidden="_hiddenCols[7]" />
+        <PropertyColumn Property="x => x.SecondName" Title="@Localizer["Second Name"]" @bind-Hidden="_hiddenCols[8]" />
+        <PropertyColumn Property="x => x.Surname" Title="@Localizer["Surname"]" FilterOperators="NonNullableStringFilterOperators" @bind-Hidden="_hiddenCols[9]" />
+        <PropertyColumn Property="x => x.IsNRAConfirmed" Title="@Localizer["Is NRA Confirmed"]" @bind-Hidden="_hiddenCols[10]">
             <CellTemplate>
                 <MudCheckBox Value="context.Item.IsNRAConfirmed" ReadOnly="true" />
             </CellTemplate>

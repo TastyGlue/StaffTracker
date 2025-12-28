@@ -37,6 +37,13 @@ Inherits from EntryBase. Represents employee hiring with additional properties:
 #### Dismissal.cs
 Inherits from EntryBase. Represents employee dismissal with no additional properties beyond the base class.
 
+#### Grid State Models (`Models/GridState/`)
+Models for persisting MudDataGrid state across navigation and app restarts:
+- **`ColumnSortState.cs`** - Stores sort information (PropertyName, Direction, Index)
+- **`ColumnFilterState.cs`** - Stores filter criteria (PropertyName, Operator, Value with custom JSON converter)
+- **`EntryGridState.cs`** - Main state container holding sorts, filters, page size/index, and hidden columns
+- Uses `PrimitiveValueConverter` for dynamic filter value type serialization (string, int, DateTime, bool, decimal, etc.)
+
 ### Base Components (`Dismissal_Appointment/Components/Pages/Abstract/`)
 
 #### ExtendedComponentBase.cs
@@ -102,6 +109,41 @@ Service for managing the page title displayed in MainLayout:
 - `SetTitle(string titleKey)` - Method to set the page title using a localization resource key
 - The title is automatically localized using the LocalizationService
 - Registered as scoped service in dependency injection container
+
+#### EntryGridStateService.cs
+Service for persisting MudDataGrid state (sorting, filtering, paging, hidden columns) across navigation and app restarts:
+
+**Features:**
+- Thread-safe file operations using dual `SemaphoreSlim` locks (`_fileLock` and `_initLock`)
+- Lazy initialization pattern to avoid deadlocks (no blocking in constructor)
+- JSON persistence to `{AppContext.BaseDirectory}\entry_grid_state.json`
+- Camel case JSON naming policy for readability
+- Automatic state saving and loading
+
+**Storage:**
+- Persists grid state to JSON file in the application directory
+- Uses custom `PrimitiveValueConverter` to handle dynamic filter value types
+
+**Public API:**
+```csharp
+EntryGridState GridState { get; }  // Synchronous property (may return default state)
+Task<EntryGridState> GetGridStateAsync()  // Safe async getter with guaranteed initialization
+Task UpdateFullStateAsync(EntryGridState state)  // Updates and saves complete grid state
+```
+
+**Implementation in All.razor.cs:**
+- **Hybrid save approach**: Combines timer-based auto-save (every 2 seconds) with navigation event handling
+- **LoadGridStateAsync()**: Restores sorts, filters, paging, and hidden columns on component initialization
+- **SaveGridStateAsync()**: Captures current grid state and persists to file
+- **CheckAndSaveState()**: Detects changes via count-based comparison (sort count, filter count, page size/index, hidden columns)
+- **Auto-save timer**: Runs every 2 seconds to detect and save changes
+- **Navigation event**: Saves state asynchronously when navigating away (using `async void` event handler)
+- **Dispose**: Saves final state using `Task.Run()` to avoid UI thread deadlock
+
+**Special Handling:**
+- EntryType enum filter requires integer-to-enum conversion during load
+- Uses expression trees (`Utils.CreatePropertySelector()`) to rebuild sort functions from property names
+- Registered as singleton in dependency injection container
 
 ### Resources (`Dismissal_Appointment/Resources/Translations/`)
 
@@ -225,3 +267,13 @@ The title will automatically be displayed in the centered page title section and
 - Windows-only deployment target
 - Labour code articles are tracked as strings for flexibility
 - All UI styling should go into `wwwroot/css/app.css` file
+
+### Grid State Persistence
+The application automatically saves and restores MudDataGrid state (sorting, filtering, pagination, hidden columns) for the All Entries page:
+- State persists across navigation and app restarts
+- Hybrid save approach: 2-second timer + navigation events + component disposal
+- State stored in JSON file at `{AppContext.BaseDirectory}\entry_grid_state.json`
+- Thread-safe with lazy initialization to prevent deadlocks
+- **Important**: Avoid blocking async calls in event handlers and Dispose methods
+  - Navigation events use `async void` pattern
+  - Dispose uses `Task.Run().Wait()` to avoid UI thread deadlock
