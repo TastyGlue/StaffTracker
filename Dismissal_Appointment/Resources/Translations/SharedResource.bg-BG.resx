@@ -384,4 +384,52 @@
   <data name="para." xml:space="preserve">
     <value>ал.</value>
   </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Език</value>
+  </data>
+  <data name="Settings_FormSettings" xml:space="preserve">
+    <value>Настройки на формите</value>
+  </data>
+  <data name="Settings_GridState" xml:space="preserve">
+    <value>Състояние на таблицата</value>
+  </data>
+  <data name="Settings_FormCreateNew" xml:space="preserve">
+    <value>Създавай нов след запазване</value>
+  </data>
+  <data name="Settings_FormFieldEntryDate" xml:space="preserve">
+    <value>Запомняй дата на записа</value>
+  </data>
+  <data name="Settings_FormFieldCompany" xml:space="preserve">
+    <value>Запомняй фирма</value>
+  </data>
+  <data name="Settings_FormFieldDivision" xml:space="preserve">
+    <value>Запомняй поделение</value>
+  </data>
+  <data name="Settings_GridStateSortsSaving" xml:space="preserve">
+    <value>Запазвай сортиране на таблицата</value>
+  </data>
+  <data name="Settings_GridStateFiltersSaving" xml:space="preserve">
+    <value>Запазвай филтри на таблицата</value>
+  </data>
+  <data name="Settings_GridStatePageSizeSaving" xml:space="preserve">
+    <value>Запазвай размер на страницата</value>
+  </data>
+  <data name="Settings_GridStatePageIndexSaving" xml:space="preserve">
+    <value>Запазвай номер на страницата</value>
+  </data>
+  <data name="Settings_GridStateHiddenColumnsSaving" xml:space="preserve">
+    <value>Запазвай скрити колони</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Settings_FormCreateNew_Tooltip_Disabled" xml:space="preserve">
+    <value>- Изключено: системата пренасочва потребителя към списъка със записи</value>
+  </data>
+  <data name="Settings_FormCreateNew_Tooltip_Enabled" xml:space="preserve">
+    <value>- Включено: потребителя остава на страницата за създаване на нов запис</value>
+  </data>
+  <data name="Settings_FormCreateNew_Tooltip_Header" xml:space="preserve">
+    <value>Контролира поведението на системата след успешно създаване на нов запис:</value>
+  </data>
 </root>

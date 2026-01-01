@@ -18,6 +18,33 @@ public class DatabaseInitializer
         // await _context.Database.MigrateAsync();
     }
 
+    public async Task SeedAppSettings()
+    {
+        // Check if settings already exist
+        if (await _context.AppSettings.AnyAsync())
+        {
+            return; // Settings already seeded
+        }
+
+        var defaultSettings = new AppSettings
+        {
+            Id = 1,
+            Culture = "bg-BG",
+            GridStateSortsSaving = true,
+            GridStateFiltersSaving = true,
+            GridStatePageSizeSaving = true,
+            GridStatePageIndexSaving = true,
+            GridStateHiddenColumnsSaving = true,
+            FormCreateNew = false,
+            FormFieldEntryDate = false,
+            FormFieldCompany = false,
+            FormFieldDivision = false
+        };
+
+        await _context.AppSettings.AddAsync(defaultSettings);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task SeedTestDataAsync()
     {
         // Check if data already exists

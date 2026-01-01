@@ -8,9 +8,9 @@ namespace Dismissal_Appointment
         public static MauiApp CreateMauiApp()
         {
             // Set default culture to Bulgarian
-            var culture = new CultureInfo("bg-BG");
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            //var culture = new CultureInfo("bg-BG");
+            //CultureInfo.DefaultThreadCurrentCulture = culture;
+            //CultureInfo.DefaultThreadCurrentUICulture = culture;
 
             var builder = MauiApp.CreateBuilder();
             builder
@@ -37,7 +37,11 @@ namespace Dismissal_Appointment
 
             // Register SQLite database
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(DatabaseConfig.ConnectionString));
+            {
+                options.UseSqlite(DatabaseConfig.ConnectionString);
+                options.EnableSensitiveDataLogging();
+                options.EnableDetailedErrors();
+            });
 
             // Localization
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources/Translations");
@@ -49,6 +53,8 @@ namespace Dismissal_Appointment
 
             // Register services
             builder.Services.AddSingleton<EntryGridStateService>();
+            builder.Services.AddSingleton<AppSettingsStateContainer>();
+            builder.Services.AddScoped<AppSettingsService>();
             builder.Services.AddScoped<IPageTitleService, PageTitleService>();
             builder.Services.AddScoped<IEntryService<EntryBase>, EntryBaseService>();
             builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();

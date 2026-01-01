@@ -59,5 +59,158 @@ namespace Dismissal_Appointment.Resources.Translations {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create new after save.
+        /// </summary>
+        public static string Settings_FormCreateNew {
+            get {
+                return ResourceManager.GetString("Settings_FormCreateNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Disabled: the system redirects to the list of entries.
+        /// </summary>
+        public static string Settings_FormCreateNew_Tooltip_Disabled {
+            get {
+                return ResourceManager.GetString("Settings_FormCreateNew_Tooltip_Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - Enabled: the user remains on the entry creation page.
+        /// </summary>
+        public static string Settings_FormCreateNew_Tooltip_Enabled {
+            get {
+                return ResourceManager.GetString("Settings_FormCreateNew_Tooltip_Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Controls system behaviour after successfully creating a new entry:.
+        /// </summary>
+        public static string Settings_FormCreateNew_Tooltip_Header {
+            get {
+                return ResourceManager.GetString("Settings_FormCreateNew_Tooltip_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember Company.
+        /// </summary>
+        public static string Settings_FormFieldCompany {
+            get {
+                return ResourceManager.GetString("Settings_FormFieldCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember Division.
+        /// </summary>
+        public static string Settings_FormFieldDivision {
+            get {
+                return ResourceManager.GetString("Settings_FormFieldDivision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember Entry Date.
+        /// </summary>
+        public static string Settings_FormFieldEntryDate {
+            get {
+                return ResourceManager.GetString("Settings_FormFieldEntryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Form Settings.
+        /// </summary>
+        public static string Settings_FormSettings {
+            get {
+                return ResourceManager.GetString("Settings_FormSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Grid State.
+        /// </summary>
+        public static string Settings_GridState {
+            get {
+                return ResourceManager.GetString("Settings_GridState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save grid filters.
+        /// </summary>
+        public static string Settings_GridStateFiltersSaving {
+            get {
+                return ResourceManager.GetString("Settings_GridStateFiltersSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save hidden columns.
+        /// </summary>
+        public static string Settings_GridStateHiddenColumnsSaving {
+            get {
+                return ResourceManager.GetString("Settings_GridStateHiddenColumnsSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save page number.
+        /// </summary>
+        public static string Settings_GridStatePageIndexSaving {
+            get {
+                return ResourceManager.GetString("Settings_GridStatePageIndexSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save page size.
+        /// </summary>
+        public static string Settings_GridStatePageSizeSaving {
+            get {
+                return ResourceManager.GetString("Settings_GridStatePageSizeSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save grid sorting.
+        /// </summary>
+        public static string Settings_GridStateSortsSaving {
+            get {
+                return ResourceManager.GetString("Settings_GridStateSortsSaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Settings_Language {
+            get {
+                return ResourceManager.GetString("Settings_Language", resourceCulture);
+            }
+        }
     }
 }

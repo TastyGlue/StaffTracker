@@ -4,3 +4,7 @@ function setTableContainerMaxHeight() {
         tableContainer.style.maxHeight = '615px';
     }
 }
+
+window.blurActiveElement = () => {
+    document.activeElement?.blur();
+};

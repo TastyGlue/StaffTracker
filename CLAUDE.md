@@ -44,6 +44,22 @@ Models for persisting MudDataGrid state across navigation and app restarts:
 - **`EntryGridState.cs`** - Main state container holding sorts, filters, page size/index, and hidden columns
 - Uses `PrimitiveValueConverter` for dynamic filter value type serialization (string, int, DateTime, bool, decimal, etc.)
 
+#### AppSettings.cs
+Model for application-wide settings stored in the database:
+- `Id` (int) - Primary key (always 1, ensuring single row constraint)
+- `Culture` (string?) - Selected UI culture (e.g., "bg-BG", "en-US")
+- **Grid State Settings** (boolean flags):
+  - `GridStateSortsSaving` - Save grid sorting state
+  - `GridStateFiltersSaving` - Save grid filters state
+  - `GridStatePageSizeSaving` - Save page size
+  - `GridStatePageIndexSaving` - Save page index
+  - `GridStateHiddenColumnsSaving` - Save hidden columns
+- **Form Settings** (boolean flags):
+  - `FormCreateNew` - Auto-create new form after save
+  - `FormFieldEntryDate` - Remember entry date field
+  - `FormFieldCompany` - Remember company field
+  - `FormFieldDivision` - Remember division field
+
 ### Base Components (`Dismissal_Appointment/Components/Pages/Abstract/`)
 
 #### ExtendedComponentBase.cs
@@ -70,6 +86,7 @@ Entity Framework Core DbContext for the application:
 - `DbSet<EntryBase> Entries` - Collection of all entry records (base type)
 - `DbSet<Appointment> Appointments` - Collection of appointment records
 - `DbSet<Dismissal> Dismissals` - Collection of dismissal records
+- `DbSet<AppSettings> AppSettings` - Application settings (single row with Id=1)
 - Uses Table-Per-Type (TPT) mapping strategy for inheritance hierarchy
 - Configures decimal precision for salary fields
 - Enforces required properties and constraints
@@ -145,6 +162,35 @@ Task UpdateFullStateAsync(EntryGridState state)  // Updates and saves complete g
 - Uses expression trees (`Utils.CreatePropertySelector()`) to rebuild sort functions from property names
 - Registered as singleton in dependency injection container
 
+#### AppSettingsService.cs
+Service for managing application-wide settings:
+- Provides business logic for retrieving and updating application settings
+- Works with `AppSettingsStateContainer` for caching
+- Registered as **scoped** service in dependency injection container
+
+**Public API:**
+```csharp
+Task<AppSettings?> GetAsync()  // Retrieves current settings (cached or from database)
+Task UpdateAsync(AppSettings settings)  // Updates and persists settings to database
+```
+
+**Usage:**
+Settings control various application behaviors:
+- Language/culture selection
+- Grid state persistence options (sorting, filtering, paging, hidden columns)
+- Form behavior (auto-create new, remember field values)
+
+#### AppSettingsStateContainer.cs
+In-memory cache for application settings:
+- Prevents unnecessary database queries by caching settings in memory
+- Thread-safe operations using `SemaphoreSlim`
+- Registered as **singleton** service (application-wide)
+
+**Features:**
+- Caches settings after first database load
+- Automatically cleared and reloaded when settings are updated
+- Thread-safe get, set, and clear operations
+
 ### Resources (`Dismissal_Appointment/Resources/Translations/`)
 
 #### SharedResource.resx
@@ -196,6 +242,31 @@ C:\Users\[Username]\AppData\Local\dismissal_appointment.db
 - Database is automatically initialized when the application starts
 - Uses Table-Per-Type mapping for Appointment and Dismissal entities
 
+### Tables
+The database contains the following tables:
+- **Entries** (base table) - Common employee entry data
+- **Appointments** - Appointment-specific data (extends Entries)
+- **Dismissals** - Dismissal-specific data (extends Entries)
+- **AppSettings** - Application settings (single row with Id=1)
+
+### Default Settings
+The `AppSettings` table is seeded with default values on first run:
+```csharp
+{
+    Id = 1,
+    Culture = "bg-BG",
+    GridStateSortsSaving = true,
+    GridStateFiltersSaving = true,
+    GridStatePageSizeSaving = true,
+    GridStatePageIndexSaving = true,
+    GridStateHiddenColumnsSaving = true,
+    FormCreateNew = false,
+    FormFieldEntryDate = false,
+    FormFieldCompany = false,
+    FormFieldDivision = false
+}
+```
+
 ### NuGet Packages
 - `Microsoft.EntityFrameworkCore.Sqlite` (v9.0.11)
 - `Microsoft.EntityFrameworkCore.Tools` (v9.0.11)
@@ -216,12 +287,51 @@ The application uses MudBlazor for the user interface:
 ### Layout Structure
 The application uses a simple, clean layout defined in `MainLayout.razor`:
 - **Topbar**: Subtle topbar with light background (`#f5f5f5`) and minimal shadow
-  - Culture/language switcher located in the right side (Bulgarian/English)
+  - Settings icon (⚙️) in the top-right corner opens the settings dialog
 - **Page Title Section**: Centered horizontally below the topbar
   - Displays the current page title with clear separation from content
 - **Page Content**: Main content area below the title section
   - Max-width of 1400px, centered horizontally
   - Light background color (`#fafafa`)
+
+### Application Settings Dialog
+The settings dialog (`AppSettingsDialog.razor`) provides a centralized interface for customizing application behavior:
+
+**Layout:**
+- **Left Panel**: Vertical navigation menu with categories (Language, Form Settings, Grid State)
+- **Right Panel**: Settings controls for the selected category
+- **Actions**: Cancel, Save, and Close (X) buttons
+
+**Settings Categories:**
+1. **Language** (🌐) - UI language selection (Bulgarian/English)
+   - Changes take effect immediately after saving
+   - Updates both `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
+
+2. **Form Settings** (✏️) - Form behavior preferences
+   - Create new after save - Auto-opens blank form after successful save
+   - Remember Entry Date - Persists entry date across form sessions
+   - Remember Company - Persists company name across form sessions
+   - Remember Division - Persists division across form sessions
+
+3. **Grid State** (⊞) - Grid state persistence options
+   - Save grid sorting - Remembers column sort order
+   - Save grid filters - Remembers active filters
+   - Save page size - Remembers rows per page
+   - Save page index - Remembers current page
+   - Save hidden columns - Remembers hidden column state
+
+**Accessing Settings Programmatically:**
+```csharp
+@inject AppSettingsService AppSettingsService
+
+var settings = await AppSettingsService.GetAsync();
+if (settings != null)
+{
+    // Use settings
+    var shouldCreateNew = settings.FormCreateNew;
+    var saveFilters = settings.GridStateFiltersSaving;
+}
+```
 
 ### Styling Guidelines
 - All custom styling for the layout is defined in `wwwroot/css/app.css`
@@ -231,12 +341,20 @@ The application uses a simple, clean layout defined in `MainLayout.razor`:
   - `.page-title-container` - Container for centered page title
   - `.page-title` - Page title text styling
   - `.page-content` - Content area with padding and max-width
+  - `.app-settings-dialog` - Main settings dialog container
+  - `.settings-container` - Flexbox layout for two-panel design
+  - `.settings-nav` - Left navigation panel styling
+  - `.settings-content` - Right content area
+  - `.settings-header` - Category title header with border
+  - `.settings-body` - Scrollable content area
+  - `.settings-section` - Individual setting group container
+  - `.language-option` - Language selection layout
 - Any new styling should be added to `app.css` to maintain separation of concerns
 
 ### Culture Switching
-- Culture can be switched via the language menu in the topbar
+- Culture is now managed through the Application Settings dialog (Language category)
 - Switching culture updates both `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
-- The active culture is highlighted with a checkmark icon and blue background
+- Changes are persisted to the database and take effect after saving the settings
 - Components inheriting from `ExtendedComponentBase` automatically re-render when culture changes
 
 ### Page Titles
@@ -268,9 +386,26 @@ The title will automatically be displayed in the centered page title section and
 - Labour code articles are tracked as strings for flexibility
 - All UI styling should go into `wwwroot/css/app.css` file
 
+### Application Settings
+The application uses a centralized settings system that controls various behaviors:
+- **Settings Storage**: Single-row table in SQLite database (Id=1)
+- **Caching**: Settings are cached in memory via `AppSettingsStateContainer` singleton
+- **Access Pattern**: Inject `AppSettingsService` and use `GetAsync()` to retrieve settings
+- **User Interface**: Settings dialog accessible via topbar settings icon (⚙️)
+
+**Settings Impact:**
+- **Grid State Settings**: Control which aspects of grid state are saved/restored
+  - Only enabled grid state aspects are persisted by `EntryGridStateService`
+  - Example: If `GridStateFiltersSaving` is false, filters won't be saved or restored
+- **Form Settings**: Control form behavior in Create/Edit pages
+  - `FormCreateNew`: Auto-creates new blank form after successful save
+  - `FormField*` settings: Persist specific field values across form sessions
+- **Culture Setting**: Controls UI language and automatically updates on save
+
 ### Grid State Persistence
-The application automatically saves and restores MudDataGrid state (sorting, filtering, pagination, hidden columns) for the All Entries page:
+The application saves and restores MudDataGrid state (sorting, filtering, pagination, hidden columns) for the All Entries page:
 - State persists across navigation and app restarts
+- **User Control**: Grid state persistence is controlled by settings in the AppSettings dialog
 - Hybrid save approach: 2-second timer + navigation events + component disposal
 - State stored in JSON file at `{AppContext.BaseDirectory}\entry_grid_state.json`
 - Thread-safe with lazy initialization to prevent deadlocks

@@ -10,6 +10,7 @@ public partial class All : EntryListBase<EntryBase>
     [Inject] protected IJSRuntime JS { get; set; } = default!;
     [Inject] protected EntryGridStateService GridStateService { get; set; } = default!;
     [Inject] protected ILogger<All> Logger { get; set; } = default!;
+    [Inject] protected AppSettingsService AppSettingsService { get; set; } = default!;
 
     protected MudDataGrid<EntryBase> DataGrid { get; set; } = default!;
     protected int CurrentPage { get; set; }
@@ -80,14 +81,14 @@ public partial class All : EntryListBase<EntryBase>
     private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         // Save state asynchronously when navigating away
-        try
-        {
-            await SaveGridStateAsync();
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex, "Failed to save grid state on navigation");
-        }
+        //try
+        //{
+        //    await SaveGridStateAsync();
+        //}
+        //catch (Exception ex)
+        //{
+        //    Logger.LogError(ex, "Failed to save grid state on navigation");
+        //}
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -118,13 +119,17 @@ public partial class All : EntryListBase<EntryBase>
 
     private async Task LoadGridStateAsync()
     {
-        var savedState = await GridStateService.GetGridStateAsync();
+        var appSettings = await AppSettingsService.GetAsync();
+        if (appSettings != null && !appSettings.IsGridStateSavingEnabled)
+            return;
 
+        var savedState = await GridStateService.GetGridStateAsync();
         if (savedState.IsEmpty())
             return;
 
         // Load Sorts
-        if (savedState.Sorts.Count != 0)
+        if (savedState.Sorts.Count != 0 &&
+            (appSettings != null && appSettings.GridStateSortsSaving))
         {
             foreach (var sort in savedState.Sorts.OrderBy(s => s.Index))
             {
@@ -134,21 +139,27 @@ public partial class All : EntryListBase<EntryBase>
         }
 
         // Load Paging
-        if (savedState.PageSize > 0)
+        if (savedState.PageSize > 0 &&
+            (appSettings != null && appSettings.GridStatePageSizeSaving))
         {
             await DataGrid.SetRowsPerPageAsync(savedState.PageSize);
             CurrentPage = savedState.PageIndex;
         }
 
         // Load Hidden Columns
-        foreach (var col in DataGrid.RenderedColumns)
+        if (savedState.HiddenColumns.Count != 0 &&
+            (appSettings != null && appSettings.GridStateHiddenColumnsSaving))
         {
-            if (savedState.HiddenColumns.Contains(col.PropertyName ?? ""))
-                await col.HideAsync();
+            foreach (var col in DataGrid.RenderedColumns)
+            {
+                if (savedState.HiddenColumns.Contains(col.PropertyName ?? ""))
+                    await col.HideAsync();
+            }
         }
 
         // Load Filters
-        if (savedState.Filters.Count != 0)
+        if (savedState.Filters.Count != 0 && 
+            (appSettings != null && appSettings.GridStateFiltersSaving))
         {
             foreach (var filter in savedState.Filters)
             {

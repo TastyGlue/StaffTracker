@@ -3,6 +3,7 @@
 public partial class Create : ExtendedComponentBase
 {
     [Inject] protected IEntryService<Appointment> AppointmentService { get; set; } = null!;
+    [Inject] protected AppSettingsService AppSettingsService { get; set; } = null!;
     protected Appointment Model { get; set; } = new() { EntryType = EntryType.Appointment };
 
     protected override async Task OnInitializedAsync()
@@ -17,7 +18,32 @@ public partial class Create : ExtendedComponentBase
         {
             await AppointmentService.Add(Model);
             Notify(Localizer["Appointment created successfully."], Severity.Success);
-            NavManager.NavigateTo("/");
+
+            var appSettings = await AppSettingsService.GetAsync();
+            if (appSettings is not null && appSettings.FormCreateNew)
+            {
+                var previousEntryDate = Model.EntryDate;
+                var previousCompanyName = Model.CompanyName;
+                var previousDivision = Model.Division;
+
+                // Reset the form for new entry
+                Model = new Appointment 
+                { 
+                    EntryType = EntryType.Appointment,
+                    Currency = Currency.BGN
+                };
+
+                if (appSettings.FormFieldEntryDate)
+                    Model.EntryDate = previousEntryDate;
+
+                if (appSettings.FormFieldCompany)
+                    Model.CompanyName = previousCompanyName;
+
+                if (appSettings.FormFieldDivision)
+                    Model.Division = previousDivision;
+            }
+            else
+                NavManager.NavigateTo("/");
         }
         catch (Exception)
         {

@@ -1,0 +1,123 @@
+@inherits ComponentBase
+@inject AppSettingsService AppSettingsService
+@inject ILocalizationService Localizer
+
+<MudDialog Class="app-settings-dialog">
+    <TitleContent>
+        <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="Close" Class="dialog-close-button" />
+    </TitleContent>
+    <DialogContent>
+        <div class="settings-container">
+            <div class="settings-nav">
+                <MudNavMenu Class="settings-nav-menu">
+                    <MudNavLink Icon="@Icons.Material.Filled.Language"
+                                IconColor="@(selectedCategory == SettingsCategory.Language ? Color.Primary : Color.Default)"
+                                OnClick="@(() => SelectCategory(SettingsCategory.Language))"
+                                Class="@(selectedCategory == SettingsCategory.Language ? "active" : "")">
+                                @Localizer["Settings_Language"]
+                    </MudNavLink>
+                    <MudNavLink Icon="@Icons.Material.Filled.Edit"
+                                IconColor="@(selectedCategory == SettingsCategory.FormSettings ? Color.Primary : Color.Default)"
+                                OnClick="@(() => SelectCategory(SettingsCategory.FormSettings))"
+                                Class="@(selectedCategory == SettingsCategory.FormSettings ? "active" : "")">
+                                @Localizer["Settings_FormSettings"]
+                    </MudNavLink>
+                    <MudNavLink Icon="@Icons.Material.Filled.GridOn"
+                                IconColor="@(selectedCategory == SettingsCategory.GridState ? Color.Primary : Color.Default)"
+                                OnClick="@(() => SelectCategory(SettingsCategory.GridState))"
+                                Class="@(selectedCategory == SettingsCategory.GridState ? "active" : "")">
+                                @Localizer["Settings_GridState"]
+                    </MudNavLink>
+                </MudNavMenu>
+            </div>
+
+            <div class="settings-content">
+                <div class="settings-header">
+                    <MudText Typo="Typo.h3">@SelectedCategoryTitle</MudText>
+                </div>
+
+                <div class="settings-body">
+                    @if (settings == null)
+                    {
+                        <MudProgressCircular Indeterminate="true" />
+                    }
+                    else
+                    {
+                        @switch (selectedCategory)
+                        {
+                            case SettingsCategory.Language:
+                                <div class="settings-section">
+                                    <MudMenuItem OnClick="@(() => settings.Culture = "bg-BG")" 
+                                                 Class="@((settings.Culture == "bg-BG") ? "mud-primary-text" : "")"
+                                                 Style="@((settings.Culture == "bg-BG") ? "background-color: var(--mud-palette-action-default-hover);" : "")">
+                                        <div class="culture-menu-item-container">
+                                            <span style="font-size: 1rem;">🇧🇬</span>
+                                            <span>Български</span>
+                                            @if (settings.Culture == "bg-BG")
+                                            {
+                                                <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" />
+                                            }
+                                        </div>
+                                    </MudMenuItem>
+                                    <MudMenuItem OnClick="@(() => settings.Culture = "en-US")" 
+                                                 Class="@((settings.Culture == "en-US") ? "mud-primary-text" : "")"
+                                                 Style="@((settings.Culture == "en-US") ? "background-color: var(--mud-palette-action-default-hover);" : "")">
+                                        <div class="culture-menu-item-container">
+                                            <span style="font-size: 1rem;">🇺🇸</span>
+                                            <span>English</span>
+                                            @if (settings.Culture == "en-US")
+                                            {
+                                                <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" />
+                                            }
+                                        </div>
+                                    </MudMenuItem>
+                                </div>
+                                break;
+
+                            case SettingsCategory.FormSettings:
+                                <div class="settings-section">
+                                    <MudStack Spacing="3">
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <MudSwitch @bind-Value="settings.FormCreateNew" Color="Color.Primary" Label="@Localizer["Settings_FormCreateNew"]" />
+                                            <MudTooltip>
+                                                <TooltipContent>
+                                                    <div style="display: flex; flex-direction: column; justify-content:flex-start; text-align:left; gap: 4px;">
+                                                        <p style="margin: 0; padding: 0;">@Localizer["Settings_FormCreateNew_Tooltip_Header"]</p>
+                                                        <p style="margin: 0; padding: 0;">@Localizer["Settings_FormCreateNew_Tooltip_Disabled"]</p>
+                                                        <p style="margin: 0; padding: 0;">@Localizer["Settings_FormCreateNew_Tooltip_Enabled"]</p>
+                                                    </div>
+                                                </TooltipContent>
+                                                <ChildContent>
+                                                    <MudIcon Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Color="Color.Tertiary" />
+                                                </ChildContent>
+                                            </MudTooltip>
+                                        </div>
+                                        <MudSwitch Disabled="!settings.FormCreateNew" @bind-Value="settings.FormFieldEntryDate" Color="Color.Primary" Label="@Localizer["Settings_FormFieldEntryDate"]" />
+                                        <MudSwitch Disabled="!settings.FormCreateNew" @bind-Value="settings.FormFieldCompany" Color="Color.Primary" Label="@Localizer["Settings_FormFieldCompany"]" />
+                                        <MudSwitch Disabled="!settings.FormCreateNew" @bind-Value="settings.FormFieldDivision" Color="Color.Primary" Label="@Localizer["Settings_FormFieldDivision"]" />
+                                    </MudStack>
+                                </div>
+                                break;
+
+                            case SettingsCategory.GridState:
+                                <div class="settings-section">
+                                    <MudStack Spacing="3">
+                                        <MudSwitch @bind-Value="settings.GridStateSortsSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStateSortsSaving"]" />
+                                        <MudSwitch @bind-Value="settings.GridStateFiltersSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStateFiltersSaving"]" />
+                                        <MudSwitch @bind-Value="settings.GridStatePageSizeSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStatePageSizeSaving"]" />
+                                        <MudSwitch @bind-Value="settings.GridStatePageIndexSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStatePageIndexSaving"]" />
+                                        <MudSwitch @bind-Value="settings.GridStateHiddenColumnsSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStateHiddenColumnsSaving"]" />
+                                    </MudStack>
+                                </div>
+                                break;
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@Localizer["Cancel"]</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Save" Variant="Variant.Filled">@Localizer["Save"]</MudButton>
+    </DialogActions>
+</MudDialog>

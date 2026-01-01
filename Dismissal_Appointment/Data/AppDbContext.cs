@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<EntryBase> Entries { get; set; } = null!;
     public DbSet<Appointment> Appointments { get; set; } = null!;
     public DbSet<Dismissal> Dismissals { get; set; } = null!;
+    public DbSet<AppSettings> AppSettings { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
