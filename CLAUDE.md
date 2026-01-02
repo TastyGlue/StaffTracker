@@ -100,8 +100,11 @@ Configuration helper for database connection:
 #### DatabaseInitializer.cs
 Service for database initialization:
 - Ensures database is created on application startup
-- Called automatically when MainPage is constructed
+- Called synchronously in `App.xaml.cs` constructor before any pages are created
 - Uses `EnsureCreatedAsync()` to create database schema
+- Seeds default `AppSettings` (culture, grid state flags, form flags)
+- Seeds test data (5 appointments and 5 dismissals) on first run
+- Registered as transient service in dependency injection
 
 ### Services (`Dismissal_Appointment/Services/`)
 
@@ -270,6 +273,43 @@ The `AppSettings` table is seeded with default values on first run:
 ### NuGet Packages
 - `Microsoft.EntityFrameworkCore.Sqlite` (v9.0.11)
 - `Microsoft.EntityFrameworkCore.Tools` (v9.0.11)
+
+## Application Startup
+
+### Initialization Sequence
+The application follows a specific initialization order to ensure the database is ready before any Blazor pages load:
+
+1. **`App.xaml.cs` Constructor** (`Dismissal_Appointment/App.xaml.cs`)
+   - Called when the MAUI application starts
+   - Initializes database **synchronously** using `InitializeDatabaseAsync().GetAwaiter().GetResult()`
+   - Ensures database creation and seeding complete before proceeding
+   - Initializes localization from saved `AppSettings` culture preference
+   - Uses scoped service provider to avoid singleton/scoped service conflicts
+
+2. **Database Initialization** (via `DatabaseInitializer`)
+   - Creates database schema if it doesn't exist
+   - Seeds default `AppSettings` (Id=1) with Bulgarian culture and default flags
+   - Seeds test data (5 appointments, 5 dismissals) on first run
+
+3. **Localization Initialization**
+   - Loads saved culture from `AppSettings` table
+   - Sets `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
+   - Falls back to Bulgarian (bg-BG) if no settings exist
+
+4. **MainPage Creation** (`Dismissal_Appointment/MainPage.xaml.cs`)
+   - Simple ContentPage with BlazorWebView
+   - No initialization logic (handled by App.xaml.cs)
+   - Database is guaranteed to exist at this point
+
+5. **Blazor UI Loads**
+   - Home page (All.razor.cs) can safely query database
+   - Grid state is restored from JSON file
+   - Application is ready for user interaction
+
+### Critical Design Notes
+- **Synchronous initialization**: Using `.GetAwaiter().GetResult()` in App constructor ensures database exists before any UI loads
+- **Race condition prevention**: Previous async `Task.Run()` approach in MainPage caused "no such table" errors
+- **Service scoping**: Database initialization uses `CreateScope()` to properly resolve scoped services (`AppDbContext`) from the singleton App instance
 
 ## Purpose
 This application serves as an accounting tool to maintain records of:

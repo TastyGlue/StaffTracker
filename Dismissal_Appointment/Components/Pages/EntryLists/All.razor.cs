@@ -73,22 +73,6 @@ public partial class All : EntryListBase<EntryBase>
         IsLoading = false;
 
         SetTitle("Entries");
-
-        // Subscribe to navigation events to save state when navigating away
-        NavManager.LocationChanged += OnLocationChanged;
-    }
-
-    private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        // Save state asynchronously when navigating away
-        //try
-        //{
-        //    await SaveGridStateAsync();
-        //}
-        //catch (Exception ex)
-        //{
-        //    Logger.LogError(ex, "Failed to save grid state on navigation");
-        //}
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -309,9 +293,6 @@ public partial class All : EntryListBase<EntryBase>
     {
         // Stop and dispose timer
         _autoSaveTimer?.Dispose();
-
-        // Unsubscribe from navigation events
-        NavManager.LocationChanged -= OnLocationChanged;
 
         // Save final state before component is destroyed (works for in-app navigation)
         // Use Task.Run to avoid UI thread deadlock
