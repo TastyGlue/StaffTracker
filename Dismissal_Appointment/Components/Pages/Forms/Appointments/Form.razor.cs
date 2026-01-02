@@ -18,7 +18,7 @@ public partial class Form : FormBase<Appointment>
 
         if (IsCreate)
         {
-            Model.Currency = Currency.BGN;
+            Model.Currency = Currency.EUR;
         }
 
         // Convert total days to years, months, days for display

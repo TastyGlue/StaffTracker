@@ -30,7 +30,7 @@ public partial class Create : ExtendedComponentBase
                 Model = new Appointment 
                 { 
                     EntryType = EntryType.Appointment,
-                    Currency = Currency.BGN
+                    Currency = Currency.EUR
                 };
 
                 if (appSettings.FormFieldEntryDate)
