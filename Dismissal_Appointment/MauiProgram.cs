@@ -53,8 +53,7 @@ namespace Dismissal_Appointment
 
             // Register services
             builder.Services.AddSingleton<EntryGridStateService>();
-            builder.Services.AddSingleton<AppSettingsStateContainer>();
-            builder.Services.AddScoped<AppSettingsService>();
+            builder.Services.AddSingleton<AppSettingsService>();
             builder.Services.AddScoped<IPageTitleService, PageTitleService>();
             builder.Services.AddScoped<IEntryService<EntryBase>, EntryBaseService>();
             builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();

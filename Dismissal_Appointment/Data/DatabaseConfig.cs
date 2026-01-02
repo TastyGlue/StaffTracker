@@ -6,8 +6,7 @@ public static class DatabaseConfig
     {
         get
         {
-            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var databaseFolder = Path.Combine(appDataPath, "DismissalAppointment");
+            var databaseFolder = Path.Combine(AppContext.BaseDirectory, "Database");
 
             // Ensure the directory exists
             Directory.CreateDirectory(databaseFolder);

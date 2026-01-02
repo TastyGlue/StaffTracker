@@ -24,7 +24,6 @@ public partial class AppSettingsDialog : ComponentBase
             // Create a copy for editing
             settings = new AppSettings
             {
-                Id = loadedSettings.Id,
                 Culture = loadedSettings.Culture,
                 GridStateSortsSaving = loadedSettings.GridStateSortsSaving,
                 GridStateFiltersSaving = loadedSettings.GridStateFiltersSaving,

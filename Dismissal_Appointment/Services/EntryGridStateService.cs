@@ -24,13 +24,17 @@ public class EntryGridStateService
 
     public async Task<EntryGridState> GetGridStateAsync()
     {
-        await EnsureInitializedAsync();
+        await EnsureInitializedAsync().ConfigureAwait(false);
         return _gridState;
     }
 
     public EntryGridStateService()
     {
-        _stateFilePath = Path.Combine(AppContext.BaseDirectory, "entry_grid_state.json");
+        // Use local user's AppData for per-user grid preferences
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var appFolder = Path.Combine(appDataPath, "Dismissal_Appointment");
+        Directory.CreateDirectory(appFolder); // Ensure directory exists
+        _stateFilePath = Path.Combine(appFolder, "entry_grid_state.json");
         _gridState = new EntryGridState();
     }
 
@@ -38,19 +42,19 @@ public class EntryGridStateService
     {
         if (_initialized) return;
 
-        await _initLock.WaitAsync();
+        await _initLock.WaitAsync().ConfigureAwait(false);
         try
         {
             // Double-check after acquiring lock
             if (_initialized) return;
 
-            await _fileLock.WaitAsync();
+            await _fileLock.WaitAsync().ConfigureAwait(false);
             try
             {
                 if (File.Exists(_stateFilePath))
                 {
                     // Load existing state
-                    var json = await File.ReadAllTextAsync(_stateFilePath);
+                    var json = await File.ReadAllTextAsync(_stateFilePath).ConfigureAwait(false);
                     var loadedState = JsonSerializer.Deserialize<EntryGridState>(json, _jsonOptions);
                     _gridState = loadedState ?? new EntryGridState();
                 }
@@ -58,7 +62,7 @@ public class EntryGridStateService
                 {
                     // Create empty state file
                     _gridState = new EntryGridState();
-                    await SaveToFileInternalAsync();
+                    await SaveToFileInternalAsync().ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -82,46 +86,46 @@ public class EntryGridStateService
 
     public async Task UpdateSortsAsync(List<ColumnSortState> sorts)
     {
-        await EnsureInitializedAsync();
+        await EnsureInitializedAsync().ConfigureAwait(false);
         _gridState.Sorts = sorts;
-        await SaveToFileAsync();
+        await SaveToFileAsync().ConfigureAwait(false);
     }
 
     public async Task UpdateFiltersAsync(List<ColumnFilterState> filters)
     {
-        await EnsureInitializedAsync();
+        await EnsureInitializedAsync().ConfigureAwait(false);
         _gridState.Filters = filters;
-        await SaveToFileAsync();
+        await SaveToFileAsync().ConfigureAwait(false);
     }
 
     public async Task UpdatePagingAsync(int pageSize, int pageIndex)
     {
-        await EnsureInitializedAsync();
+        await EnsureInitializedAsync().ConfigureAwait(false);
         _gridState.PageSize = pageSize;
         _gridState.PageIndex = pageIndex;
-        await SaveToFileAsync();
+        await SaveToFileAsync().ConfigureAwait(false);
     }
 
     public async Task UpdateHiddenColumnsAsync(List<string> hiddenColumns)
     {
-        await EnsureInitializedAsync();
+        await EnsureInitializedAsync().ConfigureAwait(false);
         _gridState.HiddenColumns = hiddenColumns;
-        await SaveToFileAsync();
+        await SaveToFileAsync().ConfigureAwait(false);
     }
 
     public async Task UpdateFullStateAsync(EntryGridState state)
     {
-        await EnsureInitializedAsync();
+        await EnsureInitializedAsync().ConfigureAwait(false);
         _gridState = state;
-        await SaveToFileAsync();
+        await SaveToFileAsync().ConfigureAwait(false);
     }
 
     private async Task SaveToFileAsync()
     {
-        await _fileLock.WaitAsync();
+        await _fileLock.WaitAsync().ConfigureAwait(false);
         try
         {
-            await SaveToFileInternalAsync();
+            await SaveToFileInternalAsync().ConfigureAwait(false);
         }
         finally
         {
@@ -135,7 +139,7 @@ public class EntryGridStateService
         try
         {
             var json = JsonSerializer.Serialize(_gridState, _jsonOptions);
-            await File.WriteAllTextAsync(_stateFilePath, json);
+            await File.WriteAllTextAsync(_stateFilePath, json).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

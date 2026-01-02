@@ -27,25 +27,23 @@
             using var scope = _serviceProvider.CreateScope();
             var databaseInitializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
 
-            await databaseInitializer.InitializeAsync();
-            await databaseInitializer.SeedAppSettings();
-            await databaseInitializer.SeedTestDataAsync();
+            await databaseInitializer.InitializeAsync().ConfigureAwait(false);
+            await databaseInitializer.SeedTestDataAsync().ConfigureAwait(false);
         }
 
         private async Task InitializeLocalizationAsync()
         {
-            using var scope = _serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var appSettingsService = _serviceProvider.GetRequiredService<AppSettingsService>();
             var localization = _serviceProvider.GetRequiredService<ILocalizationService>();
 
-            var appSettings = await context.AppSettings.FirstOrDefaultAsync();
+            var appSettings = await appSettingsService.GetAsync().ConfigureAwait(false);
             if (appSettings != null && !string.IsNullOrEmpty(appSettings.Culture))
             {
                 localization.SetCulture(appSettings.Culture);
             }
             else
             {
-                // Default to Bulgarian
+                // Default to Bulgarian (though GetAsync will return default settings)
                 localization.SetCulture("bg-BG");
             }
         }

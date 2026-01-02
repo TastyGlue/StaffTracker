@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Text.Json.Serialization;
 
 namespace Dismissal_Appointment.Models;
 
 public class AppSettings
 {
-    public int Id { get; set; }
-
     public string? Culture { get; set; }
 
     // Grid State saving
@@ -15,7 +13,7 @@ public class AppSettings
     public bool GridStatePageIndexSaving { get; set; }
     public bool GridStateHiddenColumnsSaving { get; set; }
 
-    [NotMapped]
+    [JsonIgnore]
     public bool IsGridStateSavingEnabled =>
         GridStateSortsSaving ||
         GridStateFiltersSaving ||
@@ -26,9 +24,6 @@ public class AppSettings
     // Form Fields saving
     public bool FormCreateNew { get; set; }
     public bool FormFieldEntryDate { get; set; }
-    //public DateTime? FormFieldEntryDateValue { get; set; }
     public bool FormFieldCompany { get; set; }
-    //public string? FormFieldCompanyValue { get; set; }
     public bool FormFieldDivision { get; set; }
-    //public string? FormFieldDivisionValue { get; set; }
 }

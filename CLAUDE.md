@@ -45,8 +45,8 @@ Models for persisting MudDataGrid state across navigation and app restarts:
 - Uses `PrimitiveValueConverter` for dynamic filter value type serialization (string, int, DateTime, bool, decimal, etc.)
 
 #### AppSettings.cs
-Model for application-wide settings stored in the database:
-- `Id` (int) - Primary key (always 1, ensuring single row constraint)
+Model for per-user application settings stored in JSON file in local AppData:
+- `Id` (int) - Legacy field, always 1
 - `Culture` (string?) - Selected UI culture (e.g., "bg-BG", "en-US")
 - **Grid State Settings** (boolean flags):
   - `GridStateSortsSaving` - Save grid sorting state
@@ -59,6 +59,7 @@ Model for application-wide settings stored in the database:
   - `FormFieldEntryDate` - Remember entry date field
   - `FormFieldCompany` - Remember company field
   - `FormFieldDivision` - Remember division field
+- **Storage**: `%LOCALAPPDATA%\Dismissal_Appointment\app_settings.json` (per-user)
 
 ### Base Components (`Dismissal_Appointment/Components/Pages/Abstract/`)
 
@@ -86,7 +87,6 @@ Entity Framework Core DbContext for the application:
 - `DbSet<EntryBase> Entries` - Collection of all entry records (base type)
 - `DbSet<Appointment> Appointments` - Collection of appointment records
 - `DbSet<Dismissal> Dismissals` - Collection of dismissal records
-- `DbSet<AppSettings> AppSettings` - Application settings (single row with Id=1)
 - Uses Table-Per-Type (TPT) mapping strategy for inheritance hierarchy
 - Configures decimal precision for salary fields
 - Enforces required properties and constraints
@@ -95,14 +95,13 @@ Entity Framework Core DbContext for the application:
 Configuration helper for database connection:
 - `DatabasePath` - Returns the full path to the SQLite database file
 - `ConnectionString` - Provides the SQLite connection string
-- Database location: `%LOCALAPPDATA%\dismissal_appointment.db`
+- Database location: `{AppContext.BaseDirectory}\Database\dismissal_appointment.db` (shared across all network users)
 
 #### DatabaseInitializer.cs
 Service for database initialization:
 - Ensures database is created on application startup
 - Called synchronously in `App.xaml.cs` constructor before any pages are created
 - Uses `EnsureCreatedAsync()` to create database schema
-- Seeds default `AppSettings` (culture, grid state flags, form flags)
 - Seeds test data (5 appointments and 5 dismissals) on first run
 - Registered as transient service in dependency injection
 
@@ -136,12 +135,12 @@ Service for persisting MudDataGrid state (sorting, filtering, paging, hidden col
 **Features:**
 - Thread-safe file operations using dual `SemaphoreSlim` locks (`_fileLock` and `_initLock`)
 - Lazy initialization pattern to avoid deadlocks (no blocking in constructor)
-- JSON persistence to `{AppContext.BaseDirectory}\entry_grid_state.json`
+- JSON persistence to `%LOCALAPPDATA%\Dismissal_Appointment\entry_grid_state.json` (per-user)
 - Camel case JSON naming policy for readability
 - Automatic state saving and loading
 
 **Storage:**
-- Persists grid state to JSON file in the application directory
+- Persists grid state to JSON file in user's local AppData (per-user preferences)
 - Uses custom `PrimitiveValueConverter` to handle dynamic filter value types
 
 **Public API:**
@@ -166,33 +165,36 @@ Task UpdateFullStateAsync(EntryGridState state)  // Updates and saves complete g
 - Registered as singleton in dependency injection container
 
 #### AppSettingsService.cs
-Service for managing application-wide settings:
-- Provides business logic for retrieving and updating application settings
-- Works with `AppSettingsStateContainer` for caching
-- Registered as **scoped** service in dependency injection container
+Service for managing per-user application settings stored in JSON file:
+
+**Features:**
+- Thread-safe file operations using dual `SemaphoreSlim` locks (`_fileLock` and `_initLock`)
+- Lazy initialization pattern to avoid deadlocks (no blocking in constructor)
+- JSON persistence to `%LOCALAPPDATA%\Dismissal_Appointment\app_settings.json` (per-user)
+- Camel case JSON naming policy for readability
+- Automatic default settings creation on first run
+- Registered as **singleton** service in dependency injection container
+
+**Storage:**
+- Persists settings to JSON file in user's local AppData (per-user preferences)
+- Each network user has their own settings file on their local machine
 
 **Public API:**
 ```csharp
-Task<AppSettings?> GetAsync()  // Retrieves current settings (cached or from database)
-Task UpdateAsync(AppSettings settings)  // Updates and persists settings to database
+Task<AppSettings> GetAsync()  // Retrieves current settings (auto-initializes with defaults if needed)
+Task UpdateAsync(AppSettings settings)  // Updates and persists settings to JSON file
 ```
+
+**Default Settings:**
+- Culture: "bg-BG"
+- All grid state saving flags: true
+- All form field remembering flags: false
 
 **Usage:**
 Settings control various application behaviors:
-- Language/culture selection
+- Language/culture selection (per-user)
 - Grid state persistence options (sorting, filtering, paging, hidden columns)
 - Form behavior (auto-create new, remember field values)
-
-#### AppSettingsStateContainer.cs
-In-memory cache for application settings:
-- Prevents unnecessary database queries by caching settings in memory
-- Thread-safe operations using `SemaphoreSlim`
-- Registered as **singleton** service (application-wide)
-
-**Features:**
-- Caches settings after first database load
-- Automatically cleared and reloaded when settings are updated
-- Thread-safe get, set, and clear operations
 
 ### Resources (`Dismissal_Appointment/Resources/Translations/`)
 
@@ -234,10 +236,15 @@ To use localization in Blazor components:
 ## Database Setup
 
 ### Storage Location
-The SQLite database is stored locally on the user's machine at:
+The SQLite database is stored in the application base directory (shared across all network users):
 ```
-C:\Users\[Username]\AppData\Local\dismissal_appointment.db
+{AppContext.BaseDirectory}\Database\dismissal_appointment.db
 ```
+
+**Network Deployment:**
+- When deployed to a network share (e.g., `\\server\apps\DismissalApp\`), the database resides on the server
+- All users accessing the application through shortcuts share the same database
+- Only one user should access the application at a time (no concurrent access)
 
 ### Configuration
 - Database connection is configured in `MauiProgram.cs`
@@ -250,25 +257,6 @@ The database contains the following tables:
 - **Entries** (base table) - Common employee entry data
 - **Appointments** - Appointment-specific data (extends Entries)
 - **Dismissals** - Dismissal-specific data (extends Entries)
-- **AppSettings** - Application settings (single row with Id=1)
-
-### Default Settings
-The `AppSettings` table is seeded with default values on first run:
-```csharp
-{
-    Id = 1,
-    Culture = "bg-BG",
-    GridStateSortsSaving = true,
-    GridStateFiltersSaving = true,
-    GridStatePageSizeSaving = true,
-    GridStatePageIndexSaving = true,
-    GridStateHiddenColumnsSaving = true,
-    FormCreateNew = false,
-    FormFieldEntryDate = false,
-    FormFieldCompany = false,
-    FormFieldDivision = false
-}
-```
 
 ### NuGet Packages
 - `Microsoft.EntityFrameworkCore.Sqlite` (v9.0.11)
@@ -277,24 +265,25 @@ The `AppSettings` table is seeded with default values on first run:
 ## Application Startup
 
 ### Initialization Sequence
-The application follows a specific initialization order to ensure the database is ready before any Blazor pages load:
+The application follows a specific initialization order to ensure the database and settings are ready before any Blazor pages load:
 
 1. **`App.xaml.cs` Constructor** (`Dismissal_Appointment/App.xaml.cs`)
    - Called when the MAUI application starts
    - Initializes database **synchronously** using `InitializeDatabaseAsync().GetAwaiter().GetResult()`
    - Ensures database creation and seeding complete before proceeding
-   - Initializes localization from saved `AppSettings` culture preference
-   - Uses scoped service provider to avoid singleton/scoped service conflicts
+   - Initializes localization from saved `AppSettings` JSON file (per-user)
+   - Uses scoped service provider for database initialization to properly resolve scoped `AppDbContext`
 
 2. **Database Initialization** (via `DatabaseInitializer`)
-   - Creates database schema if it doesn't exist
-   - Seeds default `AppSettings` (Id=1) with Bulgarian culture and default flags
+   - Creates database schema if it doesn't exist in `{AppContext.BaseDirectory}\Database\`
    - Seeds test data (5 appointments, 5 dismissals) on first run
+   - Database is shared across all network users
 
 3. **Localization Initialization**
-   - Loads saved culture from `AppSettings` table
+   - Loads saved culture from `AppSettingsService` (JSON file in user's local AppData)
+   - Creates default settings JSON file if it doesn't exist (culture: "bg-BG")
    - Sets `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
-   - Falls back to Bulgarian (bg-BG) if no settings exist
+   - Each network user has their own settings file on their local machine
 
 4. **MainPage Creation** (`Dismissal_Appointment/MainPage.xaml.cs`)
    - Simple ContentPage with BlazorWebView
@@ -303,13 +292,14 @@ The application follows a specific initialization order to ensure the database i
 
 5. **Blazor UI Loads**
    - Home page (All.razor.cs) can safely query database
-   - Grid state is restored from JSON file
+   - Grid state is restored from JSON file in user's local AppData (per-user preferences)
    - Application is ready for user interaction
 
 ### Critical Design Notes
 - **Synchronous initialization**: Using `.GetAwaiter().GetResult()` in App constructor ensures database exists before any UI loads
 - **Race condition prevention**: Previous async `Task.Run()` approach in MainPage caused "no such table" errors
 - **Service scoping**: Database initialization uses `CreateScope()` to properly resolve scoped services (`AppDbContext`) from the singleton App instance
+- **Data separation**: Employee data (database) is shared on network server, while UI preferences (JSON files) are per-user on local machines
 
 ## Purpose
 This application serves as an accounting tool to maintain records of:
@@ -394,7 +384,7 @@ if (settings != null)
 ### Culture Switching
 - Culture is now managed through the Application Settings dialog (Language category)
 - Switching culture updates both `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
-- Changes are persisted to the database and take effect after saving the settings
+- Changes are persisted to the user's local JSON settings file and take effect after saving
 - Components inheriting from `ExtendedComponentBase` automatically re-render when culture changes
 
 ### Page Titles
@@ -427,10 +417,10 @@ The title will automatically be displayed in the centered page title section and
 - All UI styling should go into `wwwroot/css/app.css` file
 
 ### Application Settings
-The application uses a centralized settings system that controls various behaviors:
-- **Settings Storage**: Single-row table in SQLite database (Id=1)
-- **Caching**: Settings are cached in memory via `AppSettingsStateContainer` singleton
-- **Access Pattern**: Inject `AppSettingsService` and use `GetAsync()` to retrieve settings
+The application uses a per-user settings system that controls various behaviors:
+- **Settings Storage**: JSON file in user's local AppData (`%LOCALAPPDATA%\Dismissal_Appointment\app_settings.json`)
+- **Per-User**: Each network user has their own settings file on their local machine
+- **Access Pattern**: Inject `AppSettingsService` singleton and use `GetAsync()` to retrieve settings
 - **User Interface**: Settings dialog accessible via topbar settings icon (⚙️)
 
 **Settings Impact:**
@@ -446,8 +436,9 @@ The application uses a centralized settings system that controls various behavio
 The application saves and restores MudDataGrid state (sorting, filtering, pagination, hidden columns) for the All Entries page:
 - State persists across navigation and app restarts
 - **User Control**: Grid state persistence is controlled by settings in the AppSettings dialog
+- **Per-User**: Each network user has their own grid state on their local machine
 - Hybrid save approach: 2-second timer + navigation events + component disposal
-- State stored in JSON file at `{AppContext.BaseDirectory}\entry_grid_state.json`
+- State stored in JSON file at `%LOCALAPPDATA%\Dismissal_Appointment\entry_grid_state.json` (per-user)
 - Thread-safe with lazy initialization to prevent deadlocks
 - **Important**: Avoid blocking async calls in event handlers and Dispose methods
   - Navigation events use `async void` pattern

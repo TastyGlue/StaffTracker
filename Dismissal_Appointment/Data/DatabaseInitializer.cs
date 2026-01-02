@@ -12,43 +12,16 @@ public class DatabaseInitializer
     public async Task InitializeAsync()
     {
         // Ensure the database is created
-        await _context.Database.EnsureCreatedAsync();
+        await _context.Database.EnsureCreatedAsync().ConfigureAwait(false);
 
         // Alternatively, use migrations:
         // await _context.Database.MigrateAsync();
     }
 
-    public async Task SeedAppSettings()
-    {
-        // Check if settings already exist
-        if (await _context.AppSettings.AnyAsync())
-        {
-            return; // Settings already seeded
-        }
-
-        var defaultSettings = new AppSettings
-        {
-            Id = 1,
-            Culture = "bg-BG",
-            GridStateSortsSaving = true,
-            GridStateFiltersSaving = true,
-            GridStatePageSizeSaving = true,
-            GridStatePageIndexSaving = true,
-            GridStateHiddenColumnsSaving = true,
-            FormCreateNew = false,
-            FormFieldEntryDate = false,
-            FormFieldCompany = false,
-            FormFieldDivision = false
-        };
-
-        await _context.AppSettings.AddAsync(defaultSettings);
-        await _context.SaveChangesAsync();
-    }
-
     public async Task SeedTestDataAsync()
     {
         // Check if data already exists
-        if (await _context.Appointments.AnyAsync() || await _context.Dismissals.AnyAsync())
+        if (await _context.Appointments.AnyAsync().ConfigureAwait(false) || await _context.Dismissals.AnyAsync().ConfigureAwait(false))
         {
             return; // Database already seeded
         }
@@ -237,8 +210,8 @@ public class DatabaseInitializer
             }
         };
 
-        await _context.Appointments.AddRangeAsync(appointments);
-        await _context.Dismissals.AddRangeAsync(dismissals);
-        await _context.SaveChangesAsync();
+        await _context.Appointments.AddRangeAsync(appointments).ConfigureAwait(false);
+        await _context.Dismissals.AddRangeAsync(dismissals).ConfigureAwait(false);
+        await _context.SaveChangesAsync().ConfigureAwait(false);
     }
 }
