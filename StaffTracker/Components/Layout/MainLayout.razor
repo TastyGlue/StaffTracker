@@ -1,0 +1,70 @@
+﻿@using StaffTracker.Components.Pages.Abstract
+@using StaffTracker.Services
+@inherits LayoutComponentBase
+@inject ILocalizationService Localizer
+@inject IPageTitleService PageTitleService
+@inject IDialogService DialogService
+@inject IJSRuntime JS
+@implements IDisposable
+
+<MudThemeProvider Theme="@Themes.DefaultTheme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1" Class="app-topbar">
+        <MudSpacer />
+        <MudTooltip Text="@Localizer["Settings"]" Placement="Placement.Bottom" ShowOnClick="false">
+            <MudIconButton Icon="@Icons.Material.Outlined.Settings" Color="Color.Inherit" OnClick="OpenSettings" />
+        </MudTooltip>
+    </MudAppBar>
+
+    <MudMainContent Class="main-content">
+        <div class="page-title-container">
+            <MudText Typo="Typo.h2" Class="page-title">@Localizer[PageTitleService.TitleKey]</MudText>
+        </div>
+
+        <div class="page-content">
+            @Body
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    protected override void OnInitialized()
+    {
+        PageTitleService.OnChange += OnPageTitleChanged;
+        Localizer.OnCultureChanged += OnCultureChanged;
+    }
+
+    private void OnPageTitleChanged()
+    {
+        StateHasChanged();
+    }
+
+    private void OnCultureChanged()
+    {
+        StateHasChanged();
+    }
+
+    private async Task OpenSettings()
+    {
+        await JS.InvokeVoidAsync("blurActiveElement");
+
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true,
+            CloseButton = false
+        };
+
+        await DialogService.ShowAsync<AppSettingsDialog>("", options);
+    }
+
+    public void Dispose()
+    {
+        PageTitleService.OnChange -= OnPageTitleChanged;
+        Localizer.OnCultureChanged -= OnCultureChanged;
+    }
+}
