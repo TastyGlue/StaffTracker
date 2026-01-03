@@ -1,4 +1,4 @@
-# Dismissal_Appointment - Employee Accounting Application
+# StaffTracker - Employee Accounting Application
 
 ## Project Overview
 A simple CRUD accounting application built with .NET MAUI Blazor Hybrid, running exclusively on Windows. The application tracks appointments (hiring) and dismissals of employees for accounting purposes.
@@ -12,7 +12,7 @@ A simple CRUD accounting application built with .NET MAUI Blazor Hybrid, running
 
 ## Project Structure
 
-### Models (`Dismissal_Appointment/Models/`)
+### Models (`StaffTracker/Models/`)
 
 #### EntryBase.cs
 Abstract base class for all employee entries containing common properties:
@@ -59,9 +59,9 @@ Model for per-user application settings stored in JSON file in local AppData:
   - `FormFieldEntryDate` - Remember entry date field
   - `FormFieldCompany` - Remember company field
   - `FormFieldDivision` - Remember division field
-- **Storage**: `%LOCALAPPDATA%\Dismissal_Appointment\app_settings.json` (per-user)
+- **Storage**: `%LOCALAPPDATA%\StaffTracker\app_settings.json` (per-user)
 
-### Base Components (`Dismissal_Appointment/Components/Pages/Abstract/`)
+### Base Components (`StaffTracker/Components/Pages/Abstract/`)
 
 #### ExtendedComponentBase.cs
 Abstract base class for all page components that provides common functionality:
@@ -73,14 +73,14 @@ Abstract base class for all page components that provides common functionality:
 - Automatically handles cleanup and unsubscribes from events in `Dispose()`
 - **IMPORTANT**: When overriding `OnInitialized()` or other lifecycle methods, always call `base.OnInitialized()` first to ensure event subscriptions work correctly
 
-### Enums (`Dismissal_Appointment/Enums/`)
+### Enums (`StaffTracker/Enums/`)
 
 #### EntryType.cs
 Defines entry types:
 - `Dismissal = 1`
 - `Appointment = 2`
 
-### Data (`Dismissal_Appointment/Data/`)
+### Data (`StaffTracker/Data/`)
 
 #### AppDbContext.cs
 Entity Framework Core DbContext for the application:
@@ -105,7 +105,7 @@ Service for database initialization:
 - Seeds test data (5 appointments and 5 dismissals) on first run
 - Registered as transient service in dependency injection
 
-### Services (`Dismissal_Appointment/Services/`)
+### Services (`StaffTracker/Services/`)
 
 #### LocalizationService.cs
 Service for application localization and internationalization:
@@ -135,7 +135,7 @@ Service for persisting MudDataGrid state (sorting, filtering, paging, hidden col
 **Features:**
 - Thread-safe file operations using dual `SemaphoreSlim` locks (`_fileLock` and `_initLock`)
 - Lazy initialization pattern to avoid deadlocks (no blocking in constructor)
-- JSON persistence to `%LOCALAPPDATA%\Dismissal_Appointment\entry_grid_state.json` (per-user)
+- JSON persistence to `%LOCALAPPDATA%\StaffTracker\entry_grid_state.json` (per-user)
 - Camel case JSON naming policy for readability
 - Automatic state saving and loading
 
@@ -170,7 +170,7 @@ Service for managing per-user application settings stored in JSON file:
 **Features:**
 - Thread-safe file operations using dual `SemaphoreSlim` locks (`_fileLock` and `_initLock`)
 - Lazy initialization pattern to avoid deadlocks (no blocking in constructor)
-- JSON persistence to `%LOCALAPPDATA%\Dismissal_Appointment\app_settings.json` (per-user)
+- JSON persistence to `%LOCALAPPDATA%\StaffTracker\app_settings.json` (per-user)
 - Camel case JSON naming policy for readability
 - Automatic default settings creation on first run
 - Registered as **singleton** service in dependency injection container
@@ -196,7 +196,7 @@ Settings control various application behaviors:
 - Grid state persistence options (sorting, filtering, paging, hidden columns)
 - Form behavior (auto-create new, remember field values)
 
-### Resources (`Dismissal_Appointment/Resources/Translations/`)
+### Resources (`StaffTracker/Resources/Translations/`)
 
 #### SharedResource.resx
 Default resource file containing translatable strings for the application:
@@ -267,7 +267,7 @@ The database contains the following tables:
 ### Initialization Sequence
 The application follows a specific initialization order to ensure the database and settings are ready before any Blazor pages load:
 
-1. **`App.xaml.cs` Constructor** (`Dismissal_Appointment/App.xaml.cs`)
+1. **`App.xaml.cs` Constructor** (`StaffTracker/App.xaml.cs`)
    - Called when the MAUI application starts
    - Initializes database **synchronously** using `InitializeDatabaseAsync().GetAwaiter().GetResult()`
    - Ensures database creation and seeding complete before proceeding
@@ -285,7 +285,7 @@ The application follows a specific initialization order to ensure the database a
    - Sets `DefaultThreadCurrentCulture` and `DefaultThreadCurrentUICulture`
    - Each network user has their own settings file on their local machine
 
-4. **MainPage Creation** (`Dismissal_Appointment/MainPage.xaml.cs`)
+4. **MainPage Creation** (`StaffTracker/MainPage.xaml.cs`)
    - Simple ContentPage with BlazorWebView
    - No initialization logic (handled by App.xaml.cs)
    - Database is guaranteed to exist at this point
@@ -418,7 +418,7 @@ The title will automatically be displayed in the centered page title section and
 
 ### Application Settings
 The application uses a per-user settings system that controls various behaviors:
-- **Settings Storage**: JSON file in user's local AppData (`%LOCALAPPDATA%\Dismissal_Appointment\app_settings.json`)
+- **Settings Storage**: JSON file in user's local AppData (`%LOCALAPPDATA%\StaffTracker\app_settings.json`)
 - **Per-User**: Each network user has their own settings file on their local machine
 - **Access Pattern**: Inject `AppSettingsService` singleton and use `GetAsync()` to retrieve settings
 - **User Interface**: Settings dialog accessible via topbar settings icon (⚙️)
@@ -438,7 +438,7 @@ The application saves and restores MudDataGrid state (sorting, filtering, pagina
 - **User Control**: Grid state persistence is controlled by settings in the AppSettings dialog
 - **Per-User**: Each network user has their own grid state on their local machine
 - Hybrid save approach: 2-second timer + navigation events + component disposal
-- State stored in JSON file at `%LOCALAPPDATA%\Dismissal_Appointment\entry_grid_state.json` (per-user)
+- State stored in JSON file at `%LOCALAPPDATA%\StaffTracker\entry_grid_state.json` (per-user)
 - Thread-safe with lazy initialization to prevent deadlocks
 - **Important**: Avoid blocking async calls in event handlers and Dispose methods
   - Navigation events use `async void` pattern
