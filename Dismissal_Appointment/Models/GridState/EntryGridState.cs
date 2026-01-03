@@ -12,7 +12,7 @@ public class EntryGridState
     {
         return Sorts.Count == 0 &&
                Filters.Count == 0 &&
-               (PageSize == 10 || PageSize == 0) &&
+               (PageSize == 5 || PageSize == 0) &&
                PageIndex == 0 &&
                HiddenColumns.Count == 0;
     }

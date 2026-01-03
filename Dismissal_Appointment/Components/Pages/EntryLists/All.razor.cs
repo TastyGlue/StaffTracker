@@ -127,6 +127,11 @@ public partial class All : EntryListBase<EntryBase>
             (appSettings != null && appSettings.GridStatePageSizeSaving))
         {
             await DataGrid.SetRowsPerPageAsync(savedState.PageSize);
+        }
+
+        // Load Page Index
+        if (appSettings != null && appSettings.GridStatePageIndexSaving)
+        {
             CurrentPage = savedState.PageIndex;
         }
 

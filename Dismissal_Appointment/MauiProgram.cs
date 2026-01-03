@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace Dismissal_Appointment
 {
@@ -87,8 +88,31 @@ namespace Dismissal_Appointment
                 args.SetObserved(); // Prevents app crash
             };
 
+#if WINDOWS
+        builder.ConfigureLifecycleEvents(events =>  
+        {  
+            events.AddWindows(wndLifeCycleBuilder =>
+            {
+                wndLifeCycleBuilder.OnWindowCreated(window =>
+                {
+                    IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                    Microsoft.UI.WindowId myWndId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+                    var _appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(myWndId);
+
+                    var presenter = _appWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
+                    if (presenter != null)
+                    {
+                        presenter.IsMinimizable = true;
+                        presenter.IsResizable = true;
+                        presenter.Maximize();
+                    }
+                });
+            });  
+        });
+#endif
+
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
