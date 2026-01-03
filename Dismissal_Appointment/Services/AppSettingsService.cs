@@ -55,7 +55,8 @@ public class AppSettingsService
             catch (Exception ex)
             {
                 // If loading fails, use default settings
-                Console.WriteLine($"Failed to load app settings: {ex.Message}");
+                string errorMessage = Utils.Utils.GetFullExceptionMessage(ex);
+                Log.Error("Failed to load app settings: {ErrorMessage}", errorMessage);
                 _settings = GetDefaultSettings();
             }
             finally
@@ -64,6 +65,7 @@ public class AppSettingsService
             }
 
             _initialized = true;
+            Log.Information("App settings initialized successfully");
         }
         finally
         {
@@ -108,7 +110,8 @@ public class AppSettingsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to save app settings: {ex.Message}");
+            string errorMessage = Utils.Utils.GetFullExceptionMessage(ex);
+            Log.Error("Failed to save app settings: {ErrorMessage}", errorMessage);
         }
     }
 

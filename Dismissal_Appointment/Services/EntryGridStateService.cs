@@ -67,8 +67,10 @@ public class EntryGridStateService
             }
             catch (Exception ex)
             {
+                var errorMessage = Utils.Utils.GetFullExceptionMessage(ex);
+                Log.Error("Failed to load entry grid state: {ErrorMessage}", errorMessage);
+                
                 // If loading fails, use default state
-                Console.WriteLine($"Failed to load grid state: {ex.Message}");
                 _gridState = new EntryGridState();
             }
             finally
@@ -77,6 +79,7 @@ public class EntryGridStateService
             }
 
             _initialized = true;
+            Log.Information("Entry grid state initialized successfully");
         }
         finally
         {
@@ -143,7 +146,8 @@ public class EntryGridStateService
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to save grid state: {ex.Message}");
+            var errorMessage = Utils.Utils.GetFullExceptionMessage(ex);
+            Log.Error("Failed to save entry grid state: {ErrorMessage}", errorMessage);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Globalization;
 
 namespace Dismissal_Appointment
 {
@@ -7,11 +6,6 @@ namespace Dismissal_Appointment
     {
         public static MauiApp CreateMauiApp()
         {
-            // Set default culture to Bulgarian
-            //var culture = new CultureInfo("bg-BG");
-            //CultureInfo.DefaultThreadCurrentCulture = culture;
-            //CultureInfo.DefaultThreadCurrentUICulture = culture;
-
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -33,7 +27,6 @@ namespace Dismissal_Appointment
                 config.SnackbarConfiguration.ShowTransitionDuration = 500;
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
             });
-            //builder.Services.AddMudLocalization();
 
             // Register SQLite database
             builder.Services.AddDbContext<AppDbContext>(options =>
@@ -65,6 +58,34 @@ namespace Dismissal_Appointment
 
             // Register pages
             builder.Services.AddSingleton<MainPage>();
+
+            // Configure Serilog
+            var logPath = Path.Combine(AppContext.BaseDirectory, "Logs", "log-.txt");
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.File(
+                    path: logPath,
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 30,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            // Add Serilog to the logging infrastructure
+            builder.Logging.AddSerilog(Log.Logger, dispose: true);
+
+            // Global exception handling
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                var exception = (Exception)args.ExceptionObject;
+                string errorMessage = Utils.Utils.GetFullExceptionMessage(exception);
+                Log.Fatal("Unhandled exception in AppDomain: {ErrorMessage}", errorMessage);
+            };
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+            {
+                string errorMessage = Utils.Utils.GetFullExceptionMessage(args.Exception.Flatten());
+                Log.Fatal("Unobserved task exception: {ErrorMessage}", errorMessage);
+                args.SetObserved(); // Prevents app crash
+            };
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();

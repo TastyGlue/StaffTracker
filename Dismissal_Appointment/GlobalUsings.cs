@@ -10,6 +10,7 @@ global using Dismissal_Appointment.Components.Pages.Shared;
 global using MudBlazor;
 global using MudBlazor.Services;
 global using FluentValidation;
+global using Serilog;
 
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Components;

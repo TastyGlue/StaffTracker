@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Text;
 
 namespace Dismissal_Appointment.Utils;
 
@@ -24,5 +25,25 @@ public static class Utils
         var converted = Expression.Convert(property, typeof(object));
         var lambda = Expression.Lambda<Func<EntryBase, object?>>(converted, parameter);
         return lambda.Compile();
+    }
+
+    public static string GetFullExceptionMessage(Exception ex)
+    {
+        if (ex == null) return string.Empty;
+
+        var errorMessage = new StringBuilder();
+        errorMessage.AppendLine($"Exception: {ex.Message}");
+        errorMessage.AppendLine($"Stack Trace: {ex.StackTrace}");
+
+        var innerException = ex.InnerException;
+        while (innerException != null)
+        {
+            errorMessage.AppendLine("---- Inner Exception ----");
+            errorMessage.AppendLine($"Exception: {innerException.Message}");
+            errorMessage.AppendLine($"Stack Trace: {innerException.StackTrace}");
+            innerException = innerException.InnerException;
+        }
+
+        return errorMessage.ToString();
     }
 }

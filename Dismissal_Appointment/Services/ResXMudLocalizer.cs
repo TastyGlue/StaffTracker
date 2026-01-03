@@ -23,8 +23,4 @@ public class ResXMudLocalizer : MudLocalizer
             return new LocalizedString(key, string.Format(format, arguments));
         }
     }
-
-    //public override LocalizedString this[string key] => _localization[key];
-
-    //public override LocalizedString this[string key, params object[] arguments] => _localization[key, arguments];
 }
