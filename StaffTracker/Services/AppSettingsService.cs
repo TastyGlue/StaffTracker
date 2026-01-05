@@ -129,7 +129,9 @@ public class AppSettingsService
             FormCreateNew = false,
             FormFieldEntryDate = false,
             FormFieldCompany = false,
-            FormFieldDivision = false
+            FormFieldDivision = false,
+            ExportDefaultFileName = "staff_entries",
+            ExportPreferredDownloadDestination = Utils.Utils.GetDefaultDownloadFolder()
         };
     }
 }

@@ -420,6 +420,15 @@
   <data name="Settings_GridStateHiddenColumnsSaving" xml:space="preserve">
     <value>Запазвай скрити колони</value>
   </data>
+  <data name="Settings_ExportSettings" xml:space="preserve">
+    <value>Настройки за експорт</value>
+  </data>
+  <data name="Settings_ExportPreferredDownloadDestination" xml:space="preserve">
+    <value>Предпочитана папка за изтегляне</value>
+  </data>
+  <data name="Settings_ExportDefaultFileName" xml:space="preserve">
+    <value>Име на файл по подразбиране</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Настройки</value>
   </data>
@@ -431,5 +440,50 @@
   </data>
   <data name="Settings_FormCreateNew_Tooltip_Header" xml:space="preserve">
     <value>Контролира поведението на системата след успешно създаване на нов запис:</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Експорт</value>
+  </data>
+  <data name="ExportDialogTitle" xml:space="preserve">
+    <value>Експорт</value>
+  </data>
+  <data name="ExportType" xml:space="preserve">
+    <value>Тип експорт</value>
+  </data>
+  <data name="DayExport" xml:space="preserve">
+    <value>Дневен експорт</value>
+  </data>
+  <data name="YearExport" xml:space="preserve">
+    <value>Годишен експорт</value>
+  </data>
+  <data name="SelectDate" xml:space="preserve">
+    <value>Изберете дата</value>
+  </data>
+  <data name="SelectYear" xml:space="preserve">
+    <value>Изберете година</value>
+  </data>
+  <data name="ExportFolder" xml:space="preserve">
+    <value>Папка за експорт</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>Избери папка</value>
+  </data>
+  <data name="ExportSuccess" xml:space="preserve">
+    <value>Експортът е създаден успешно</value>
+  </data>
+  <data name="ExportError" xml:space="preserve">
+    <value>Възникна грешка при експортирането</value>
+  </data>
+  <data name="ExportValidationError" xml:space="preserve">
+    <value>Моля изберете дата или година</value>
+  </data>
+  <data name="FileSelectionError" xml:space="preserve">
+    <value>Грешка при избор на папка</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Име на файла</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Днес</value>
   </data>
 </root>

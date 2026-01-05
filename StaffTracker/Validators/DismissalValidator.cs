@@ -1,7 +1,4 @@
-﻿using StaffTracker.Models;
-using StaffTracker.Services;
-
-namespace StaffTracker.Validators;
+﻿namespace StaffTracker.Validators;
 
 public partial class DismissalValidator : AbstractValidator<Dismissal>
 {

@@ -1,9 +1,7 @@
-﻿using StaffTracker;
-using Microsoft.Extensions.Logging;
-using Microsoft.Maui.LifecycleEvents;
-using StaffTracker.Data;
-using StaffTracker.Models;
-using StaffTracker.Services;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents; // Necessary for WINDOWS-specific code
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Storage;
 
 namespace StaffTracker
 {
@@ -14,6 +12,7 @@ namespace StaffTracker
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -57,9 +56,13 @@ namespace StaffTracker
             builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();
             builder.Services.AddScoped<IEntryService<Dismissal>, DismissalService>();
 
+            // Register Community Toolkit services
+            builder.Services.AddSingleton<IFolderPicker>(FolderPicker.Default);
+
             // Register Validators
             builder.Services.AddSingleton<IValidator<Appointment>, AppointmentValidator>();
             builder.Services.AddSingleton<IValidator<Dismissal>, DismissalValidator>();
+            builder.Services.AddSingleton<IValidator<ExportForm>, ExportFormValidator>();
 
             // Register pages
             builder.Services.AddSingleton<MainPage>();

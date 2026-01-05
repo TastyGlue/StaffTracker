@@ -1,11 +1,11 @@
-using StaffTracker.Models;
+using CommunityToolkit.Maui.Storage;
 
 namespace StaffTracker.Components.Layout;
 
-public partial class AppSettingsDialog : ComponentBase
+public partial class AppSettingsDialog : ExtendedComponentBase
 {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; } = null!;
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = null!;
+    [Inject] private IFolderPicker FolderPicker { get; set; } = null!;
 
     private AppSettings? settings;
     private AppSettings? originalSettings;
@@ -15,6 +15,7 @@ public partial class AppSettingsDialog : ComponentBase
         SettingsCategory.Language => Localizer["Settings_Language"],
         SettingsCategory.FormSettings => Localizer["Settings_FormSettings"],
         SettingsCategory.GridState => Localizer["Settings_GridState"],
+        SettingsCategory.ExportSettings => Localizer["Settings_ExportSettings"],
         _ => ""
     };
 
@@ -35,11 +36,32 @@ public partial class AppSettingsDialog : ComponentBase
                 FormCreateNew = loadedSettings.FormCreateNew,
                 FormFieldEntryDate = loadedSettings.FormFieldEntryDate,
                 FormFieldCompany = loadedSettings.FormFieldCompany,
-                FormFieldDivision = loadedSettings.FormFieldDivision
+                FormFieldDivision = loadedSettings.FormFieldDivision,
+                ExportPreferredDownloadDestination = loadedSettings.ExportPreferredDownloadDestination,
+                ExportDefaultFileName = loadedSettings.ExportDefaultFileName
             };
 
             // Keep original for comparison
             originalSettings = loadedSettings;
+        }
+    }
+
+    private async Task SelectFolder()
+    {
+        try
+        {
+            var result = await FolderPicker.PickAsync(settings.ExportPreferredDownloadDestination, CancellationToken.None);
+
+            if (result.IsSuccessful && result.Folder != null)
+            {
+                settings.ExportPreferredDownloadDestination = result.Folder.Path;
+            }
+        }
+        catch (Exception ex)
+        {
+            Notify(Localizer["FileSelectionError"], Severity.Error);
+            string errorMessage = Utils.Utils.GetFullExceptionMessage(ex);
+            Log.Error(errorMessage);
         }
     }
 
@@ -78,6 +100,7 @@ public partial class AppSettingsDialog : ComponentBase
     {
         Language,
         FormSettings,
-        GridState
+        GridState,
+        ExportSettings
     }
 }

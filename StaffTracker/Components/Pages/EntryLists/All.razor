@@ -56,6 +56,15 @@
                            Class="ml-2" />
         </MudTooltip>
 
+        <MudDivider Vertical="true" Style="border-width:2px; height:50%; border-color:darkgrey;" Class="ml-2" />
+
+        <MudTooltip Text="@Localizer["Export"]" Placement="Placement.Bottom">
+            <MudIconButton Icon="@Icons.Material.Filled.Download"
+                           Variant="Variant.Filled"
+                           OnClick="OpenExportDialog"
+                           Class="ml-2 export-button" />
+        </MudTooltip>
+
         <MudSpacer />
 
         <MudTextField @bind-Value="SearchString"

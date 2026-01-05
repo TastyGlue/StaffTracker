@@ -1,0 +1,90 @@
+﻿@inherits ExtendedComponentBase
+@using StaffTracker.Enums
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5" Style="display:flex; align-items:stretch;">
+            <MudIcon Icon="@Icons.Material.Filled.Download" Class="mr-3 mb-n1" />
+            @Localizer["ExportDialogTitle"]
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <EditForm @ref="Form" Model="Model">
+            <FluentValidator />
+
+            <MudStack Spacing="4" Style="min-width: 400px;">
+                <!-- Export Type Selection -->
+                <MudStack Spacing="2">
+                    <MudText Typo="Typo.subtitle1" Style="font-weight:500;">
+                        @Localizer["ExportType"]
+                    </MudText>
+                    <MudTabs ActivePanelIndex="SelectedTabIndex" 
+                             ActivePanelIndexChanged="TabIndexChanged"
+                             KeepPanelsAlive="true" 
+                             HideSlider="true">
+                        <MudTabPanel Text="@Localizer["DayExport"]">
+                            <MudDatePicker @bind-Date="Model.Day"
+                                           For="@(() => Model.Day)"
+                                           Label="@Localizer["SelectDate"]"
+                                           Mask="@(new DateMask("dd.MM.yyyy"))"
+                                           DateFormat="dd.MM.yyyy"
+                                           Editable="true"
+                                           AutoClose="true"
+                                           Variant="Variant.Outlined"
+                                           PickerVariant="PickerVariant.Dialog" />
+                        </MudTabPanel>
+                        <MudTabPanel Text="@Localizer["YearExport"]">
+                            <MudDatePicker @bind-Date="Model.Year"
+                                           For="@(() => Model.Year)"
+                                           Label="@Localizer["SelectYear"]"
+                                           Mask="@(new DateMask("yyyy"))"
+                                           DateFormat="yyyy"
+                                           TitleDateFormat="yyyy"
+                                           Editable="true"
+                                           AutoClose="true"
+                                           FixDay="@DateTime.Now.Day" FixMonth="@DateTime.Now.Month"
+                                           Variant="Variant.Outlined"
+                                           PickerVariant="PickerVariant.Dialog" />
+                        </MudTabPanel>
+                    </MudTabs>
+                </MudStack>
+
+                <div class="export-form-file-section">
+                    <!-- Folder Selection -->
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.subtitle1" Style="font-weight:500;">
+                            @Localizer["ExportFolder"]
+                        </MudText>
+                            <MudTextField @bind-Value="Model.Folder"
+                                          Variant="Variant.Outlined"
+                                          Placeholder="@Localizer["ExportFolder"]"
+                                          FullWidth="true" 
+                                          Adornment="Adornment.End" 
+                                          AdornmentIcon="@Icons.Material.Filled.FolderOpen" 
+                                          OnAdornmentClick="SelectFolder" />
+                    </MudStack>
+
+                    <!-- File Name Selection -->
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.subtitle1" Style="font-weight:500;">
+                            @Localizer["FileName"]
+                        </MudText>
+                        <MudTextField Placeholder="@Localizer["FileName"]"
+                                      @bind-Value="@Model.FileName"
+                                      For="@(() => Model.FileName)"
+                                      FullWidth="true"
+                                      Variant="Variant.Outlined" />
+                    </MudStack>
+
+                </div>
+
+            </MudStack>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@Localizer["Cancel"]</MudButton>
+        <MudButton Color="Color.Primary" OnClick="PerformExport" Variant="Variant.Filled">
+            @Localizer["Export"]
+        </MudButton>
+    </DialogActions>
+</MudDialog>

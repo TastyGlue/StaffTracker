@@ -1,7 +1,4 @@
-﻿using StaffTracker.Models;
-using StaffTracker.Services;
-
-namespace StaffTracker.Components.Pages.Shared;
+﻿namespace StaffTracker.Components.Pages.Shared;
 
 public partial class ConfirmDeleteDialog : ExtendedComponentBase
 {

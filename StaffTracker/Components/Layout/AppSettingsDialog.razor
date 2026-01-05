@@ -1,5 +1,5 @@
 @using StaffTracker.Services
-@inherits ComponentBase
+@inherits ExtendedComponentBase
 @inject AppSettingsService AppSettingsService
 @inject ILocalizationService Localizer
 
@@ -28,6 +28,12 @@
                                 OnClick="@(() => SelectCategory(SettingsCategory.GridState))"
                                 Class="@(selectedCategory == SettingsCategory.GridState ? "active" : "")">
                                 @Localizer["Settings_GridState"]
+                    </MudNavLink>
+                    <MudNavLink Icon="@Icons.Material.Filled.Download"
+                                IconColor="@(selectedCategory == SettingsCategory.ExportSettings ? Color.Primary : Color.Default)"
+                                OnClick="@(() => SelectCategory(SettingsCategory.ExportSettings))"
+                                Class="@(selectedCategory == SettingsCategory.ExportSettings ? "active" : "")">
+                                @Localizer["Settings_ExportSettings"]
                     </MudNavLink>
                 </MudNavMenu>
             </div>
@@ -108,6 +114,24 @@
                                         <MudSwitch @bind-Value="settings.GridStatePageSizeSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStatePageSizeSaving"]" />
                                         <MudSwitch @bind-Value="settings.GridStatePageIndexSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStatePageIndexSaving"]" />
                                         <MudSwitch @bind-Value="settings.GridStateHiddenColumnsSaving" Color="Color.Primary" Label="@Localizer["Settings_GridStateHiddenColumnsSaving"]" />
+                                    </MudStack>
+                                </div>
+                                break;
+
+                            case SettingsCategory.ExportSettings:
+                                <div class="settings-section">
+                                    <MudStack Spacing="3">
+                                        <MudTextField @bind-Value="settings.ExportPreferredDownloadDestination"
+                                                      Label="@Localizer["Settings_ExportPreferredDownloadDestination"]"
+                                                      Variant="Variant.Outlined"
+                                                      Clearable="true"
+                                                      Adornment="Adornment.End"
+                                                      AdornmentIcon="@Icons.Material.Filled.FolderOpen"
+                                                      OnAdornmentClick="SelectFolder" />
+                                        <MudTextField @bind-Value="settings.ExportDefaultFileName"
+                                                      Label="@Localizer["Settings_ExportDefaultFileName"]"
+                                                      Variant="Variant.Outlined"
+                                                      Clearable="true" />
                                     </MudStack>
                                 </div>
                                 break;

@@ -70,11 +70,119 @@ namespace StaffTracker.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day Export.
+        /// </summary>
+        public static string DayExport {
+            get {
+                return ResourceManager.GetString("DayExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string ExportDialogTitle {
+            get {
+                return ResourceManager.GetString("ExportDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred during export.
+        /// </summary>
+        public static string ExportError {
+            get {
+                return ResourceManager.GetString("ExportError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Folder.
+        /// </summary>
+        public static string ExportFolder {
+            get {
+                return ResourceManager.GetString("ExportFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export created successfully.
+        /// </summary>
+        public static string ExportSuccess {
+            get {
+                return ResourceManager.GetString("ExportSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Type.
+        /// </summary>
+        public static string ExportType {
+            get {
+                return ResourceManager.GetString("ExportType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a date or year.
+        /// </summary>
+        public static string ExportValidationError {
+            get {
+                return ResourceManager.GetString("ExportValidationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File Name.
+        /// </summary>
+        public static string FileName {
+            get {
+                return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error selecting folder.
+        /// </summary>
+        public static string FileSelectionError {
+            get {
+                return ResourceManager.GetString("FileSelectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Date.
+        /// </summary>
+        public static string SelectDate {
+            get {
+                return ResourceManager.GetString("SelectDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Folder.
+        /// </summary>
+        public static string SelectFolder {
+            get {
+                return ResourceManager.GetString("SelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Year.
+        /// </summary>
+        public static string SelectYear {
+            get {
+                return ResourceManager.GetString("SelectYear", resourceCulture);
             }
         }
         
@@ -210,6 +318,15 @@ namespace StaffTracker.Resources.Translations {
         public static string Settings_Language {
             get {
                 return ResourceManager.GetString("Settings_Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year Export.
+        /// </summary>
+        public static string YearExport {
+            get {
+                return ResourceManager.GetString("YearExport", resourceCulture);
             }
         }
     }

@@ -225,4 +225,7 @@
   <data name="MudDataGrid_ShowAll" xml:space="preserve">
     <value>Покажи всички</value>
   </data>
+  <data name="Converter_InvalidDateTime" xml:space="preserve">
+    <value>Невалидна дата</value>
+  </data>
 </root>

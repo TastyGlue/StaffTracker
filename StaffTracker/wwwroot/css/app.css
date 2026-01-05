@@ -300,3 +300,23 @@ h1:focus {
 .mud-switch-disabled .mud-switch-button .mud-switch-thumb-medium {
     background-color: hsl(0 0% 84% / 1);
 }
+
+/* Export */
+button.mud-button.mud-button-filled.export-button {
+    color: var(--mud-palette-primary-text);
+    --mud-ripple-color: var(--mud-palette-primary-text);
+    background-color: hsl(153deg 65% 27%);
+}
+
+    button.mud-button.mud-button-filled.export-button:hover {
+        background-color: hsl(153 65% 22% / 1);
+    }
+
+.export-form-file-section {
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    border-radius: 8px;
+    border: darkgray 1px solid;
+}

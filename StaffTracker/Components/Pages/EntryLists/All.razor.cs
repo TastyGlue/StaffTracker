@@ -104,6 +104,7 @@ public partial class All : EntryListBase<EntryBase>
         }
     }
 
+    #region Grid State
     private async Task LoadGridStateAsync()
     {
         var appSettings = await AppSettingsService.GetAsync();
@@ -247,7 +248,9 @@ public partial class All : EntryListBase<EntryBase>
 
         await GridStateService.UpdateFullStateAsync(state);
     }
+    #endregion
 
+    #region Toolbar Buttons
     protected void NavigateToEditEntry()
     {
         string entryType = SelectedEntry!.EntryType.ToString().ToLower();
@@ -270,6 +273,27 @@ public partial class All : EntryListBase<EntryBase>
             SelectedEntry = null;
         }
     }
+
+    protected async Task OpenExportDialog()
+    {
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Medium,
+            BackdropClick = false,
+            CloseOnEscapeKey = true,
+            Position = DialogPosition.Center
+        };
+
+        var dialog = await DialogService.ShowAsync<ExportDialog>(null, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            // Export was successful, file path is in result.Data
+            Logger.LogInformation($"Export completed successfully: {result.Data}");
+        }
+    }
+    #endregion
 
     #region Grid Events
     private async Task ClearEntryTypeFilterAsync(FilterContext<EntryBase> context)

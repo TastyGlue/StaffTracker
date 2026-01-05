@@ -153,6 +153,15 @@
   <data name="Settings_GridStateHiddenColumnsSaving" xml:space="preserve">
     <value>Save hidden columns</value>
   </data>
+  <data name="Settings_ExportSettings" xml:space="preserve">
+    <value>Export Settings</value>
+  </data>
+  <data name="Settings_ExportPreferredDownloadDestination" xml:space="preserve">
+    <value>Preferred Download Folder</value>
+  </data>
+  <data name="Settings_ExportDefaultFileName" xml:space="preserve">
+    <value>Default File Name</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -167,5 +176,44 @@
   </data>
   <data name="Settings_FormCreateNew_Tooltip_Header" xml:space="preserve">
     <value>Controls system behaviour after successfully creating a new entry:</value>
+  </data>
+  <data name="ExportDialogTitle" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportType" xml:space="preserve">
+    <value>Export Type</value>
+  </data>
+  <data name="DayExport" xml:space="preserve">
+    <value>Day Export</value>
+  </data>
+  <data name="YearExport" xml:space="preserve">
+    <value>Year Export</value>
+  </data>
+  <data name="SelectDate" xml:space="preserve">
+    <value>Select Date</value>
+  </data>
+  <data name="SelectYear" xml:space="preserve">
+    <value>Select Year</value>
+  </data>
+  <data name="ExportFolder" xml:space="preserve">
+    <value>Export Folder</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>Select Folder</value>
+  </data>
+  <data name="ExportSuccess" xml:space="preserve">
+    <value>Export created successfully</value>
+  </data>
+  <data name="ExportError" xml:space="preserve">
+    <value>An error occurred during export</value>
+  </data>
+  <data name="ExportValidationError" xml:space="preserve">
+    <value>Please select a date or year</value>
+  </data>
+  <data name="FileSelectionError" xml:space="preserve">
+    <value>Error selecting folder</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>File Name</value>
   </data>
 </root>

@@ -26,4 +26,8 @@ public class AppSettings
     public bool FormFieldEntryDate { get; set; }
     public bool FormFieldCompany { get; set; }
     public bool FormFieldDivision { get; set; }
+
+    // Export settings
+    public string? ExportPreferredDownloadDestination { get; set; }
+    public string? ExportDefaultFileName { get; set; }
 }

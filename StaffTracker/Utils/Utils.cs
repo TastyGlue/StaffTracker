@@ -47,4 +47,27 @@ public static class Utils
 
         return errorMessage.ToString();
     }
+
+    public static string GetDefaultDownloadFolder()
+    {
+        try
+        {
+            var downloadsPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "Downloads"
+            );
+            if (Directory.Exists(downloadsPath))
+            {
+                return downloadsPath;
+            }
+            else
+            {
+                return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+        }
+        catch
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        }
+    }
 }
