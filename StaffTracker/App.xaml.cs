@@ -36,7 +36,7 @@ namespace StaffTracker
             var databaseInitializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
 
             await databaseInitializer.InitializeAsync().ConfigureAwait(false);
-            await databaseInitializer.SeedTestDataAsync().ConfigureAwait(false);
+            //await databaseInitializer.SeedTestDataAsync().ConfigureAwait(false);
             Log.Information("Database initialized successfully");
         }
 

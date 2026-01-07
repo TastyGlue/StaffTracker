@@ -168,12 +168,11 @@ public class ExcelExportService : IExportService
 
         var compensationCell = worksheet.Cells[row, 2, row, 3];
         compensationCell.Merge = true;
-        compensationCell.Value = $"ОБЕЗЩЕТЕНИЕ ПО ЧЛ.224 - {dismissal.CompensationDays.ToString() ?? "NULL"} ДНИ";
+        compensationCell.Value = $"ОБЕЗЩЕТЕНИЕ ПО ЧЛ.224 - {FormatNullableInt(dismissal.CompensationDays)} ДНИ";
         SetBorderedCell(compensationCell);
         row++;
 
         // Row 6: ЗАПОР - ДА, НЕ | ОТПУСК ПОСЛЕДЕН МЕСЕЦ
-        string garnishment = $"ЗАПОР - ";
         worksheet.Cells[row, 1].Value = FormatGarnishment(dismissal.Garnishment);
         SetBorderedCell(worksheet.Cells[row, 1]);
 
@@ -255,9 +254,12 @@ public class ExcelExportService : IExportService
 
     private static string FormatGarnishment(bool? garnishment)
     {
+        string str = "ЗАПОР - ";
         if (garnishment is not null)
-            return (garnishment.Value) ? "ДА" : "НЕ";
+            str += (garnishment.Value) ? "ДА" : "НЕ";
         else
-            return "NULL";
+            str += "NULL";
+
+        return str;
     }
 }
