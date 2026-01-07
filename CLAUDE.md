@@ -59,7 +59,19 @@ Model for per-user application settings stored in JSON file in local AppData:
   - `FormFieldEntryDate` - Remember entry date field
   - `FormFieldCompany` - Remember company field
   - `FormFieldDivision` - Remember division field
+- **Export Settings**:
+  - `ExportPreferredDownloadDestination` (string?) - Default export folder path
+  - `ExportDefaultFileName` (string?) - Default base filename for exports
 - **Storage**: `%LOCALAPPDATA%\StaffTracker\app_settings.json` (per-user)
+
+#### ExportForm.cs
+Model for the export dialog form data:
+- `ExportType` (ExportType enum) - Type of export (Day or Year)
+- `Day` (DateTime?) - Selected date for Day export
+- `Year` (DateTime?) - Selected year for Year export
+- `Folder` (string) - Destination folder path for export file
+- `FileName` (string) - Base filename for export file (without date suffix)
+- **Validation**: Uses FluentValidation with `ExportFormValidator`
 
 ### Base Components (`StaffTracker/Components/Pages/Abstract/`)
 
@@ -79,6 +91,11 @@ Abstract base class for all page components that provides common functionality:
 Defines entry types:
 - `Dismissal = 1`
 - `Appointment = 2`
+
+#### ExportType.cs
+Defines export types for data export functionality:
+- `Day` - Export all entries for a specific day
+- `Year` - Export all entries for a specific year
 
 ### Data (`StaffTracker/Data/`)
 
@@ -196,6 +213,70 @@ Settings control various application behaviors:
 - Grid state persistence options (sorting, filtering, paging, hidden columns)
 - Form behavior (auto-create new, remember field values)
 
+#### ExcelExportService.cs
+Service for exporting employee entry data to Excel files with Bulgarian formatting:
+
+**Interface:** `IExportService`
+**Implementation:** `ExcelExportService`
+
+**Features:**
+- Exports entries to Excel (.xlsx) files using EPPlus library
+- Bulgarian language formatting for all labels and values
+- Custom form-like layout (not a traditional table structure)
+- Separate formatting for Appointment and Dismissal entries
+- Automatic column width adjustment with minimum widths for merged cells
+- Bold text for key fields (company name, full name, salary, etc.)
+- Bordered cells for clear visual separation
+
+**Public API:**
+```csharp
+Task ExportToExcelAsync(IEnumerable<EntryBase> entries, string filePath);
+```
+
+**EPPlus Configuration:**
+- Uses non-commercial license: `ExcelPackage.License.SetNonCommercialOrganization("Sitikom 2007")`
+- License context must be set before creating any ExcelPackage instances
+
+**Appointment Export Format:**
+Each appointment entry is formatted as a custom form with the following structure:
+- Row 1: Red bold header "За назначаване"
+- Row 2: Company name (bold) | Division
+- Row 3: IDN (bold) | Full name (bold)
+- Row 4: Salary with currency (bold) | Position with label (bold) | Work experience (merged 3 columns)
+- Row 5: Work experience in profession (merged 3 columns, spans row 4-5 area)
+- Row 6: Entry date with label (bold) | Contract date with label | Working hours (merged 3 columns)
+- Row 7: ID card number with label | ID card date with label | ID card authority (merged 3 columns)
+- Row 8: Address with label (merged 5 columns)
+
+**Dismissal Export Format:**
+Each dismissal entry is formatted as:
+- Row 1: Red bold header "За уволнение"
+- Row 2: Company name (bold) | Division
+- Row 3: IDN (bold) | Full name (bold)
+- Row 4: Entry date with label (bold)
+- Row 5: Labour code article with label | Compensation days with label (merged 2 columns)
+- Row 6: Garnishment status with label | Leave last month with label (merged 2 columns)
+
+**Field Formatting Rules:**
+- **Display value only** (bold): Company name, IDN, Full name
+- **Label + value format**: All other fields (e.g., "ЗАПЛАТА - 1400 EUR", "ДЛЪЖНОСТ - Manager")
+- **NULL values**: Displayed as "NULL" for missing optional fields
+- **Dates**: Formatted as "dd.MM.yyyy" or "NULL"
+- **Work experience**: Converted from days to "X години / Y месеци / Z дни" format
+- **Labour code article**: Formatted as "Чл.X, п.Y, т.Z" (Article X, paragraph Y, item Z)
+- **Garnishment**: Displayed as "ДА" (yes) or "НЕ" (no)
+
+**Column Width Handling:**
+- After AutoFit, ensures minimum column width of 20 units
+- Prevents merged cells from being cut off due to AutoFit limitations
+- Adjustable minimum width for different text densities
+
+**Registered as:** Scoped service in dependency injection container
+
+**Dependencies:**
+- EPPlus library for Excel file generation
+- Requires `using OfficeOpenXml;` and `using OfficeOpenXml.Style;`
+
 ### Resources (`StaffTracker/Resources/Translations/`)
 
 #### SharedResource.resx
@@ -261,6 +342,8 @@ The database contains the following tables:
 ### NuGet Packages
 - `Microsoft.EntityFrameworkCore.Sqlite` (v9.0.11)
 - `Microsoft.EntityFrameworkCore.Tools` (v9.0.11)
+- `EPPlus` (v7.x) - Excel file generation for export functionality
+- `CommunityToolkit.Maui` (v9.1.1) - Cross-platform UI components and helpers (includes IFolderPicker)
 
 ## Application Startup
 
@@ -362,6 +445,85 @@ if (settings != null)
     var saveFilters = settings.GridStateFiltersSaving;
 }
 ```
+
+### Export Dialog
+The export dialog (`ExportDialog.razor`) provides an interface for exporting employee entry data to Excel files:
+
+**Location:** `StaffTracker/Components/Pages/Shared/ExportDialog.razor`
+
+**Access:** Export button in the All Entries page toolbar (download icon)
+
+**Features:**
+1. **Export Type Selection**
+   - Tab-based interface (Day Export / Year Export)
+   - Day Export: Exports all entries for a selected date
+   - Year Export: Exports all entries for a selected year
+
+2. **Date/Year Selection**
+   - Day Export: MudDatePicker with dd.MM.yyyy format and mask
+   - Year Export: MudNumericField (range: 1900-2100)
+   - Both fields are required
+
+3. **Folder Selection**
+   - Text field for manual path entry or paste
+   - Folder icon button opens native Windows folder picker
+   - Defaults to user's Downloads folder (or Documents if Downloads doesn't exist)
+
+4. **File Naming**
+   - Uses configurable default filename from AppSettings
+   - Day export: `{filename}_YYYY-MM-DD.xlsx` (e.g., `Entries_2026-01-07.xlsx`)
+   - Year export: `{filename}_YYYY.xlsx` (e.g., `Entries_2026.xlsx`)
+   - **Windows-style duplicate handling**: If file exists, appends index (e.g., `Entries_2026-01-07 (1).xlsx`, `Entries_2026-01-07 (2).xlsx`)
+
+5. **Export Actions**
+   - **Cancel**: Closes dialog without exporting
+   - **Export**: Validates input, queries database, generates Excel file, and opens it
+
+**Export Workflow:**
+1. User clicks Export button on All Entries page
+2. Dialog opens with default settings (Year export, current year, Downloads folder)
+3. User selects export type (Day or Year)
+4. User selects date or year
+5. User selects destination folder (optional, defaults pre-filled)
+6. User clicks Export button
+7. Application validates input
+8. Application queries database for matching entries
+9. If no entries found, displays warning message
+10. If entries found, generates Excel file using ExcelExportService
+11. File is automatically opened with default Excel application
+12. Success notification displayed
+13. Dialog closes
+
+**Validation:**
+- Date/Year selection is required
+- Folder path must not be empty
+- Displays warning if no entries found for selected period
+
+**Error Handling:**
+- Folder selection errors: Displays error notification and logs exception
+- Export errors: Displays error notification, logs exception, keeps dialog open for retry
+- File open errors: Handled by MAUI Launcher API
+
+**Dependencies:**
+- `IFolderPicker` - Native Windows folder picker (CommunityToolkit.Maui)
+- `IExportService` - Excel file generation service
+- `AppDbContext` - Database access for querying entries
+- `AppSettingsService` - Access to default filename and folder preferences
+
+**Code-Behind:** `ExportDialog.razor.cs`
+- Inherits from `ExtendedComponentBase` for automatic localization
+- Uses FluentValidation for form validation (ExportFormValidator)
+- Implements Windows-style file naming with `GetUniqueFilePath()` helper method
+
+**Localization Keys:**
+- `ExportDialogTitle` - Dialog title
+- `DayExport` / `YearExport` - Export type options
+- `SelectDate` / `SelectYear` - Date/year picker labels
+- `ExportFolder` - Folder selection label
+- `Export` / `Cancel` - Action buttons
+- `ExportSuccess` / `ExportError` / `ExportValidationError` - Notification messages
+- `NoEntriesToExport` - Warning when no entries found
+- `OpenExportedFile` - File open request title
 
 ### Styling Guidelines
 - All custom styling for the layout is defined in `wwwroot/css/app.css`

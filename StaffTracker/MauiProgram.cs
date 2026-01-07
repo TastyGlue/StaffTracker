@@ -55,6 +55,7 @@ namespace StaffTracker
             builder.Services.AddScoped<IEntryService<EntryBase>, EntryBaseService>();
             builder.Services.AddScoped<IEntryService<Appointment>, AppointmentService>();
             builder.Services.AddScoped<IEntryService<Dismissal>, DismissalService>();
+            builder.Services.AddScoped<IExportService, ExcelExportService>();
 
             // Register Community Toolkit services
             builder.Services.AddSingleton<IFolderPicker>(FolderPicker.Default);

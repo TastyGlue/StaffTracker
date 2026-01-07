@@ -216,4 +216,10 @@
   <data name="FileName" xml:space="preserve">
     <value>File Name</value>
   </data>
+  <data name="NoEntriesToExport" xml:space="preserve">
+    <value>No entries found for the selected period</value>
+  </data>
+  <data name="OpenExportedFile" xml:space="preserve">
+    <value>Open Exported File</value>
+  </data>
 </root>

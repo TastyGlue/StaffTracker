@@ -486,4 +486,10 @@
   <data name="Today" xml:space="preserve">
     <value>Днес</value>
   </data>
+  <data name="NoEntriesToExport" xml:space="preserve">
+    <value>Няма намерени записи за избрания период</value>
+  </data>
+  <data name="OpenExportedFile" xml:space="preserve">
+    <value>Отваряне на експортиран файл</value>
+  </data>
 </root>
