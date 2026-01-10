@@ -2,6 +2,8 @@
 
 public enum ExportType
 {
-    Day,
-    Year
+    ExportType_Day,
+    ExportType_Month,
+    ExportType_Year,
+    ExportType_Range
 }

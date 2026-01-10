@@ -22,6 +22,9 @@
         <Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
+		<!-- Include only English and Bulgarian localization resources -->
+		<SatelliteResourceLanguages>en;bg</SatelliteResourceLanguages>
+
         <!-- Display name -->
         <ApplicationTitle>StaffTracker</ApplicationTitle>
 

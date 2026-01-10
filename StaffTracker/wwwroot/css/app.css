@@ -312,11 +312,17 @@ button.mud-button.mud-button-filled.export-button {
         background-color: hsl(153 65% 22% / 1);
     }
 
-.export-form-file-section {
-    padding: 8px;
-    display: flex;
-    gap: 8px;
-    flex-direction: column;
-    border-radius: 8px;
-    border: darkgray 1px solid;
+.export-form-section {
+    padding-block: 24px;
+    border-bottom: darkgrey solid 1px;
+}
+
+.horizontal-divider {
+    height: 1px;
+    width: 100%;
+    background-color: darkgrey;
+}
+
+.margin-top-24 {
+    margin-top: 24px !important;
 }

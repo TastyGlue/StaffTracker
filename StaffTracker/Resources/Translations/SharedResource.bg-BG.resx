@@ -466,7 +466,7 @@
     <value>Папка за експорт</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
-    <value>Избери папка</value>
+    <value>Изберете папка</value>
   </data>
   <data name="ExportSuccess" xml:space="preserve">
     <value>Експортът е създаден успешно</value>
@@ -491,5 +491,29 @@
   </data>
   <data name="OpenExportedFile" xml:space="preserve">
     <value>Отваряне на експортиран файл</value>
+  </data>
+  <data name="ExportType_Day" xml:space="preserve">
+    <value>Дневен</value>
+  </data>
+  <data name="ExportType_Month" xml:space="preserve">
+    <value>Месечен</value>
+  </data>
+  <data name="ExportType_Range" xml:space="preserve">
+    <value>Период</value>
+  </data>
+  <data name="ExportType_Year" xml:space="preserve">
+    <value>Годишен</value>
+  </data>
+  <data name="SelectEndDate" xml:space="preserve">
+    <value>Изберете крайна дата</value>
+  </data>
+  <data name="SelectMonth" xml:space="preserve">
+    <value>Изберете месец</value>
+  </data>
+  <data name="SelectStartDate" xml:space="preserve">
+    <value>Изберете начална дата</value>
+  </data>
+  <data name="Start Date must be equal or less than End Date" xml:space="preserve">
+    <value>Началната дата трябва да бъде равна или преди крайната дата</value>
   </data>
 </root>

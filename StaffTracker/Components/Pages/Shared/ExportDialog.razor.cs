@@ -17,7 +17,10 @@ public partial class ExportDialog : ExtendedComponentBase
     private ExportForm Model { get; set; } = new()
     {
         Day = DateTime.Today,
-        Year = DateTime.Today
+        Month = DateTime.Today,
+        Year = DateTime.Today,
+        RangeStartDate = DateTime.Today.AddDays(-7),
+        RangeEndDate = DateTime.Today
     };
     private int SelectedTabIndex { get; set; }
 
@@ -29,7 +32,7 @@ public partial class ExportDialog : ExtendedComponentBase
 
         Model.Folder = AppSettings.ExportPreferredDownloadDestination
             ?? Utils.Utils.GetDefaultDownloadFolder();
-        Model.FileName = AppSettings.ExportDefaultFileName ?? default!;
+        Model.FileName = AppSettings.ExportDefaultFileName;
     }
 
     private async Task SelectFolder()
@@ -60,36 +63,59 @@ public partial class ExportDialog : ExtendedComponentBase
         try
         {
             // Determine export parameters
+            string baseFileName = (string.IsNullOrWhiteSpace(Model.FileName)) ? "StaffTracker_Export" : Model.FileName;
             string fileName;
-            List<EntryBase> entries;
+            IQueryable<EntryBase> entriesQuery;
 
-            if (Model.ExportType == ExportType.Day)
+            if (Model.ExportType == ExportType.ExportType_Day)
             {
-                fileName = $"{Model.FileName}_{Model.Day!.Value:yyyy-MM-dd}.xlsx";
+                fileName = $"{baseFileName}_{Model.Day!.Value:yyyy-MM-dd}.xlsx";
 
                 // Query entries for the selected date
                 var selectedDate = Model.Day.Value.Date;
-                entries = await DbContext.Entries
-                    .Where(e => e.EntryDate.HasValue && e.EntryDate.Value.Date == selectedDate)
-                    .OrderBy(e => e.Id)
-                    .ToListAsync();
+                entriesQuery = DbContext.Entries
+                    .Where(e => e.EntryDate.HasValue && e.EntryDate.Value.Date == selectedDate);
             }
-            else if (Model.ExportType == ExportType.Year)
+            else if (Model.ExportType == ExportType.ExportType_Month)
             {
-                fileName = $"{Model.FileName}_{Model.Year!.Value.Year}.xlsx";
+                fileName = $"{baseFileName}_{Model.Month!.Value:yyyy-MM}.xlsx";
+
+                // Query entries for the selected month
+                var selectedMonth = Model.Month.Value.Month;
+                entriesQuery = DbContext.Entries
+                    .Where(e => e.EntryDate.HasValue && e.EntryDate.Value.Month == selectedMonth);
+            }
+            else if (Model.ExportType == ExportType.ExportType_Year)
+            {
+                fileName = $"{baseFileName}_{Model.Year!.Value.Year}.xlsx";
 
                 // Query entries for the selected year
                 var selectedYear = Model.Year.Value.Year;
-                entries = await DbContext.Entries
-                    .Where(e => e.EntryDate.HasValue && e.EntryDate.Value.Year == selectedYear)
-                    .OrderBy(e => e.Id)
-                    .ToListAsync();
+                entriesQuery = DbContext.Entries
+                    .Where(e => e.EntryDate.HasValue && e.EntryDate.Value.Year == selectedYear);
+            }
+            else if (Model.ExportType == ExportType.ExportType_Range)
+            {
+                fileName = $"{baseFileName}_({Model.RangeStartDate!.Value:yyyy-MM-dd} - {Model.RangeEndDate!.Value:yyyy-MM-dd}).xlsx";
+
+                // Query entries for the selected date
+                var startDate = Model.RangeStartDate.Value.Date;
+                var endDate = Model.RangeEndDate.Value.Date;
+                entriesQuery = DbContext.Entries
+                    .Where(e => e.EntryDate.HasValue && e.EntryDate.Value.Date >= startDate && e.EntryDate.Value.Date <= endDate);
             }
             else
             {
                 Notify(Localizer["ExportValidationError"], Severity.Warning);
                 return;
             }
+
+            // Execute query
+            var entries = await entriesQuery.OrderBy(e => e.Id).ToListAsync();
+
+            // Apply Company name filtering
+            if (!string.IsNullOrWhiteSpace(Model.Company))
+                entries = entries.Where(e => e.CompanyName.Equals(Model.Company, StringComparison.OrdinalIgnoreCase)).ToList();
 
             // Check if there are entries to export
             if (entries.Count == 0)
@@ -123,17 +149,6 @@ public partial class ExportDialog : ExtendedComponentBase
             string errorMessage = Utils.Utils.GetFullExceptionMessage(ex);
             Log.Error($"Export failed: {errorMessage}");
         }
-    }
-
-    private void TabIndexChanged(int value)
-    {
-        SelectedTabIndex = value;
-        Model.ExportType = SelectedTabIndex switch
-        {
-            0 => ExportType.Day,
-            1 => ExportType.Year,
-            _ => ExportType.Day
-        };
     }
 
     /// <summary>

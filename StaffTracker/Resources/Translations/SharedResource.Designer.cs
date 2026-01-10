@@ -124,6 +124,42 @@ namespace StaffTracker.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        public static string ExportType_Day {
+            get {
+                return ResourceManager.GetString("ExportType_Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        public static string ExportType_Month {
+            get {
+                return ResourceManager.GetString("ExportType_Month", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range.
+        /// </summary>
+        public static string ExportType_Range {
+            get {
+                return ResourceManager.GetString("ExportType_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        public static string ExportType_Year {
+            get {
+                return ResourceManager.GetString("ExportType_Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a date or year.
         /// </summary>
         public static string ExportValidationError {
@@ -151,6 +187,24 @@ namespace StaffTracker.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No entries found for the selected period.
+        /// </summary>
+        public static string NoEntriesToExport {
+            get {
+                return ResourceManager.GetString("NoEntriesToExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Exported File.
+        /// </summary>
+        public static string OpenExportedFile {
+            get {
+                return ResourceManager.GetString("OpenExportedFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
@@ -169,6 +223,15 @@ namespace StaffTracker.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select End Date.
+        /// </summary>
+        public static string SelectEndDate {
+            get {
+                return ResourceManager.GetString("SelectEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Folder.
         /// </summary>
         public static string SelectFolder {
@@ -178,11 +241,56 @@ namespace StaffTracker.Resources.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Month.
+        /// </summary>
+        public static string SelectMonth {
+            get {
+                return ResourceManager.GetString("SelectMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Start Date.
+        /// </summary>
+        public static string SelectStartDate {
+            get {
+                return ResourceManager.GetString("SelectStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Year.
         /// </summary>
         public static string SelectYear {
             get {
                 return ResourceManager.GetString("SelectYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default File Name.
+        /// </summary>
+        public static string Settings_ExportDefaultFileName {
+            get {
+                return ResourceManager.GetString("Settings_ExportDefaultFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferred Download Folder.
+        /// </summary>
+        public static string Settings_ExportPreferredDownloadDestination {
+            get {
+                return ResourceManager.GetString("Settings_ExportPreferredDownloadDestination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Settings.
+        /// </summary>
+        public static string Settings_ExportSettings {
+            get {
+                return ResourceManager.GetString("Settings_ExportSettings", resourceCulture);
             }
         }
         
