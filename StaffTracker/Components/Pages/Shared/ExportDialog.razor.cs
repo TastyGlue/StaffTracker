@@ -22,7 +22,6 @@ public partial class ExportDialog : ExtendedComponentBase
         RangeStartDate = DateTime.Today.AddDays(-7),
         RangeEndDate = DateTime.Today
     };
-    private int SelectedTabIndex { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

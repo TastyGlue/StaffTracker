@@ -605,3 +605,39 @@ The application saves and restores MudDataGrid state (sorting, filtering, pagina
 - **Important**: Avoid blocking async calls in event handlers and Dispose methods
   - Navigation events use `async void` pattern
   - Dispose uses `Task.Run().Wait()` to avoid UI thread deadlock
+
+## Deployment and Publishing
+
+### Publishing the Application
+
+The application uses framework-dependent deployment, which requires .NET 9.0 Runtime to be installed on client machines but produces a smaller deployment package.
+
+Navigate to the repository root directory and run the following PowerShell command:
+
+```powershell
+dotnet publish .\StaffTracker\StaffTracker.csproj -f net9.0-windows10.0.19041.0 -c Release -p:WindowsPackageType=None -p:Platform=x64 -o .\StaffTracker\bin\Release\net9.0-windows10.0.19041.0\win-x64\publish
+```
+
+### Command Parameters Explained
+- `-f net9.0-windows10.0.19041.0` - Specifies the target framework for Windows
+- `-c Release` - Builds in Release configuration (optimized)
+- `-p:WindowsPackageType=None` - Creates an unpackaged Windows app
+- `-p:Platform=x64` - Targets 64-bit Windows systems
+- `-o` - Output directory for published files
+
+### Published Output Location
+The command will create the published application in:
+```
+.\StaffTracker\bin\Release\net9.0-windows10.0.19041.0\win-x64\publish\
+```
+
+### Deployment to Network Share
+After publishing, copy the contents of the publish folder to your network share location (e.g., `\\server\apps\StaffTracker\`). Create shortcuts on client machines pointing to the `StaffTracker.exe` file in the network location.
+
+**Prerequisites:**
+- .NET 9.0 Runtime must be installed on all client machines that will run the application
+
+**Important Notes:**
+- The database will be created in the `Database` subfolder relative to the executable location (on the network share)
+- User-specific settings and grid state are stored locally on each user's machine in `%LOCALAPPDATA%\StaffTracker\`
+- Only one user should access the application at a time to avoid database conflicts
